@@ -1,6 +1,41 @@
+<!DOCTYPE php>
 <?php
-include("html/home_page.html");
-include("php/database_functions.php");
+// This file contains functions used for all pages
+
+// Used to connect to the database
+function databaseConnect() {
+  // Connection details
+  $servername = "localhost";
+  $username = "dreg_user";
+  $password = "epq";
+
+  // Create connection
+  $conn = new mysqli($servername, $username, $password);
+
+  // Check connection
+  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+  echo "Connected successfully";
+}
+
+// Used to terminate the connection to the database
+function databaseDisconnect() {
+  $conn->close();
+}
+
+// Used to verify a staff members login details
+function verifyStaffLoginDetails($username, $password) {
+  // Temporary code, replace with SQL queries connecting to the database to
+  // actually check if the user is on the system and has entered the incorrect
+  // login information
+  if ($username === "staff" && $password === "password") {
+    return True;
+  }
+  else {
+    return False;
+  }
+}
 
 // Executed if the staff login form is submitted
 function staffLogin() {
@@ -22,17 +57,20 @@ function staffLogin() {
     echo 'Staff Username: ',$staff_username;
     echo 'Staff Password: ',$staff_password;
 
-    // If username and password are correct
+    // If login details are correct
     if (verifyStaffLoginDetails($staff_username, $staff_password)) {
         // Creates a session so that the staff member can stay logged in
         // Allows variables to be used accross pages
+        /*#############################
         session_start();
         // stores the staff username for use in this session
         $_SESSION["staff_username"] = $staff_username;
         // Tells the server that the staff has logged in, the next page will use this as authentication
         $_SESSION["logged_in"] = True;
+        #############################*/
         // redirects the loged in user to the staff page
-        header('Location: http://' . $_SERVER['HTTP_HOST'] . '/doyrms-registration/php/staff_page.php');
+        echo '<script type="text/javascript">staffPageRedirect()</script>';
+        exit;
     }
     // If login details are incorrect
     else {
@@ -85,17 +123,4 @@ function studentSignOut() {
   }
 
 };
-
-// Executes the function if a member of staff signs in
-if (isset($_POST['staff_username']) && isset($_POST['staff_password'])) {
-  staffLogin();
-}
-// Executes the function if a student signs in
-if (isset($_POST['student_sign_in_name'])) {
-  studentSignIn();
-}
-// Executes the function if a student signs out
-if (isset($_POST['student_sign_out_name']) && isset($_POST['student_sign_out_location'])) {
-  studentSignOut();
-}
 ?>

@@ -1,0 +1,35 @@
+#!/bin/false
+This text file contains a list of everything that needs to be done before finalising the project
+
+# Page Looks
+# These tasks relate to how the page looks and are not too important
+
+  - Add error message for when sign in/out fields are left empty
+  - Add success message for when someone logs in to the system successfully
+
+# Pages
+# These tasks involve the creation of certain pages and their attributes
+
+  - create framework for staff page
+    - staff page must be able to display data from the database
+    - staff page must also only be accessible via the login portal, redirect when
+      the user has not logged in (i.e. pasting a URL into the search bar)
+  - create framework for admin page
+
+# Server
+# These tasks involve making the website work with the server
+
+  - authenticate staff login information with that stored on the server
+  - get locations from the database on the server and display them in the
+    'locations' drop-down selection
+  - get names from database using the initials entered in the sign in and out field(s)
+  - get the main page to 'talk' to the server and retrieve some information
+    from the SQL database
+
+# Security
+# These tasks involve the security of the system
+
+  - use password hashing with the staff login information
+  - limit attempted login attempts, and add a cool-down function
+  - make admin page only accessible via the URL, so that only experienced users,
+    such as an admin, have knowledge on how to access the login portal
