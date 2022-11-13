@@ -36,6 +36,3 @@ This text file contains a list of everything that needs to be done before finali
 
 # URGENT
 # These tasks need to be completed as soon as possible
-
-  - allow verified staff to log in to the staff page, currently it will redirect even if the page has been accessed legitimately
-    This can be done using a cookie to store whether the user has or has not logged in
