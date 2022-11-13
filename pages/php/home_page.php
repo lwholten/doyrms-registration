@@ -1,4 +1,7 @@
 <?php
+/*Initiates a session when the page is first loaded*/
+session_start();
+/*Includes all files used in the main page*/
 include("../php/functions.php");
 include("../../css/mainstyles.css");
 include("../../css/main_page.css");

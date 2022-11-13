@@ -59,17 +59,12 @@ function staffLogin() {
 
     // If login details are correct
     if (verifyStaffLoginDetails($staff_username, $staff_password)) {
-        // Creates a session so that the staff member can stay logged in
-        // Allows variables to be used accross pages
-        /*#############################
-        session_start();
         // stores the staff username for use in this session
         $_SESSION["staff_username"] = $staff_username;
         // Tells the server that the staff has logged in, the next page will use this as authentication
         $_SESSION["logged_in"] = True;
-        #############################*/
         // redirects the loged in user to the staff page
-        echo '<script type="text/javascript">staffPageRedirect()</script>';
+        echo '<script type="text/javascript">window.location.href = "staff_page.php";</script>';
         exit;
     }
     // If login details are incorrect

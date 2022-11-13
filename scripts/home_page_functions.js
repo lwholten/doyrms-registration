@@ -85,11 +85,6 @@ function resetForm(formID) {
   document.getElementById(formID).reset();
 }
 
-function staffPageRedirect() {
-  window.alert('Redirecting you to the staff page')
-  window.location.href = 'staff_page.php';
-}
-
 function toggleFooter() {
   const footer_expanded_preset = document.getElementById('footer_expanded_preset');
   const footer_collapsed_preset = document.getElementById('footer_collapsed_preset');

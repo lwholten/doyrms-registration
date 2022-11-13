@@ -33,3 +33,9 @@ This text file contains a list of everything that needs to be done before finali
   - limit attempted login attempts, and add a cool-down function
   - make admin page only accessible via the URL, so that only experienced users,
     such as an admin, have knowledge on how to access the login portal
+
+# URGENT
+# These tasks need to be completed as soon as possible
+
+  - allow verified staff to log in to the staff page, currently it will redirect even if the page has been accessed legitimately
+    This can be done using a cookie to store whether the user has or has not logged in
