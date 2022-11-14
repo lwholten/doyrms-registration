@@ -1,7 +1,8 @@
 <?php
 /*Used to display the page, prevents users from seeing the page without logging in*/
 function displayPage() {
-  include("../../css/styles.css");
+  include("../../css/mainstyles.css");
+  include("../../css/admin_page.css");
   include("../html/admin_page.html");
   include("../php/functions.php");
 }
@@ -24,4 +25,11 @@ function onPageLoad() {
 }
 
 onPageLoad();
+
+/* Run the admin logout function if the admin user logs out*/
+/* A form on the admin page is used to POST a variable when the logout button is pressed;
+   This code executes when that variable has been set*/
+if (isset($_POST['admin_sign_out'])) {
+  adminSignOut();
+}
 ?>

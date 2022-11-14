@@ -104,6 +104,12 @@ function staffSignOut() {
   echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   exit();
 }
+// Executed if an admin user logs out
+function adminSignOut() {
+  session_destroy();
+  echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
+  exit();
+}
 // Executed if the student sign in form is submitted
 function studentSignIn() {
   // converts the form POST array into useful variables
