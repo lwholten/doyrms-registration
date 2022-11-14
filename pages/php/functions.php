@@ -98,6 +98,12 @@ function staffLogin() {
   }
 
 };
+// Executed if a staff user logs out
+function staffSignOut() {
+  session_destroy();
+  echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
+  exit();
+}
 // Executed if the student sign in form is submitted
 function studentSignIn() {
   // converts the form POST array into useful variables

@@ -17,7 +17,7 @@ function onPageLoad() {
   /* If a staff member has not logged in, they will be redirected*/
   } else {
     /*Alerts the user that they must log in*/
-    echo '<script type="text/javascript">window.alert("WARNING: You do not have access this page, please log in as an administrator");</script>';
+    echo '<script type="text/javascript">window.alert("DENIED: You do not have access this page, please log in as an administrator");</script>';
     /*Redirects the user back to the home page*/
     echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   }

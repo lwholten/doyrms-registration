@@ -13,4 +13,186 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#main_footer {
+  width: 100vw;
+  height: auto;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+}
+#main_footer .text {
+  color: var(--white);
+}
+
+#footer_collapsed_preset {
+  height: 20px;
+  width: 100%;
+  background: var(--navy);
+  transition: background 500ms;
+}
+
+#footer_expanded_preset {
+  height: 1px;
+  width: 100%;
+  background: var(--navy);
+  transition: height 500ms;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#footer_expanded_preset .text_grid {
+  width: auto;
+  margin: auto 0px auto 100px;
+  grid-column-gap: 20px;
+}
+#footer_expanded_preset .text_grid h3 {
+  grid-area: 1 / 1 / 2 / 3;
+  margin-bottom: 8px;
+}
+
+#contact_email {
+  cursor: pointer;
+}
+#contact_email:hover .right_arrow {
+  border-color: var(--burgundy);
+  transition: 50ms;
+}
+
+#login_box {
+  width: 1100px;
+  height: 420px;
+  background: var(--white);
+  border-radius: 60px;
+  margin-top: 140px;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  display: block;
+}
+#login_box header {
+  width: 100%;
+  min-height: 88px;
+  background: var(--burgundy);
+  grid-area: 1 / 1 / 1 / 4;
+  border-radius: 60px 60px 0px 0px;
+  display: flex;
+  border-bottom: 4px solid var(--black);
+}
+#login_box h2 {
+  margin: auto 0px auto 40px;
+  color: var(--white);
+}
+#login_box .login_preset {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  max-height: 420px;
+}
+#login_box #student_selection_preset {
+  display: block;
+}
+#back_button {
+  display: none;
+}
+
+.login_preset form {
+  height: 100%;
+  max-height: 320px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr auto 1fr;
+  grid-row-gap: 30px;
+  grid-auto-flow: row;
+  background: none;
+}
+.login_preset label {
+  width: auto;
+  height: 50px;
+  margin: auto auto 0px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+.login_preset input, select {
+  height: 50px;
+  width: 662px;
+  margin: auto auto 0px 0px;
+  background: var(--light-grey);
+  border: none;
+  border-radius: 8px;
+  box-sizing:border-box;
+}
+.login_preset input, option {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 29px;
+}
+.login_preset #student_sign_out_location {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 29px;
+}
+
+.login_preset #student_sign_out_submit, #staff_login_submit, #student_sign_in_submit {
+  margin: auto;
+  grid-column: 2 / -1;
+  width: 300px;
+  background: var(--navy);
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 29px;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  margin-left: 20%;
+
+  border-radius: 8px;
+  width: 80%;
+  height: 50px;
+  margin: 0;
+}
+.login_preset #student_sign_in_submit {
+  grid-row: 2 / -1;
+}
+.login_preset input[type="password"] {
+  font:small-caption;font-size:32px
+}
+
+#student_selection_grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+  max-height: 320px;
+  width: 100%;
+  background: none;
+}
+#student_selection_grid divider {
+  width: 4px;
+  height: 80%;
+  background: var(--black);
+  border-radius: 2px;
+  display: block;
+  margin: auto;
+}
+#student_selection_grid button {
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  border-radius: 16px;
+  border: none;
+  font-family: "Montserrat";
+  cursor: pointer;
+  box-shadow: 0px 3px 15px rgb(0 0 0 / 20%);
+  transition: 200ms;
+}
 </style>

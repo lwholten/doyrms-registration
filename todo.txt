@@ -15,12 +15,7 @@ This text file contains a list of everything that needs to be done before finali
     - staff page must also only be accessible via the login portal, redirect when
       the user has not logged in (i.e. pasting a URL into the search bar)
   - create framework for admin page
-  - Implement access levels for the staff login portal
-    - This allows admins and staff to log in with the same portal
-    - To do this, we must get the access level associated with the username from
-      the database.
-    - Once we have the access level, we need to redirect admins to the admin page
-      and staff to the staff page
+  - Link staff sign in system to the database
   - Timeouts
     - if a staff member has been idle for more than X minutes (which can be set by the admin),
       It will automatically log them out and send them to the home page
