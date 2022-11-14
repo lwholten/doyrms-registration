@@ -29,12 +29,27 @@ function verifyStaffLoginDetails($username, $password) {
   // Temporary code, replace with SQL queries connecting to the database to
   // actually check if the user is on the system and has entered the incorrect
   // login information
-  if ($username === "staff" && $password === "password") {
+  if ($username === "admin" && $password === "password") {
+    return True;
+  } elseif ($username === "staff" && $password === "password") {
     return True;
   }
   else {
     return False;
   }
+}
+
+function getAccessLevel($username) {
+  // Used to get the access level associated with the staff username
+  // In future make sure to get this from the database, temporarily outputs useable data
+  if ($username === "admin") {
+    $access_level = "admin";
+  } elseif ($username === "staff") {
+    $access_level = "staff";
+  } else {
+    $access_level = "user";
+  }
+  return $access_level;
 }
 
 // Executed if the staff login form is submitted
@@ -52,21 +67,28 @@ function staffLogin() {
   }
   // If username and/or password fields are not left empty
   else {
-    // use this area to declare what must happen to the variable with the server
-    // temporarily displays the input data on the website
-    echo 'Staff Username: ',$staff_username;
-    echo 'Staff Password: ',$staff_password;
 
     // If login details are correct
     if (verifyStaffLoginDetails($staff_username, $staff_password)) {
         // stores the staff username for use in this session
         $_SESSION["staff_username"] = $staff_username;
+        // stores the access level for this user
+        $_SESSION["access_level"] = getAccessLevel($staff_username);
         // Tells the server that the staff has logged in, the next page will use this as authentication
         $_SESSION["logged_in"] = True;
-        // redirects the loged in user to the staff page
-        echo '<script type="text/javascript">window.location.href = "staff_page.php";</script>';
+
+        // redirects the user to the appropriate page depending on their access level
+        if ($_SESSION["access_level"] === "admin") {
+          echo '<script type="text/javascript">window.location.href = "admin_page.php";</script>';
+        } elseif ($_SESSION["access_level"] === "staff") {
+          echo '<script type="text/javascript">window.location.href = "staff_page.php";</script>';
+        } else {
+          echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
+        };
+
         exit;
     }
+
     // If login details are incorrect
     else {
       // Luke:
