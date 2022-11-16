@@ -92,10 +92,41 @@ function hideOverlay() {
   /*Makes the login box zoom in to frame*/
   login_box = document.getElementById('login_box');
   login_box.style.transform = 'scale(1.0)';
-  /*Adds a blur effect to the background*/
-  document.body.style.backdropFilter = 'blur(0px)';
   /*Execute containted code after n miliseconds (200ms)*/
   setTimeout(function(){
     overlay.style.display = 'none';
   }, 200);
+}
+function showOverlay() {
+  /*Shows the overlay*/
+  overlay = document.getElementById('idle_overlay');
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1.0';
+  /*Makes the login box zoom out of frame*/
+  login_box = document.getElementById('login_box');
+  login_box.style.transform = 'scale(0.0)';
+}
+function idleTimer() {
+  var time;
+  /*Resets the timer when the window or document is loaded*/
+  window.onload = resetTimer;
+  document.onload = resetTimer;
+
+  /*Reset the timer when one of these occur*/
+  document.onmousemove = resetTimer;
+  document.onmousedown = resetTimer;
+  document.onkeydown = resetTimer;
+  document.onclick = resetTimer;
+
+  /*Used to reset the timer, also shows the overlay when this occurs*/
+  function resetTimer() {
+      clearTimeout(time);
+      time = setTimeout(showOverlay, 30000)
+      /*Note 1 second = 1000ms*/
+  }
+}
+
+/*When the window is loaded, start the idle timer*/
+window.onload = function() {
+  idleTimer()
 }
