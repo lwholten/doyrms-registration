@@ -20,7 +20,21 @@
       <button><h5>HELP</h5></button>
     </navbar>
   </header>
-  <aside id="sidebar">
-    <section id="user_info_tab" class="sidebar_tab"></section>
-  </aside>
+  <div class="wrapper">
+    <div class="text" id="sidebar">
+      <input type="checkbox" id="sidebar_toggle" class="hidden"/>
+      <label for="sidebar_toggle" class="sidebar_button" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
+      <ul id="sidebar_contents">
+        <li class="sidebar_option"><h3>HOME</h3></li>
+        <li class="sidebar_option"><h3>ONE</h3></li>
+        <li class="sidebar_option"><h3>TWO</h3></li>
+        <li class="sidebar_option"><h3>THREE</h3></li>
+        <li class="sidebar_option"><h3>FOUR</h3></li>
+        <li class="sidebar_option"><h3>FIVE</h3></li>
+        <li class="sidebar_option"><h3>SIX</h3></li>
+      </ul>
+    </div>
+    <div class="text main">
+    </div>
+  </div>
 </body>
