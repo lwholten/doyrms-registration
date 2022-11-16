@@ -4,16 +4,17 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 :root {
-  --white: #FFFFFF;
+  --white: #F8F5FA;
   --black: #000000;
   --navy: #0A2240;
   --blue: blue;
   --grey: #6E7C8E;
   --light-grey: #D9D9D9;
-  --green: #A2F2B2;
   --burgundy: #72253D;
   --bookmark_border: var(--black);
   --bookmark_background: var(--burgundy);
+  --sign_in_button_color: rgba(162, 242, 178, 1);
+  --sign_out_button_color: rgba(248, 200, 220, 1);
 }
 #main_header {
   position: sticky;

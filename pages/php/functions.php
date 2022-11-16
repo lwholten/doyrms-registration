@@ -63,7 +63,7 @@ function staffLogin() {
     // Luke:
     // I will create a javascript function to display a note in the form area
     // telling the user to fill in the box before submitting
-    echo 'please input username and/or password';
+    session_destroy();
   }
   // If username and/or password fields are not left empty
   else {

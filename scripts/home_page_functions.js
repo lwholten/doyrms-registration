@@ -58,11 +58,11 @@ function toggleStudentPreset(preset) {
   const staff_button = document.getElementById('staff_button');
   const back_button = document.getElementById('back_button');
 
-  if (preset === 'log_in') {
+  if (preset === 'sign_in') {
     student_sign_out_preset.style.display = 'none';
     student_sign_in_preset.style.display = 'flex';
   }
-  else if  (preset === 'log_out') {
+  else if  (preset === 'sign_out') {
     student_sign_in_preset.style.display = 'none';
     student_sign_out_preset.style.display = 'flex';
 
@@ -85,38 +85,17 @@ function resetForm(formID) {
   document.getElementById(formID).reset();
 }
 
-function toggleFooter() {
-  const footer_expanded_preset = document.getElementById('footer_expanded_preset');
-  const footer_collapsed_preset = document.getElementById('footer_collapsed_preset');
-
-  /*If the footer has been collapsed*/
-  if (footer_collapsed_preset.style.backgroundColor === 'var(--burgundy)') {
-    footer_collapsed_preset.style.backgroundColor = 'var(--navy)';
-    footer_expanded_preset.style.height =  '1px';
-  }
-  /*If the footer has been expanded*/
-  else {
-    footer_collapsed_preset.style.backgroundColor = 'var(--burgundy)';
-    footer_expanded_preset.style.height =  '120px';
-  }
-
-}
-
-function copyContactEmail() {
-  /*saves the content within the element*/
-  var content = document.getElementById("contact_email").innerHTML;
-  var email = '';
-  /*Iterates through the content and appends it to the email*/
-  for (var i = 0; i < content.length; i++) {
-    character = content.charAt(i);
-    /*If the character is invalid, the loop breaks and the email is returned*/
-    if (character !== '<') {
-      email += character
-    }
-    else {
-      break
-    }
-  }
-  navigator.clipboard.writeText(email);
-  window.alert('Copied email to clipboard')
+function hideOverlay() {
+  /*Hides the overlay*/
+  overlay = document.getElementById('idle_overlay');
+  overlay.style.opacity = '0';
+  /*Makes the login box zoom in to frame*/
+  login_box = document.getElementById('login_box');
+  login_box.style.transform = 'scale(1.0)';
+  /*Adds a blur effect to the background*/
+  document.body.style.backdropFilter = 'blur(0px)';
+  /*Execute containted code after n miliseconds (200ms)*/
+  setTimeout(function(){
+    overlay.style.display = 'none';
+  }, 200);
 }

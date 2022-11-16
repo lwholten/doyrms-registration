@@ -6,6 +6,9 @@
 <title>Home | DOYRMS Registration</title>
 </head>
 
+<section id="idle_overlay" onclick="hideOverlay()" class="text">
+  <h1>Click to Start</h1>
+</section>
 <body>
   <header class="text" id="main_header">
     <img src="../../images/logo.png"></img>
@@ -19,15 +22,18 @@
       <button><h5>HELP</h5></button>
     </navbar>
   </header>
-  <section class="text" id="login_box">
+  <section id="login_box" class="text">
     <div class="login_preset" id="student_selection_preset">
-      <header>
+      <header class="text">
         <h2>Welcome</h2>
       </header>
       <div id="student_selection_grid" class="text">
-        <button class="blue_button" onclick="toggleStudentPreset('log_in')"><h1>Sign In</h1></button>
-        <divider></divider>
-        <button class="blue_button" onclick="toggleStudentPreset('log_out')"><h1>Sign Out</h1></button>
+        <container>
+          <button class="sign_in_out_button" onclick="toggleStudentPreset('sign_in')"><h2>Sign In</h2></button>
+        </container>
+        <container>
+          <button class="sign_in_out_button" onclick="toggleStudentPreset('sign_out')"><h2>Sign Out</h2></button>
+        </container>
       </div>
     </div>
     <div class="login_preset" id="student_sign_in_preset">
@@ -37,7 +43,7 @@
       <form id="student_sign_in_form" class="text" action="" method="POST">
         <label for="student_sign_in_name"><h3>Your Initials</h3></label>
         <input type="text" id="student_sign_in_name" name="student_sign_in_name" placeholder="" value="">
-
+        <divider></divider>
         <input class="blue_button" id="student_sign_in_submit" type="submit" value="Submit">
       </form>
     </div>
@@ -48,11 +54,10 @@
       <form id="student_sign_out_form" class="text" action="" method="POST">
         <label for="student_sign_out_name"><h3>Your Initials</h3></label>
         <input type="text" id="student_sign_out_name" name="student_sign_out_name" placeholder="" value="">
-
+        <divider></divider>
         <label for="location"><h3>Location</h3></label>
-        <select class="text" id="student_sign_out_location" name="student_sign_out_location" placeholder="" value="">
-        </select>
-
+        <select class="text" id="student_sign_out_location" name="student_sign_out_location" placeholder="" value=""></select>
+        <divider></divider>
         <input class="blue_button" id="student_sign_out_submit" type="submit" value="Submit">
       </form>
     </div>
@@ -63,24 +68,12 @@
       <form id="staff_login_form" class="text" action="" method="POST">
         <label for="staff_username"><h3>Username</h3></label>
         <input type="text" id="staff_username" name="staff_username" placeholder="" value="">
-
+        <divider></divider>
         <label for="staff_password"><h3>Password</h3></label>
         <input type="password" id="staff_password" name="staff_password" placeholder="" value="">
-
+        <divider></divider>
         <input class="blue_button" id="staff_login_submit" type="submit" value="Submit">
       </form>
     </div>
   </section>
-  <footer id="main_footer">
-    <div id="footer_collapsed_preset"></div>
-    <div id="footer_expanded_preset" class="text">
-      <div class="text_grid">
-        <h3>Contact Us</h3>
-        <h4>Email:</h4>
-        <h4 id="contact_email" onclick="copyContactEmail()">luke.holten@doyrms.com <span class="right_arrow"></span></h4>
-        <h4>Phone:</h4>
-        <h4>0769420699</h4>
-      </div>
-    </div>
-  </footer>
 </body>
