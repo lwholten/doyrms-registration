@@ -36,6 +36,9 @@ body {
 .main_section_active {
   display: block;
 }
+.main_section h2{
+  text-transform: capitalize;
+}
 
 #sidebar {
   position: sticky;
@@ -68,16 +71,30 @@ body {
   transform: scale(1.5) rotate(-45deg);
   transition: 200ms;
 }
+#sidebar_search {
+  box-sizing:border-box;
+  width: 100%;
+  height: 28px;
+  text-align: left;
+  transition: opacity 200ms linear;
+}
 #sidebar_contents {
   padding: 0px;
-  margin-top: 20px;
+  margin-top: 0px;
   width: 100%;
   height: auto;
-  background: rgba(55,71,79,0.3);
   transition: opacity 200ms linear;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#sidebar_contents spacer {
+  width: 100%;
+  padding: 4px 0px;
+  height: 20px;
+  display: block;
+  cursor: default;
+  background: rgba(0,0,0,0.0);
 }
 #sidebar_contents .sidebar_button {
   width: 100%;
@@ -85,6 +102,7 @@ body {
   height: auto;
   display: block;
   text-align: center;
+  text-transform: uppercase;
   color: var(--white);
   cursor: pointer;
   background: rgba(0,0,0,0.0);
