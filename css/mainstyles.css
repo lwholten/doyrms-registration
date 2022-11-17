@@ -7,7 +7,6 @@
   --white: #F8F5FA;
   --black: #000000;
   --navy: #0A2240;
-  --blue: blue;
   --grey: #6E7C8E;
   --light-grey: #D9D9D9;
   --burgundy: #72253D;
@@ -15,7 +14,6 @@
   --bookmark_background: var(--burgundy);
   --sign_in_button_color: rgba(162, 242, 178, 1);
   --sign_out_button_color: rgba(248, 200, 220, 1);
-  --sidebar_color: rgba(55,71,79,0.8);
 }
 
 body {
@@ -111,7 +109,7 @@ navbar .divider {
   -webkit-transform: rotate(135deg);
 }
 
-.left_arrow, .right_arrow {
+.left_arrow, .right_arrow, .down_arrow {
   border: solid var(--white);
   border-width: 0 3px 3px 0;
   display: inline-block;
@@ -123,6 +121,10 @@ navbar .divider {
 .right_arrow {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
+}
+.down_arrow {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 
 .text_grid {

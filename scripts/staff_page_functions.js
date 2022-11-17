@@ -2,28 +2,21 @@ function toggleSidebar() {
   toggle = document.getElementById('sidebar_toggle');
   sidebar = document.getElementById('sidebar');
   sidebar_content = document.getElementById('sidebar_contents');
-  sidebar_search = document.getElementById('sidebar_search');
 
   if (toggle.checked) {
     sidebar_content.style.display = 'flex';
-    sidebar_search.style.display = 'block';
-    sidebar.style.background = 'rgba(55,71,79,0.8)';
     sidebar.style.width = '300px';
 
     setTimeout(function(){
       sidebar_content.style.opacity = '1.0';
-      sidebar_search.style.opacity = '1.0'
     }, 200);
   }
   else {
     sidebar_content.style.display = 'flex';
-    sidebar.style.background = 'rgba(0,0,0,0.3)';
-    sidebar.style.width = '80px';
+    sidebar.style.width = '50px';
     sidebar_content.style.opacity = 0.0;
-    sidebar_search.style.opacity = 0.0;
     setTimeout(function(){
       sidebar_content.style.display = 'none';
-      sidebar_search.style.display = 'none';
     }, 200);
   }
 }
