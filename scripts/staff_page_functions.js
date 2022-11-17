@@ -2,19 +2,23 @@ function toggleSidebar() {
   toggle = document.getElementById('sidebar_toggle');
   sidebar = document.getElementById('sidebar');
   sidebar_content = document.getElementById('sidebar_contents');
+  container = document.getElementById('sidebar_contents_container')
 
   if (toggle.checked) {
     sidebar_content.style.display = 'flex';
     sidebar.style.width = '300px';
-
+    container.style.overflowY = 'auto';
     setTimeout(function(){
       sidebar_content.style.opacity = '1.0';
+          sidebar.style.minWidth = '300px';
     }, 200);
   }
   else {
     sidebar_content.style.display = 'flex';
+    sidebar.style.minWidth = '50px';
     sidebar.style.width = '50px';
     sidebar_content.style.opacity = 0.0;
+    container.style.overflowY = 'hidden';
     setTimeout(function(){
       sidebar_content.style.display = 'none';
     }, 200);
