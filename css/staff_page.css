@@ -79,7 +79,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
-#sidebar_contents li {
+#sidebar_contents .sidebar_button {
   width: 100%;
   padding: 4px 0px;
   height: auto;
@@ -87,8 +87,13 @@ body {
   text-align: center;
   color: var(--white);
   cursor: pointer;
+  background: rgba(0,0,0,0.0);
+  transition: background 100ms;
 }
-#sidebar_contents li:hover {
+#sidebar_contents .sidebar_button_active {
+  background: rgba(0,0,0,0.3);
+}
+#sidebar_contents .sidebar_button:hover {
   background: rgba(0,0,0,0.3);
 }
 </style>

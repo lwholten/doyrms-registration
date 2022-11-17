@@ -25,17 +25,17 @@
       <input type="checkbox" id="sidebar_toggle" class="hidden"/>
       <label for="sidebar_toggle" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
       <ul id="sidebar_contents">
-        <li onclick="toggleMainSection('home')" class="sidebar_option"><h3>HOME</h3></li>
-        <li onclick="toggleMainSection('one')" class="sidebar_option"><h3>ONE</h3></li>
-        <li onclick="toggleMainSection('two')" class="sidebar_option"><h3>TWO</h3></li>
-        <li onclick="toggleMainSection('three')" class="sidebar_option"><h3>THREE</h3></li>
+        <li onclick="toggleMainSection('s1','m1')" class="sidebar_button sidebar_button_active" id="s1"><h3>HOME</h3></li>
+        <li onclick="toggleMainSection('s2','m2')" class="sidebar_button" id="s2"><h3>ONE</h3></li>
+        <li onclick="toggleMainSection('s3','m3')" class="sidebar_button" id="s3"><h3>TWO</h3></li>
+        <li onclick="toggleMainSection('s4','m4')" class="sidebar_button" id="s4"><h3>THREE</h3></li>
       </ul>
     </div>
     <div class="text main">
-      <section class="main_section main_section_active" id="home">Home Section</section>
-      <section class="main_section" id="one">One</section>
-      <section class="main_section" id="two">Two</section>
-      <section class="main_section" id="three">Three</section>
+      <section class="main_section main_section_active" id="m1">Home Section</section>
+      <section class="main_section" id="m2">One</section>
+      <section class="main_section" id="m3">Two</section>
+      <section class="main_section" id="m4">Three</section>
     </div>
   </div>
 </body>

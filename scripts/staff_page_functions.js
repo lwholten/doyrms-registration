@@ -24,26 +24,34 @@ function toggleSidebar() {
   }
 }
 
-function toggleMainSection(section_id) {
-  var new_section = document.getElementById(section_id);
+function toggleMainSection(button_id, section_id) {
+  var section = document.getElementById(section_id);
+  var button = document.getElementById(button_id)
   /*If the parameters are left empty*/
-  if (new_section === null) {
+  if (section === null) {
     /*Outputs an error message to the console*/
-    console.log('ERROR: Could not display new section as the ID was invalid or left empty')
+    console.log('ERROR: the \'section_id\' is invalid');
+  }
+  else if (button === null) {
+    /*Outputs an error message to the console*/
+    console.log('ERROR: the \'button_id\' is invalid');
   }
   else {
-    /*Saves active sections to an array*/
+    /*Saves active sections and active buttons to an array*/
     var active_sections = document.getElementsByClassName('main_section_active');
-    /*Selects the first element of the array*/
+    var active_buttons = document.getElementsByClassName('sidebar_button_active');
+    /*Selects the first element of the arrays*/
     var old_section = active_sections[0];
-    /*Hides the element*/
+    var old_button = active_buttons[0];
+    /*Hides the old section and removes the active class*/
     old_section.style.display = 'none';
-    /*Removes the active class from the old section*/
     old_section.classList.remove('main_section_active');
-
-    /*uses 'section_id' to display the new section*/
-    new_section.style.display = 'block';
-    /*Adds the active class to the new section*/
-    new_section.classList.add('main_section_active')
+    /*resets the background color of the old button and removes the active class*/
+    old_button.classList.remove('sidebar_button_active');
+    /*Shows the new section and adds the active class*/
+    section.style.display = 'block';
+    section.classList.add('main_section_active')
+    /*Updates the background color of the selected button and adds the active class*/
+    button.classList.add('sidebar_button_active');
   }
 }
