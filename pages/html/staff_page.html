@@ -24,6 +24,9 @@
     <div class="text" id="sidebar">
       <input type="checkbox" id="sidebar_toggle" class="hidden"/>
       <label for="sidebar_toggle" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
+      <div id="sidebar_search_wrapper">
+        <input type="text" placeholder="Search..." id="sidebar_search"></input>
+      </div>
       <ul id="sidebar_contents">
         <li onclick="toggleMainSection('s1','m1')" class="sidebar_button sidebar_button_active" id="s1"><h3>HOME</h3></li>
         <li onclick="toggleMainSection('s2','m2')" class="sidebar_button" id="s2"><h3>ONE</h3></li>
