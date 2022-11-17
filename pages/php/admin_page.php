@@ -1,7 +1,9 @@
 <?php
 /*Used to display the page, prevents users from seeing the page without logging in*/
 function displayPage() {
+  /*Note that the admin page imports the css and js used by the staff page*/
   include("../../css/mainstyles.css");
+  include("../../css/staff_page.css");
   include("../../css/admin_page.css");
   include("../html/admin_page.html");
   include("../php/functions.php");

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+<script src="../../scripts/staff_page_functions.js"></script>
 <script src="../../scripts/admin_page_functions.js"></script>
 <meta charset="UTF-8" lang="en">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,18 +24,19 @@
   <div class="wrapper">
     <div class="text" id="sidebar">
       <input type="checkbox" id="sidebar_toggle" class="hidden"/>
-      <label for="sidebar_toggle" class="sidebar_button" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
+      <label for="sidebar_toggle" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
       <ul id="sidebar_contents">
-        <li class="sidebar_option"><h3>HOME</h3></li>
-        <li class="sidebar_option"><h3>ONE</h3></li>
-        <li class="sidebar_option"><h3>TWO</h3></li>
-        <li class="sidebar_option"><h3>THREE</h3></li>
-        <li class="sidebar_option"><h3>FOUR</h3></li>
-        <li class="sidebar_option"><h3>FIVE</h3></li>
-        <li class="sidebar_option"><h3>SIX</h3></li>
+        <li onclick="toggleMainSection('home')" class="sidebar_option"><h3>HOME</h3></li>
+        <li onclick="toggleMainSection('one')" class="sidebar_option"><h3>ONE</h3></li>
+        <li onclick="toggleMainSection('two')" class="sidebar_option"><h3>TWO</h3></li>
+        <li onclick="toggleMainSection('three')" class="sidebar_option"><h3>THREE</h3></li>
       </ul>
     </div>
     <div class="text main">
+      <section class="main_section main_section_active" id="home">Home Section</section>
+      <section class="main_section" id="one">One</section>
+      <section class="main_section" id="two">Two</section>
+      <section class="main_section" id="three">Three</section>
     </div>
   </div>
 </body>
