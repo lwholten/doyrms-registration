@@ -52,6 +52,7 @@ body {
   max-width: 900px;
   height: 50%;
   max-height: 400px;
+  min-height: 400px;
   position: fixed;
   top: 30%;
   border-radius: 60px;
@@ -189,12 +190,12 @@ body {
   transition: background 1000ms;
 }
 #student_selection_grid container:nth-of-type(1) .sign_in_out_button:active {
-  background-color: var(--sign_in_button_color);
+  background-color: var(--green);
   background-size: 100%;
   transition: background 40ms;
 }
 #student_selection_grid container:nth-of-type(2) .sign_in_out_button:active {
-  background-color: var(--sign_out_button_color);
+  background-color: var(--red);
   background-size: 100%;
   transition: background 40ms;
 }
@@ -220,6 +221,9 @@ body {
   }
   navbar {
     padding: 0px 20px 0px 0px;
+  }
+  #login_box {
+    top: 20%;
   }
 }
 </style>

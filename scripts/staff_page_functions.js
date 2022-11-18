@@ -27,7 +27,7 @@ function toggleSidebar() {
 
 function toggleMainSection(button_id, section_id) {
   var section = document.getElementById(section_id);
-  var button = document.getElementById(button_id)
+  var button = document.getElementById(button_id);
   /*If the parameters are left empty*/
   if (section === null) {
     /*Outputs an error message to the console*/
@@ -51,7 +51,7 @@ function toggleMainSection(button_id, section_id) {
     old_button.classList.remove('sidebar_button_active');
     /*Shows the new section and adds the active class*/
     section.style.display = 'block';
-    section.classList.add('main_section_active')
+    section.classList.add('main_section_active');
     /*Updates the background color of the selected button and adds the active class*/
     button.classList.add('sidebar_button_active');
   }

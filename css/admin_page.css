@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <style>
-body {
-  height: 100%;
-  width: 100vw;
-  margin: 0px;
-  display: flex;
+.hidden_section {
+  width: 100%;
+  height: auto;
+  display: none;
   flex-direction: column;
-  align-items: center;
-  background: var(--white);
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  margin-bottom: 40px;
 }
+.hidden_section_active {
+  display: flex;
+}
+.hidden_section h3 {
+  display: inline-block;
+  width: auto;
+  border-bottom: 2px solid #C6C4C8;
+}
+.hidden_section .edit_wrapper {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 60px;
+}
+.add_button {
+  background: var(--green);
+}
+.remove_button {
+  background: var(--red);
+}
+.edit_button {
+  background: var(--navy);
+}
+#locations_accounts_table {
+  table-layout: auto;
+}
+
 </style>

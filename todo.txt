@@ -11,7 +11,6 @@ This text file contains a list of everything that needs to be done before finali
 # These tasks involve the creation of certain pages and their attributes
 
   - Link staff sign in system to the database
-  - Create CSS required for displaying data on the Staff and Admin pages
   - Timeouts
     - if a staff member has been idle for more than X minutes (which can be set by the admin),
       It will automatically log them out and send them to the home page

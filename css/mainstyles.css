@@ -12,8 +12,8 @@
   --burgundy: #72253D;
   --bookmark_border: var(--black);
   --bookmark_background: var(--burgundy);
-  --sign_in_button_color: rgba(162, 242, 178, 1);
-  --sign_out_button_color: rgba(248, 200, 220, 1);
+  --green: rgba(162, 242, 178, 1);
+  --red: rgba(248, 200, 220, 1);
 }
 
 body {
