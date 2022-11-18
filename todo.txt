@@ -10,11 +10,8 @@ This text file contains a list of everything that needs to be done before finali
 # Pages
 # These tasks involve the creation of certain pages and their attributes
 
-  - create framework for staff page
-    - staff page must be able to display data from the database
-    - Add a a search area to the staff/admin sidebar
-  - create framework for admin page
   - Link staff sign in system to the database
+  - Create CSS required for displaying data on the Staff and Admin pages
   - Timeouts
     - if a staff member has been idle for more than X minutes (which can be set by the admin),
       It will automatically log them out and send them to the home page

@@ -198,4 +198,28 @@ body {
   background-size: 100%;
   transition: background 40ms;
 }
+
+@media screen and (max-width: 1400px), (max-height: 800px) {
+  #main_header {
+    min-height: 80px;
+  }
+  #main_header img {
+    width: 65px;
+    height: 60px;
+    margin: 10px 0px 10px 10px;
+  }
+  #main_header h5 {
+    font-size: 16px;
+  }
+  #main_header h1 {
+    font-size: 20px;;
+  }
+  #main_header .blue_button {
+    height: 32px;
+    border-radius: 12px;
+  }
+  navbar {
+    padding: 0px 20px 0px 0px;
+  }
+}
 </style>

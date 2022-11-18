@@ -24,7 +24,7 @@ body {
   position: sticky;
   width: 100%;
   height: auto;
-  min-height: 133px;
+  min-height: 120px;
   max-height: 100%;
   background: var(--white);
   display: flex;
@@ -34,11 +34,12 @@ body {
   top: 0;
   white-space: nowrap;
   z-index: 2;
+  transition: min-height 200ms linear;
 }
 #main_header img {
-  height: 120px;
-  width: 130px;
-  margin: 10px;
+  height: 90px;
+  width: 98px;
+  margin: 16px 0px 16px 16px;
   border: none;
   outline: 0;
   background: none;
@@ -57,7 +58,7 @@ navbar {
   flex-direction: row-reverse;
   align-items: center;
   justify-content: flex-start;
-  padding: 0px 100px 0px 0px;
+  padding: 0px 60px 0px 0px;
 }
 navbar button {
   border: none;
@@ -83,7 +84,7 @@ navbar .divider {
 
 .blue_button {
   background: var(--navy);
-  height: 48px;
+  height: 40px;
   width: auto;
   display: flex;
   justify-content: center;
@@ -174,6 +175,9 @@ navbar .divider {
   font-weight: 400;
   font-size: 20px;
   line-height: 27px;
+}
+.text p {
+  max-width: 840px;
 }
 
 .hidden {
