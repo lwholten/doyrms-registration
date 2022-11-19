@@ -6,6 +6,16 @@
   display: none;
   flex-direction: column;
   margin-bottom: 40px;
+  border-bottom: 2px solid #C6C4C8;
+}
+.hidden_section form {
+  width: 45%;
+  min-width: 600px;
+  max-width: 800px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
 }
 .hidden_section_active {
   display: flex;
@@ -14,6 +24,7 @@
   display: inline-block;
   width: auto;
   border-bottom: 2px solid #C6C4C8;
+  margin-bottom: 16px;
 }
 .hidden_section .edit_wrapper {
   width: 100%;
@@ -23,16 +34,13 @@
   grid-template-rows: 60px;
 }
 .add_button {
-  background: var(--green);
+  background: var(--white);
 }
 .remove_button {
   background: var(--red);
 }
 .edit_button {
   background: var(--navy);
-}
-#locations_accounts_table {
-  table-layout: auto;
 }
 
 </style>

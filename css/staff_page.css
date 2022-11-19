@@ -154,7 +154,6 @@ body {
   background: rgba(0,0,0,0.2);
 }
 
-
 .table_wrapper {
   width: 100%;
   height: auto;
@@ -178,7 +177,7 @@ body {
   width: auto;
   height: 100%;
   display: grid;
-  grid-template-columns: 60px;
+  grid-template-columns: 120px;
   grid-auto-columns: 60px;
   grid-template-rows: 1fr;
   grid-auto-flow: column;
@@ -217,7 +216,7 @@ body {
 }
 .table {
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: auto;
   width: 100%;
 }
 .table td, .table th {
@@ -232,6 +231,9 @@ body {
 .table tr:hover {
   background-color: rgba(0,0,0,0.2);
 }
+.table tr:hover button {
+  display: block;
+}
 .table th {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -240,13 +242,81 @@ body {
   color: white;
 }
 .table button {
+  margin: 0px;
   width: 100%;
-  padding: 4px;
+  padding: 2px;
   height: auto;
   border: none;
   border-radius: 8px;
   color: var(--white);
   cursor: pointer;
+  display: none;
+}
+
+.text_input_area {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 35% 65%;
+  margin: 16px 0px;
+}
+.text_input_area * {
+  width: 100%;
+  height: 100%;
+}
+.text_input_area label {
+  grid-area: 1 / 1 / 2 / 2;
+  text-align: left;
+}
+.text_input_area input {
+  padding: 0;
+  margin: -2px -2px 0px 0px;
+  border: 2px solid #C6C4C8;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.text_input_area textarea {
+  padding: 0;
+  margin: -2px -2px 0px 0px;
+  border: 2px solid #C6C4C8;
+  border-radius: 4px;
+  resize: none;
+  font-size: 16px;
+}
+.radio_input_area {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 35% 65%;
+  margin: 16px 0px;
+}
+.radio_input_area .radio_wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.radio_input_area .radio_wrapper label {
+  margin: auto auto auto 8px;
+}
+.submit_wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+.submit_wrapper input {
+  width: 200px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 2px solid #C6C4C8;
 }
 
 @media screen and (max-width: 1400px), (max-height: 800px) {

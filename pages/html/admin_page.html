@@ -61,81 +61,11 @@
       </section>
 
       <section class="main_section" id="m11">
-        <h2 class="title">Manage Staff</h2>
-        <div class="table_wrapper">
-          <header>
-            <h2>Staff Accounts</h2>
-            <div class="button_wrapper">
-              <button onclick="toggleHiddenSection('staff_add_section');" class="add_button" id="add_staff_button">Add</button>
-              <button onclick="toggleHiddenSection('staff_remove_section');" class="remove_button" id="remove_staff_button">Remove</button>
-            </div>
-          </header>
-          <table class="table" id="staff_accounts_table">
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Date Added</th>
-              <th>Last Logged In</th>
-              <th></th>
-            </tr>
-            <tr>
-              <td>jsmith</td>
-              <td>john.smith@example.com</td>
-              <td>18/11/22</td>
-              <td>18/11/22 @ 20:13</td>
-              <td><button onclick="toggleHiddenSection('staff_edit_section');" class="blue_button edit_button">Edit</button></td>
-            </tr>
-          </table>
-          <footer/>
-        </div>
-        <section class="hidden_section" id="staff_edit_section">
-          <h3>Edit Staff - 'jsmith'</h3>
-        </section>
-        <section class="hidden_section" id="staff_add_section">
-          <h3>Add Staff Account</h3>
-        </section>
-        <section class="hidden_section" id="staff_remove_section">
-          <h3>Remove Staff Account</h3>
-        </section>
+        <h2>Manage Staff</h2>
       </section>
 
       <section class="main_section" id="m21">
-        <h2 class="title">Manage Users</h2>
-        <div class="table_wrapper">
-          <header>
-            <h2>Users</h2>
-            <div class="button_wrapper">
-              <button onclick="toggleHiddenSection('user_add_section');" class="add_button" id="add_staff_button">Add</button>
-              <button onclick="toggleHiddenSection('user_remove_section');" class="remove_button" id="remove_staff_button">Remove</button>
-            </div>
-          </header>
-          <table class="table" id="user_accounts_table">
-            <tr>
-              <th>First Name</th>
-              <th>Second Name</th>
-              <th>Initials</th>
-              <th>Email</th>
-              <th></th>
-            </tr>
-            <tr>
-              <td>John</td>
-              <td>Smith</td>
-              <td>js</td>
-              <td>john.smith@example.com</td>
-              <td><button onclick="toggleHiddenSection('user_edit_section');" class="blue_button edit_button">Edit</button></td>
-            </tr>
-          </table>
-          <footer/>
-        </div>
-        <section class="hidden_section" id="user_edit_section">
-          <h3>Edit User - 'John Smith'</h3>
-        </section>
-        <section class="hidden_section" id="user_add_section">
-          <h3>Add User</h3>
-        </section>
-        <section class="hidden_section" id="user_remove_section">
-          <h3>Remove User</h3>
-        </section>
+        <h2>Manage Users</h2>
       </section>
 
       <section class="main_section" id="m31">
@@ -144,37 +74,54 @@
           <header>
             <h2>Locations</h2>
             <div class="button_wrapper">
-              <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_staff_button">Add</button>
-              <button onclick="toggleHiddenSection('locations_remove_section');" class="remove_button" id="remove_staff_button">Remove</button>
+              <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_staff_button">Add Location</button>
             </div>
           </header>
-          <table class="table" id="locations_accounts_table">
+          <table class='table' id='locations_accounts_table'>
             <tr>
-              <th>Location Name</th>
+              <th>ID</th>
+              <th>Location</th>
               <th>Description</th>
+              <th>Popularity</th>
               <th></th>
             </tr>
-            <tr>
-              <td>Dining Hall</td>
-              <td>Where students go to dine</td>
-              <td><button onclick="toggleHiddenSection('locations_edit_section');" class="blue_button edit_button">Edit</button></td>
-            </tr>
-            <tr>
-              <td>Cafe</td>
-              <td>Where students go to relax</td>
-              <td><button onclick="toggleHiddenSection('locations_edit_section');" class="blue_button edit_button">Edit</button></td>
-            </tr>
+            <?php fillLocationsTable() ?>
           </table>
           <footer/>
         </div>
         <section class="hidden_section" id="locations_edit_section">
-          <h3>Edit Locations - 'Dining Hall'</h3>
+          <h3 id="locations_edit_title">Edit Location -</h3>
         </section>
         <section class="hidden_section" id="locations_add_section">
           <h3>Add Location</h3>
-        </section>
-        <section class="hidden_section" id="locations_remove_section">
-          <h3>Remove Location</h3>
+          <form id="add_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <div class="text_input_area">
+              <label for="location_name"><h4>Location Name:</h4></label>
+              <input id="location_name" name="location_name" placeholder="'The Climbing Wall...'" type="text" maxlength="20"></input>
+            </div>
+            <div class="text_input_area description">
+              <label for="location_desc"><h4>Description:</h4></label>
+              <textarea id="location_desc" name="location_desc" placeholder="'Next to the small car park...'" rows="4" cols="50" maxlength="100"></textarea>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Popularity:</h4></label>
+              <div class="radio_wrapper">
+                <input id="location_1" type="radio" name="location_pop" value="1">
+                <label for="location_1">1</label>
+                <input id="location_2" type="radio" name="location_pop" value="2">
+                <label for="location_2">2</label>
+                <input id="location_3" type="radio" name="location_pop" value="3">
+                <label for="location_3">3</label>
+                <input id="location_4" type="radio" name="location_pop" value="4">
+                <label for="location_4">4</label>
+                <input id="location_5" type="radio" name="location_pop" value="5">
+                <label for="location_5">5</label>
+              </div>
+            </div>
+            <div class="submit_wrapper">
+              <input type="submit" value="Submit"/>
+            </div>
+          </form>
         </section>
       </section>
     </div>

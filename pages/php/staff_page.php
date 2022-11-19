@@ -24,12 +24,35 @@ function onPageLoad() {
   }
 }
 
+// Used to connect to the database
+function databaseConnect() {
+  // Connection details
+  $servername = "localhost";
+  $username = "dreg_user";
+  $password = "epq";
+  $database = 'dregDB';
+
+  // Create connection
+  $con = new mysqli($servername, $username, $password, $database);
+
+  // Check connection
+  if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+    return 0;
+  }
+  return $con;
+}
+
+/*Executed when the page is first loaded*/
 onPageLoad();
 
 /* Run the staff logout function if the staff user logs out*/
 /* A form on the staff page is used to POST a variable when the logout button is pressed;
    This code executes when that variable has been set*/
 if (isset($_POST['staff_sign_out'])) {
-  staffSignOut();
+  /*Logs the staff user out*/
+  session_destroy();
+  echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
+  exit();
 }
 ?>

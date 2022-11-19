@@ -2,28 +2,6 @@
 <?php
 // This file contains functions used for all pages
 
-// Used to connect to the database
-function databaseConnect() {
-  // Connection details
-  $servername = "localhost";
-  $username = "dreg_user";
-  $password = "epq";
-
-  // Create connection
-  $conn = new mysqli($servername, $username, $password);
-
-  // Check connection
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-  echo "Connected successfully";
-}
-
-// Used to terminate the connection to the database
-function databaseDisconnect() {
-  $conn->close();
-}
-
 // Used to verify a staff members login details
 function verifyStaffLoginDetails($username, $password) {
   // Temporary code, replace with SQL queries connecting to the database to
@@ -98,18 +76,7 @@ function staffLogin() {
   }
 
 };
-// Executed if a staff user logs out
-function staffSignOut() {
-  session_destroy();
-  echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
-  exit();
-}
-// Executed if an admin user logs out
-function adminSignOut() {
-  session_destroy();
-  echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
-  exit();
-}
+
 // Executed if the student sign in form is submitted
 function studentSignIn() {
   // converts the form POST array into useful variables
