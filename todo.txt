@@ -15,6 +15,8 @@ This text file contains a list of everything that needs to be done before finali
     - if a staff member has been idle for more than X minutes (which can be set by the admin),
       It will automatically log them out and send them to the home page
 
+  - In administrator edit sections add data cleansing, i.e making sure that names are capitalized before being added to the database
+
 # Server
 # These tasks involve making the website work with the server
 

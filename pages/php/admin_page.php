@@ -46,6 +46,59 @@ function databaseConnect() {
 }
 
 /*Used to fill the locations table with data from the database*/
+function fillUsersTable() {
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*SQL code to get the table data*/
+  $sql = "SELECT * FROM `Users`";
+  /*Saves the result of the SQL code to a variable*/
+  $result = $con->query($sql);
+  /*Disconnects from the database*/
+  $con->close();
+
+  /*Iterates through the table records and displays them on the web page's table*/
+  while($record = $result -> fetch_array(MYSQLI_NUM)) {
+    echo "<tr>";
+    foreach ($record as $value) {
+      echo "<td> $value </td>";
+    }
+    /*Makes the edit section appear for the selected record, passes the record id and location name as parameters*/
+    /*record[0] --> The ID of that record | record[1] --> The name of that location*/
+    echo "<td><button onclick=\"formatEditSection('users_edit_section','$record[1] $record[2]','$record[0]');\" class=\"blue_button edit_button\">Edit</button></td>";
+    echo "</tr>";
+  }
+}
+/*Used to add users to the database*/
+function addUser($forename, $surname, $email, $gender, $roomNumber, $initials) {
+  /*Data formatting:*/
+  /*Generates the users initials using their forename and surname*/
+  $initials = strtoupper($forename[0].$surname[0]);
+  /*Makes the forname and surname uppercase before being added to the database*/
+  $forename = ucwords($forename);
+  $surname = ucwords($surname);
+
+
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "INSERT INTO `Users` (`UserId`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ssssss", $forename, $surname, $email, $gender, $roomNumber, $initials);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/* Detects if a user is being added and runs the code */
+if (isset($_POST['add_user'])) {
+  addUser($_POST['user_forename'],$_POST['user_surname'],$_POST['user_email'],$_POST['user_gender'],$_POST['user_room_num'],'tt');
+}
+
+
+/*Used to fill the locations table with data from the database*/
 function fillLocationsTable() {
   /*Connects to the database*/
   $con = databaseConnect();
@@ -68,15 +121,17 @@ function fillLocationsTable() {
     echo "</tr>";
   }
 }
-
 /*Used to add locations to the database*/
 function addLocation($name, $description, $popularity) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "INSERT INTO Locations (LocationId, LocationName, Description, Popularity) VALUES (NULL, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
-  /*SQL query used to upload the data to the table*/
-  $query = "INSERT INTO Locations (LocationId, LocationName, Description, Popularity) VALUES (NULL, '$name', '$description', '$popularity')";
-  /*Executes the sql code*/
-  $con->query($query);
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("sss", $name, $description, $popularity);
+  /*Executes the statement code*/
+  $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
   /*Prevents form resubmission using a javascript function*/

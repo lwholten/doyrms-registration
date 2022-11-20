@@ -65,7 +65,66 @@
       </section>
 
       <section class="main_section" id="m21">
-        <h2>Manage Users</h2>
+        <h2 class="title">Manage Users</h2>
+        <div class="table_wrapper">
+          <header>
+            <h2>Users</h2>
+            <div class="button_wrapper">
+              <button onclick="toggleHiddenSection('users_add_section');" class="add_button" id="add_user_button">Add User</button>
+            </div>
+          </header>
+          <table class='table' id='user_accounts_table'>
+            <tr>
+              <th>ID</th>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Email</th>
+              <th>Gender</th>
+              <th>Room Number</th>
+              <th>Initials</th>
+              <th></th>
+            </tr>
+            <?php fillUsersTable() ?>
+          </table>
+          <footer/>
+        </div>
+
+        <section class="hidden_section" id="users_add_section">
+          <h3>Add User</h3>
+          <form id="add_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="add_user" value="true"/>
+            <div class="text_input_area">
+              <label for="user_forename"><h4>Forename*:</h4></label>
+              <input id="user_forename" name="user_forename" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
+            </div>
+            <div class="text_input_area">
+              <label for="user_surname"><h4>Surname*:</h4></label>
+              <input id="user_surname" name="user_surname" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
+            </div>
+            <div class="text_input_area description">
+              <label for="user_email"><h4>Email:</h4></label>
+              <textarea id="user_email" name="user_email" value="" placeholder="Optional" rows="4" cols="50" maxlength="320"></textarea>
+            </div>
+            <div class="text_input_area">
+              <label for="user_room_num"><h4>Room Number:</h4></label>
+              <input id="user_room_num" name="user_room_num" placeholder="Optional" type="text" maxlength="3" pattern="[0-9]+"></input>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Gender:</h4></label>
+              <div class="radio_wrapper">
+                <input type="radio" name="user_gender" value="m">
+                <label>Male</label>
+                <input type="radio" name="user_gender" value="f">
+                <label>Female</label>
+                <input type="radio" checked="checked" name="user_gender" value="o">
+                <label>Other</label>
+              </div>
+            </div>
+            <div class="submit_wrapper">
+              <input type="submit" value="Submit"/>
+            </div>
+          </form>
+        </section>
       </section>
 
       <section class="main_section" id="m31">
@@ -77,7 +136,7 @@
               <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_location_button">Add Location</button>
             </div>
           </header>
-          <table class='table' id='locations_accounts_table'>
+          <table class='table' id='locations_table'>
             <tr>
               <th>ID</th>
               <th>Location</th>
@@ -150,7 +209,7 @@
             <input type="hidden" name="add_location" value="true"/>
             <div class="text_input_area">
               <label for="location_name"><h4>Location Name*:</h4></label>
-              <input id="location_name" name="location_name" placeholder="Required" type="text" maxlength="20"></input>
+              <input id="location_name" name="location_name" placeholder="Required" type="text" maxlength="20" required></input>
             </div>
             <div class="text_input_area description">
               <label for="location_desc"><h4>Description:</h4></label>
