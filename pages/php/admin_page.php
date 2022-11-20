@@ -7,6 +7,12 @@ function displayPage() {
   include("../../css/admin_page.css");
   include("../html/admin_page.html");
   include("../php/functions.php");
+
+  /*Loads the navbar section that is currently active, that way if the page is refreshed
+  the page will stay on the most recently selected navbar option - useful for when a form is submitted*/
+  $activeSection = $_SESSION["active_section"];
+  $activeButton = $_SESSION["active_button"];
+  echo "<script>loadActiveSection('$activeSection', '$activeButton')</script>";
 }
 
 /*Executes when this page is loaded*/
@@ -92,6 +98,10 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm21';
+  $_SESSION['active_button'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -146,6 +156,10 @@ function changeUserEntry($userId, $newValue, $fieldName) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm21';
+  $_SESSION['active_button'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -189,6 +203,10 @@ function removeUser($userId) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm21';
+  $_SESSION['active_button'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -233,6 +251,10 @@ function addLocation($name, $description, $popularity) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm31';
+  $_SESSION['active_button'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -262,6 +284,10 @@ function changeLocationEntry($locationId, $newValue, $fieldName) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm31';
+  $_SESSION['active_button'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -295,6 +321,10 @@ function removeLocation($locationId) {
   $stmt->execute();
   /*Disconnects from the database*/
   $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm31';
+  $_SESSION['active_button'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }

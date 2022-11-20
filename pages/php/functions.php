@@ -54,6 +54,9 @@ function staffLogin() {
         $_SESSION["access_level"] = getAccessLevel($staff_username);
         // Tells the server that the staff has logged in, the next page will use this as authentication
         $_SESSION["logged_in"] = True;
+        // Sets the sidebar section and button to be displayed to the user, this code defaults it to the 'home' section
+        $_SESSION["active_section"] = "m1";
+        $_SESSION["active_button"] = "s1";
 
         // redirects the user to the appropriate page depending on their access level
         if ($_SESSION["access_level"] === "admin") {

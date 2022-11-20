@@ -56,3 +56,14 @@ function toggleMainSection(button_id, section_id) {
     button.classList.add('sidebar_button_active');
   }
 }
+
+function loadActiveSection(section_id, button_id) {
+  /*Precautions in case the variables are undefined, will load the welcome page instead*/
+  if (section_id === null || section_id === undefined || section_id === "") { section_id = 'm1'; };
+  if (button_id === null || section_id === undefined || button_id === "") {button_id = 's1'; };
+  /*Sets the correspoding section and button to be displayed on the page*/
+  document.getElementById(section_id).classList.add('main_section_active');
+  document.getElementById(button_id).classList.add('sidebar_button_active');
+  /*Strips all the other sections and buttons of the active class*/
+  toggleMainSection(button_id, section_id);
+}

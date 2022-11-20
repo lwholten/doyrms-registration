@@ -116,7 +116,10 @@ body {
   background: rgba(0,0,0,0.15);
   margin: 8px 0px;
 }
-#sidebar_contents li:last-child {
+#sidebar_contents button {
+  border: none;
+}
+#sidebar_contents button:last-child {
   margin-bottom: 40px;
 }
 #sidebar_contents .sidebar_subtitle {
