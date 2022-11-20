@@ -36,32 +36,48 @@
 .add_button {
   background: var(--white);
 }
-.remove_button {
-  background: var(--red);
-}
 .edit_button {
   background: var(--navy);
 }
-#locations_edit_section form {
+.input_area form {
   width: auto;
   max-width: 1000px;
 }
-#locations_edit_section .text_input_area {
+.input_area .input_wrapper {
   grid-template-columns: 30% 40% 30%;
 }
-#locations_edit_section .submit_wrapper {
-  margin: 0px auto 0px 16px;
-  max-height: 24px;
-  width: 80px;
+.input_area .submit_wrapper {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 30% 40% 30%;
+  margin: 16px 0px;
 }
-#locations_edit_section .submit_wrapper input {
-  height: 24px;
+.input_area .submit_button {
+  grid-area: 1 / 2 / 2 / 3;
+  padding: 0;
+  margin: -2px -2px 0px 0px;
+  border: 2px solid var(--light-grey);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  height: 26px;
+  transition: 200ms;
 }
-#locations_edit_section .radio_input_area {
+.input_area .submit_button:hover {
+  background: #32de84;
+  border: #32de84;
+}
+.input_area .remove_button:hover {
+  background: #fa1140;
+  border: #fa1140;
+}
+.input_area .radio_input_area {
   margin: 0px;
   grid-template-columns: 100%;
 }
-#locations_edit_section .radio_input_area {
+.input_area .radio_input_area {
   grid-template-columns: 30% 40% 30%;
 }
 
@@ -75,7 +91,7 @@
   #locations_edit_section .submit_wrapper {
     margin: 0px 16px 0px auto;
   }
-  #locations_edit_section .text_input_area {
+  #locations_edit_section .input_wrapper {
     grid-template-columns: 30% 50% 20%;
   }
 }

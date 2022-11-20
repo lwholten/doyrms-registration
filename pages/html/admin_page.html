@@ -79,8 +79,8 @@
               <th>Forename</th>
               <th>Surname</th>
               <th>Email</th>
-              <th>Gender</th>
               <th>Room Number</th>
+              <th>Gender</th>
               <th>Initials</th>
               <th></th>
             </tr>
@@ -88,26 +88,70 @@
           </table>
           <footer/>
         </div>
-
-        <section class="hidden_section" id="users_add_section">
+        <section class="hidden_section input_area" id="users_edit_section">
+          <h3 id="users_edit_title">Edit Users -</h3>
+          <form id="edit_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="edit_user_form" value="true"/>
+            <input class="user_id_storage" type="hidden" name="user_id" value="0"/>
+            <div class="input_wrapper">
+              <label for="new_user_forename"><h4>Forename:</h4></label>
+              <input id="new_user_forename" name="new_user_forename" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper">
+              <label for="new_user_surname"><h4>Surname:</h4></label>
+              <input id="new_user_surname" name="new_user_surname" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper description">
+              <label for="new_user_email"><h4>Email:</h4></label>
+              <textarea id="new_user_email" name="new_user_email"rows="4" cols="50" maxlength="320"></textarea>
+            </div>
+            <div class="input_wrapper">
+              <label for="new_user_room_num"><h4>Room Number:</h4></label>
+              <input id="new_user_room_num" name="new_user_room_num" type="text" maxlength="3" pattern="[0-9]+"></input>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Gender:</h4></label>
+              <div class="radio_wrapper">
+                <input type="radio" name="new_user_gender" value="m">
+                <label>Male</label>
+                <input type="radio" name="new_user_gender" value="f">
+                <label>Female</label>
+                <input type="radio" checked="checked" name="new_user_gender" value="o">
+                <label>Other</label>
+              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Make Changes" />
+            </div>
+          </form>
+          <form id="remove_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="remove_user" value="true"/>
+            <input class="user_id_storage" type="hidden" name="user_id" value="0"/>
+            <div class="input_wrapper">
+              <label for="remove_user"><h4>Remove User:</h4></label>
+              <input class="submit_button remove_button" type="submit" value="Remove" />
+            </div>
+          </form>
+        </section>
+        <section class="hidden_section input_area" id="users_add_section">
           <h3>Add User</h3>
           <form id="add_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="add_user" value="true"/>
-            <div class="text_input_area">
+            <div class="input_wrapper">
               <label for="user_forename"><h4>Forename*:</h4></label>
               <input id="user_forename" name="user_forename" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
             </div>
-            <div class="text_input_area">
+            <div class="input_wrapper">
               <label for="user_surname"><h4>Surname*:</h4></label>
               <input id="user_surname" name="user_surname" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
             </div>
-            <div class="text_input_area description">
+            <div class="input_wrapper description">
               <label for="user_email"><h4>Email:</h4></label>
-              <textarea id="user_email" name="user_email" value="" placeholder="Optional" rows="4" cols="50" maxlength="320"></textarea>
+              <textarea id="user_email" name="user_email" value="" placeholder="Optional" value="" rows="4" cols="50" maxlength="320"></textarea>
             </div>
-            <div class="text_input_area">
+            <div class="input_wrapper">
               <label for="user_room_num"><h4>Room Number:</h4></label>
-              <input id="user_room_num" name="user_room_num" placeholder="Optional" type="text" maxlength="3" pattern="[0-9]+"></input>
+              <input id="user_room_num" name="user_room_num" placeholder="Optional" value="" type="text" maxlength="3" pattern="[0-9]+"></input>
             </div>
             <div class="radio_input_area">
               <label><h4>Gender:</h4></label>
@@ -120,8 +164,8 @@
                 <label>Other</label>
               </div>
             </div>
-            <div class="submit_wrapper">
-              <input type="submit" value="Submit"/>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Add User" />
             </div>
           </form>
         </section>
@@ -148,33 +192,19 @@
           </table>
           <footer/>
         </div>
-        <section class="hidden_section" id="locations_edit_section">
+        <section class="hidden_section input_area" id="locations_edit_section">
           <h3 id="locations_edit_title">Edit Location -</h3>
-          <form id="change_location_name_form" autocomplete="off" class="text generic_form" action="" method="POST">
-            <input type="hidden" name="change_location_name" value="true"/>
+          <form id="edit_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="edit_location_form" value="true"/>
             <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
-            <div class="text_input_area">
+            <div class="input_wrapper">
               <label for="new_location_name"><h4>Change Name:</h4></label>
               <input id="new_location_name" name="new_location_name" type="text" maxlength="20"></input>
-              <div class="submit_wrapper">
-                <input type="submit" value="Submit"/>
-              </div>
             </div>
-          </form>
-          <form id="change_location_desc_form" autocomplete="off" class="text generic_form" action="" method="POST">
-            <input type="hidden" name="change_location_desc" value="true"/>
-            <input id="test" class="location_id_storage" type="hidden" name="location_id"/>
-            <div class="text_input_area description">
+            <div class="input_wrapper description">
               <label for="new_location_desc"><h4>Change Description:</h4></label>
               <textarea id="new_location_desc" name="new_location_desc" rows="4" cols="50" maxlength="100"></textarea>
-              <div class="submit_wrapper">
-                <input type="submit" value="Submit"/>
-              </div>
             </div>
-          </form>
-          <form id="change_location_pop_form" class="text generic_form" action="" method="POST">
-            <input type="hidden" name="change_location_pop" value="true"/>
-            <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
             <div class="radio_input_area">
               <label><h4>Change Popularity:</h4></label>
               <div class="radio_wrapper">
@@ -189,29 +219,29 @@
                 <input type="radio" name="new_location_pop" value="5">
                 <label>5</label>
               </div>
-              <div class="submit_wrapper">
-                <input type="submit" value="Submit"/>
-              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Make Changes" />
             </div>
           </form>
           <form id="remove_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="remove_location" value="true"/>
             <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
-            <div class="remove_button_wrapper">
+            <div class="input_wrapper">
               <label for="remove_location"><h4>Remove Location:</h4></label>
-              <input class="remove_button" type="submit" value="Remove" />
+              <input class="submit_button remove_button" type="submit" value="Remove" />
             </div>
           </form>
         </section>
-        <section class="hidden_section" id="locations_add_section">
+        <section class="hidden_section input_area" id="locations_add_section">
           <h3>Add Location</h3>
           <form id="add_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="add_location" value="true"/>
-            <div class="text_input_area">
+            <div class="input_wrapper">
               <label for="location_name"><h4>Location Name*:</h4></label>
               <input id="location_name" name="location_name" placeholder="Required" type="text" maxlength="20" required></input>
             </div>
-            <div class="text_input_area description">
+            <div class="input_wrapper description">
               <label for="location_desc"><h4>Description:</h4></label>
               <textarea id="location_desc" name="location_desc" value="" placeholder="Optional" rows="4" cols="50" maxlength="100"></textarea>
             </div>
@@ -230,8 +260,8 @@
                 <label>5</label>
               </div>
             </div>
-            <div class="submit_wrapper">
-              <input type="submit" value="Submit"/>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Add Location" />
             </div>
           </form>
         </section>
