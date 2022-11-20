@@ -62,8 +62,9 @@ function fillLocationsTable() {
     foreach ($record as $value) {
       echo "<td> $value </td>";
     }
-    /*Echoes the edit button for this record, it passes the location name as a parameter so it may be used in the edit section's title*/
-    echo "<td><button onclick=\"formatEditSection('locations_edit_section','$record[1]');\" class=\"blue_button edit_button\">Edit</button></td>";
+    /*Makes the edit section appear for the selected record, passes the record id and location name as parameters*/
+    /*record[0] --> The ID of that record | record[1] --> The name of that location*/
+    echo "<td><button onclick=\"formatEditSection('locations_edit_section','$record[1]','$record[0]');\" class=\"blue_button edit_button\">Edit</button></td>";
     echo "</tr>";
   }
 }
@@ -72,21 +73,79 @@ function fillLocationsTable() {
 function addLocation($name, $description, $popularity) {
   /*Connects to the database*/
   $con = databaseConnect();
-  /*SQL code to upload the data to the table*/
-  $sql = "INSERT INTO `Locations` (`LocationId`, `LocationName`, `Description`, `Popularity`) VALUES (NULL, '$name', '$description', '$popularity')";
+  /*SQL query used to upload the data to the table*/
+  $query = "INSERT INTO Locations (LocationId, LocationName, Description, Popularity) VALUES (NULL, '$name', '$description', '$popularity')";
   /*Executes the sql code*/
-  $con->query($sql);
+  $con->query($query);
   /*Disconnects from the database*/
   $con->close();
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
-/*Executed when the page is first loaded*/
-onPageLoad();
-
-// Executes the function if a member of staff signs in
-if (isset($_POST['location_name']) && isset($_POST['location_desc']) && isset($_POST['location_pop'])) {
+/* Detects if a location is being added and runs the code */
+if (isset($_POST['add_location'])) {
   addLocation($_POST['location_name'],$_POST['location_desc'],$_POST['location_pop']);
+}
+
+/*Used to change the name of a location*/
+function changeLocationName($locationId, $newLocationName) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "UPDATE Locations SET LocationName=? WHERE LocationId=?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $newLocationName, $locationId);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*Used to change the description of a location*/
+function changeLocationDesc($locationId, $newLocationDesc) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "UPDATE Locations SET Description=? WHERE LocationId=?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $newLocationDesc, $locationId);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*used to change the popularity of a location*/
+function changeLocationPop($locationId, $newLocationPop) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "UPDATE Locations SET Popularity=? WHERE LocationId=?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $newLocationPop, $locationId);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/* Detects it the locations description is being changed */
+if (isset($_POST['change_location_name'])) {
+  changeLocationName($_POST['location_id'],$_POST['new_location_name']);
+}
+/* Detects it the locations description is being changed */
+if (isset($_POST['change_location_desc'])) {
+  changeLocationDesc($_POST['location_id'],$_POST['new_location_desc']);
+}
+/* Detects it the locations popularity is being changed */
+if (isset($_POST['change_location_pop'])) {
+  changeLocationPop($_POST['location_id'],$_POST['new_location_pop']);
 }
 
 /* Run the admin logout function if the admin user logs out*/
@@ -98,4 +157,7 @@ if (isset($_POST['admin_sign_out'])) {
   echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   exit();
 }
+
+/*Executed when the page is first loaded*/
+onPageLoad();
 ?>

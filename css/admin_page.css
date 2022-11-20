@@ -42,5 +42,41 @@
 .edit_button {
   background: var(--navy);
 }
+#locations_edit_section form {
+  width: auto;
+  max-width: 1000px;
+}
+#locations_edit_section .text_input_area {
+  grid-template-columns: 30% 40% 30%;
+}
+#locations_edit_section .submit_wrapper {
+  margin: 0px auto 0px 16px;
+  max-height: 24px;
+  width: 80px;
+}
+#locations_edit_section .submit_wrapper input {
+  height: 24px;
+}
+#locations_edit_section .radio_input_area {
+  margin: 0px;
+  grid-template-columns: 100%;
+}
+#locations_edit_section .radio_input_area {
+  grid-template-columns: 30% 40% 30%;
+}
 
+@media screen and (max-width: 1400px) {
+  #locations_edit_section form {
+    width: 100%;
+    max-width: none;
+  }
+}
+@media screen and (max-width: 1200px) {
+  #locations_edit_section .submit_wrapper {
+    margin: 0px 16px 0px auto;
+  }
+  #locations_edit_section .text_input_area {
+    grid-template-columns: 30% 50% 20%;
+  }
+}
 </style>

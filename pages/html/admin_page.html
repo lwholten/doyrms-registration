@@ -91,31 +91,76 @@
         </div>
         <section class="hidden_section" id="locations_edit_section">
           <h3 id="locations_edit_title">Edit Location -</h3>
+          <form id="change_location_name_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="change_location_name" value="true"/>
+            <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
+            <div class="text_input_area">
+              <label for="new_location_name"><h4>Change Name:</h4></label>
+              <input id="new_location_name" name="new_location_name" type="text" maxlength="20"></input>
+              <div class="submit_wrapper">
+                <input type="submit" value="Submit"/>
+              </div>
+            </div>
+          </form>
+          <form id="change_location_desc_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="change_location_desc" value="true"/>
+            <input id="test" class="location_id_storage" type="hidden" name="location_id"/>
+            <div class="text_input_area description">
+              <label for="new_location_desc"><h4>Change Description:</h4></label>
+              <textarea id="new_location_desc" name="new_location_desc" rows="4" cols="50" maxlength="100"></textarea>
+              <div class="submit_wrapper">
+                <input type="submit" value="Submit"/>
+              </div>
+            </div>
+          </form>
+          <form id="change_location_pop_form" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="change_location_pop" value="true"/>
+            <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
+            <div class="radio_input_area">
+              <label><h4>Change Popularity:</h4></label>
+              <div class="radio_wrapper">
+                <input type="radio" name="new_location_pop" value="1">
+                <label>1</label>
+                <input type="radio" name="new_location_pop" value="2">
+                <label>2</label>
+                <input type="radio" name="new_location_pop" value="3">
+                <label>3</label>
+                <input type="radio" name="new_location_pop" value="4">
+                <label>4</label>
+                <input type="radio" name="new_location_pop" value="5">
+                <label>5</label>
+              </div>
+              <div class="submit_wrapper">
+                <input type="submit" value="Submit"/>
+              </div>
+            </div>
+          </form>
         </section>
         <section class="hidden_section" id="locations_add_section">
           <h3>Add Location</h3>
           <form id="add_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="add_location" value="true"/>
             <div class="text_input_area">
-              <label for="location_name"><h4>Location Name:</h4></label>
-              <input id="location_name" name="location_name" placeholder="'The Climbing Wall...'" type="text" maxlength="20"></input>
+              <label for="location_name"><h4>Location Name*:</h4></label>
+              <input id="location_name" name="location_name" placeholder="Required" type="text" maxlength="20"></input>
             </div>
             <div class="text_input_area description">
               <label for="location_desc"><h4>Description:</h4></label>
-              <textarea id="location_desc" name="location_desc" placeholder="'Next to the small car park...'" rows="4" cols="50" maxlength="100"></textarea>
+              <textarea id="location_desc" name="location_desc" value="" placeholder="Optional" rows="4" cols="50" maxlength="100"></textarea>
             </div>
             <div class="radio_input_area">
               <label><h4>Popularity:</h4></label>
               <div class="radio_wrapper">
-                <input id="location_1" type="radio" name="location_pop" value="1">
-                <label for="location_1">1</label>
-                <input id="location_2" type="radio" name="location_pop" value="2">
-                <label for="location_2">2</label>
-                <input id="location_3" type="radio" name="location_pop" value="3">
-                <label for="location_3">3</label>
-                <input id="location_4" type="radio" name="location_pop" value="4">
-                <label for="location_4">4</label>
-                <input id="location_5" type="radio" name="location_pop" value="5">
-                <label for="location_5">5</label>
+                <input type="radio" name="location_pop" value="1">
+                <label>1</label>
+                <input type="radio" name="location_pop" value="2">
+                <label>2</label>
+                <input type="radio" name="location_pop" value="3">
+                <label>3</label>
+                <input type="radio" name="location_pop" value="4">
+                <label>4</label>
+                <input type="radio" checked="checked" name="location_pop" value="5">
+                <label>5</label>
               </div>
             </div>
             <div class="submit_wrapper">

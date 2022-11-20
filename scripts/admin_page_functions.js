@@ -2,7 +2,7 @@
 
 /*section_id -> the id of the section being formatted*/
 /*title_content -> content added to the section title*/
-function formatEditSection(section_id, title_content) {
+function formatEditSection(section_id, title_content, location_id=0) {
   /*Assigns the section being formated to a variable*/
   section = document.getElementById(section_id);
 
@@ -10,6 +10,12 @@ function formatEditSection(section_id, title_content) {
   section_title = section.getElementsByTagName('h3')[0];
   /*Concatinates the additional content to the edit section title*/
   section_title.innerHTML = 'Edit - '+'\''+title_content+'\'';
+
+  /*Sets the location id for all forms to that of the selected record*/
+  const location_id_storage_array = document.getElementsByClassName('location_id_storage');
+  for (var i = 0; i < location_id_storage_array.length; i++) {
+    location_id_storage_array[i].setAttribute('value', location_id);
+  };
 
   /*Shows the edit section to the user*/
   toggleHiddenSection(section_id);
