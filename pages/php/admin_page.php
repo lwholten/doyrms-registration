@@ -87,6 +87,27 @@ if (isset($_POST['add_location'])) {
   addLocation($_POST['location_name'],$_POST['location_desc'],$_POST['location_pop']);
 }
 
+/*Used to remove locations from the database*/
+function removeLocation($locationId) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "DELETE FROM `Locations` WHERE `Locations`.`LocationId` = ?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $locationId);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*Detects if a location is being removed and executes the corresponding function*/
+if (isset($_POST['remove_location'])) {
+  removeLocation($_POST['location_id']);
+}
+
 /*Used to change the name of a location*/
 function changeLocationName($locationId, $newLocationName) {
   /*SQL query used to change the location popularity stored on the table*/

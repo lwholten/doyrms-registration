@@ -74,7 +74,7 @@
           <header>
             <h2>Locations</h2>
             <div class="button_wrapper">
-              <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_staff_button">Add Location</button>
+              <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_location_button">Add Location</button>
             </div>
           </header>
           <table class='table' id='locations_accounts_table'>
@@ -133,6 +133,14 @@
               <div class="submit_wrapper">
                 <input type="submit" value="Submit"/>
               </div>
+            </div>
+          </form>
+          <form id="remove_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="remove_location" value="true"/>
+            <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
+            <div class="remove_button_wrapper">
+              <label for="remove_location"><h4>Remove Location:</h4></label>
+              <input class="remove_button" type="submit" value="Remove" />
             </div>
           </form>
         </section>

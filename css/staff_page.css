@@ -318,6 +318,23 @@ body {
   border-radius: 4px;
   border: 2px solid #C6C4C8;
 }
+.remove_button_wrapper {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 30% 40% 30%;
+  margin: 16px 0px;
+}
+.remove_button_wrapper input {
+  padding: 0;
+  margin: -2px -2px 0px 0px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  font-size: 16px;
+  background: #FF5C33;
+  cursor: pointer;
+}
 
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
