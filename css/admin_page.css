@@ -46,6 +46,10 @@
 .input_area .input_wrapper {
   grid-template-columns: 30% 40% 30%;
 }
+.input_area .input_wrapper input {
+  text-transform: capitalize;
+  padding: 0px 0px 0px 8px;
+}
 .input_area .submit_wrapper {
   width: 100%;
   height: auto;

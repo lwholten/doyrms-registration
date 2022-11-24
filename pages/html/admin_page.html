@@ -84,7 +84,7 @@
               <th>Initials</th>
               <th></th>
             </tr>
-            <?php fillUsersTable() ?>
+            <?php @include('../php/tables/fill_users_table.php'); fillUsersTable() ?>
           </table>
           <footer/>
         </div>
@@ -184,11 +184,12 @@
             <tr>
               <th>ID</th>
               <th>Location</th>
+              <th>Alias</th>
               <th>Description</th>
               <th>Popularity</th>
               <th></th>
             </tr>
-            <?php fillLocationsTable() ?>
+            <?php @include('../php/tables/fill_locations_table.php'); fillLocationsTable() ?>
           </table>
           <footer/>
         </div>
@@ -200,6 +201,10 @@
             <div class="input_wrapper">
               <label for="new_location_name"><h4>Change Name:</h4></label>
               <input id="new_location_name" name="new_location_name" type="text" maxlength="20"></input>
+            </div>
+            <div class="input_wrapper">
+              <label for="new_location_alias"><h4>Change Alias:</h4></label>
+              <input id="new_location_alias" name="new_location_alias" type="text" maxlength="20"></input>
             </div>
             <div class="input_wrapper description">
               <label for="new_location_desc"><h4>Change Description:</h4></label>

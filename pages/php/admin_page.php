@@ -51,30 +51,6 @@ function databaseConnect() {
   return $con;
 }
 
-/*Populates the users table*/
-function fillUsersTable() {
-  /*Connects to the database*/
-  $con = databaseConnect();
-  /*SQL code to get the table data*/
-  $sql = "SELECT * FROM `Users`";
-  /*Saves the result of the SQL code to a variable*/
-  $result = $con->query($sql);
-  /*Disconnects from the database*/
-  $con->close();
-
-  /*Iterates through the table records and displays them on the web page's table*/
-  while($record = $result -> fetch_array(MYSQLI_NUM)) {
-    echo "<tr>";
-    foreach ($record as $value) {
-      echo "<td> $value </td>";
-    }
-    /*Makes the edit section appear for the selected record, passes the record id and user forename + surname as parameters*/
-    /*record[0] --> The ID of that record | record[1] --> The name of that location*/
-    echo "<td><button onclick=\"formatEditSection('users_edit_section','user_id_storage','$record[1] $record[2]','$record[0]');\" class=\"blue_button edit_button\">Edit</button></td>";
-  }
-}
-
-
 /*Used to add users to the database*/
 function addUser($forename, $surname, $email, $gender, $roomNumber) {
   /*Data formatting:*/
@@ -215,29 +191,6 @@ if (isset($_POST['remove_user'])) {
   removeUser($_POST['user_id']);
 }
 
-
-function fillLocationsTable() {
-  /*Connects to the database*/
-  $con = databaseConnect();
-  /*SQL code to get the table data*/
-  $sql = "SELECT * FROM `Locations`";
-  /*Saves the result of the SQL code to a variable*/
-  $result = $con->query($sql);
-  /*Disconnects from the database*/
-  $con->close();
-
-  /*Iterates through the table records and displays them on the web page's table*/
-  while($record = $result -> fetch_array(MYSQLI_NUM)) {
-    echo "<tr>";
-    foreach ($record as $value) {
-      echo "<td> $value </td>";
-    }
-    /*Makes the edit section appear for the selected record, passes the record id and location name as parameters*/
-    /*record[0] --> The ID of that record | record[1] --> The name of that location*/
-    echo "<td><button onclick=\"formatEditSection('locations_edit_section','location_id_storage','$record[1]','$record[0]');\" class=\"blue_button edit_button\">Edit</button></td>";
-    echo "</tr>";
-  }
-}
 /*Used to add locations to the database*/
 function addLocation($name, $description, $popularity) {
   /*SQL query used to change the location popularity stored on the table*/
@@ -269,6 +222,9 @@ function changeLocationEntry($locationId, $newValue, $fieldName) {
   if ($fieldName === "LocationName") {
     $query = "UPDATE Locations SET LocationName=? WHERE LocationId=?";
   }
+  elseif ($fieldName === "LocationAlias") {
+    $query = "UPDATE Locations SET LocationAlias=? WHERE LocationId=?";
+  }
   elseif ($fieldName === "Description") {
     $query = "UPDATE Locations SET Description=? WHERE LocationId=?";
   }
@@ -279,7 +235,7 @@ function changeLocationEntry($locationId, $newValue, $fieldName) {
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("ss", $newValue, $locationId);
+  $stmt->bind_param("ss", ucwords($newValue), $locationId);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -296,6 +252,10 @@ if (isset($_POST['edit_location_form'])) {
   /*If the name needs to be changed*/
   if (isset($_POST['new_location_name']) && !empty($_POST['new_location_name'])) {
     changeLocationEntry($_POST['location_id'],$_POST['new_location_name'],'LocationName');
+  }
+  /*If the alias needs to be changed*/
+  if (isset($_POST['new_location_alias']) && !empty($_POST['new_location_alias'])) {
+    changeLocationEntry($_POST['location_id'],$_POST['new_location_alias'],'LocationAlias');
   }
   /*If the description needs to change*/
   if (isset($_POST['new_location_desc']) && !empty($_POST['new_location_desc'])) {
