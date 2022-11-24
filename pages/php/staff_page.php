@@ -5,6 +5,7 @@ function displayPage() {
   include("../../css/staff_page.css");
   include("../html/staff_page.html");
   include("../php/functions.php");
+  $configs = include("../config/config.php");
 }
 
 /*Executes when this page is loaded*/
@@ -26,14 +27,8 @@ function onPageLoad() {
 
 // Used to connect to the database
 function databaseConnect() {
-  // Connection details
-  $servername = "localhost";
-  $username = "dreg_user";
-  $password = "epq";
-  $database = 'dregDB';
-
   // Create connection
-  $con = new mysqli($servername, $username, $password, $database);
+  $con = new mysqli($config['hostname'], $config['username'], $config['password'], $config['database']);
 
   // Check connection
   if ($con->connect_error) {

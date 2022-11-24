@@ -15,8 +15,8 @@ function backButton() {
   staff_button.style.display = 'flex';
   back_button.style.display = 'none';
   resetForm('staff_login_form');
-  resetForm('student_sign_in_form');
-  resetForm('student_sign_out_form');
+  resetForm('user_sign_in_form');
+  resetForm('user_sign_out_form');
 }
 
 function toggleStaffLoginPreset() {
@@ -31,22 +31,6 @@ function toggleStaffLoginPreset() {
 
   staff_button.style.display = 'none';
   back_button.style.display = 'flex';
-}
-
-function addLocations() {
-  // Gets the dropdown menu that contains the signout locations
-  const locations_dropdown = document.getElementById('student_sign_out_location');
-  var locations = ["Location 1", "Location 2", "Location 3"];
-
-  // If no locations are stored in the dropdown selection
-  if (locations_dropdown.options.length === 0) {
-    // Iterates through the available locations and adds them to the selection
-    for (var i = 0; i < locations.length; i++) {
-      // Note that it saves the name of the location, but keeps the value as a number, i,
-      // This is to prevent a user from changing the html and uploading a false location
-      locations_dropdown.options[locations_dropdown.options.length] = new Option(locations[i], i);
-    };
-  };
 }
 
 function toggleStudentPreset(preset) {
@@ -65,8 +49,6 @@ function toggleStudentPreset(preset) {
   else if  (preset === 'sign_out') {
     student_sign_in_preset.style.display = 'none';
     student_sign_out_preset.style.display = 'flex';
-
-    addLocations();
   }
   else {
     student_sign_out_preset.style.display = 'none';
@@ -129,4 +111,8 @@ function idleTimer() {
 /*When the window is loaded, start the idle timer*/
 window.onload = function() {
   idleTimer()
+}
+
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
 }
