@@ -208,6 +208,9 @@ body {
   z-index: 2;
   transition: opacity 100ms linear;
 }
+.input_wrapper:first-of-type {
+  z-index: 3;
+}
 .input_wrapper ul {
   width: 100%;
   height: auto;
@@ -222,25 +225,33 @@ body {
 }
 .input_wrapper li {
   width: 100%;
-  height: auto;
+  height: 50px;
   text-align: left;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
-.input_wrapper input:focus ~ #location_suggestions {
+.input_wrapper input:focus ~ .suggested_inputs {
   opacity: 1.0;
 }
-.input_wrapper input:not(:focus) ~ #location_suggestions {
+.input_wrapper input:not(:focus) ~ .suggested_inputs {
   opacity: 0.0;
 }
 .input_wrapper li:hover {
   background: #D9D9D9;
 }
-.input_wrapper li * {
+.input_wrapper li h3 {
+  height: auto;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
+  display: inline-block;
+  margin: auto 0px;
+  padding: 0px;
 }
 
 @media screen and (max-width: 1400px), (max-height: 800px) {
