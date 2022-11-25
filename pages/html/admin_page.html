@@ -61,7 +61,109 @@
       </section>
 
       <section class="main_section" id="m11">
-        <h2>Manage Staff</h2>
+        <h2 class="title">Manage Staff</h2>
+        <div class="table_wrapper">
+          <header>
+            <h2>Staff</h2>
+            <div class="button_wrapper">
+              <button onclick="toggleHiddenSection('staff_add_section');" class="add_button" id="add_staff_button">Add Staff</button>
+            </div>
+          </header>
+          <table class='table' id='staff_accounts_table'>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Email</th>
+              <th>Access Level</th>
+              <th></th>
+            </tr>
+            <?php @include('../php/tables/fill_staff_table.php'); fillStaffTable() ?>
+          </table>
+          <footer/>
+        </div>
+        <section class="hidden_section input_area" id="staff_edit_section">
+          <h3 id="staff_edit_title">Edit Staff -</h3>
+          <form id="edit_staff_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="edit_staff_form" value="true"/>
+            <input class="staff_id_storage" type="hidden" name="staff_id" value="0"/>
+            <div class="input_wrapper">
+              <label for="new_staff_username"><h4>Username:</h4></label>
+              <input id="new_staff_username" name="new_staff_username" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="new_staff_forename"><h4>Forename:</h4></label>
+              <input id="new_staff_forename" name="new_staff_forename" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="new_staff_surname"><h4>Surname:</h4></label>
+              <input id="new_staff_surname" name="new_staff_surname" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper description">
+              <label for="new_staff_email"><h4>Email:</h4></label>
+              <textarea id="new_staff_email" name="new_staff_email" rows="4" cols="50" maxlength="320"></textarea>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Access Level:</h4></label>
+              <div class="radio_wrapper">
+                <input type="radio" name="new_staff_access_level" value="1">
+                <label>[1] Staff</label>
+                <input type="radio" name="new_staff_access_level" value="2">
+                <label>[2] Moderator</label>
+                <input type="radio" name="new_staff_access_level" value="3">
+                <label>[3] Admin</label>
+              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Make Changes" />
+            </div>
+          </form>
+          <form id="remove_staff_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <div class="input_wrapper">
+              <label for="remove_staff"><h4>Remove Staff:</h4></label>
+              <input type="hidden" name="remove_staff" value="true"/>
+              <input class="staff_id_storage" type="hidden" name="staff_id" value="0"/>
+              <input class="submit_button remove_button" type="submit" value="Remove" />
+            </div>
+          </form>
+        </section>
+        <section class="hidden_section input_area" id="staff_add_section">
+          <h3>Add Staff</h3>
+          <form id="add_staff_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="add_staff" value="true"/>
+            <div class="input_wrapper">
+              <label for="staff_username"><h4>Username*:</h4></label>
+              <input id="staff_username" name="staff_username" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
+            </div>
+            <div class="input_wrapper">
+              <label for="staff_forename"><h4>Forename:</h4></label>
+              <input id="staff_forename" name="staff_forename" type="text" placeholder="Optional" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper">
+              <label for="staff_surname"><h4>Surname:</h4></label>
+              <input id="staff_surname" name="staff_surname" type="text" placeholder="Optional" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper description">
+              <label for="staff_email"><h4>Email:</h4></label>
+              <textarea id="staff_email" name="staff_email" value="" placeholder="Optional" value="" rows="4" cols="50" maxlength="320"></textarea>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Access Level:</h4></label>
+              <div class="radio_wrapper">
+                <input type="radio" checked="checked" name="staff_access_level" value="1">
+                <label>[1] Staff</label>
+                <input type="radio" name="staff_access_level" value="2">
+                <label>[2] Moderator</label>
+                <input type="radio" name="staff_access_level" value="3">
+                <label>[3] Admin</label>
+              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Add Staff" />
+            </div>
+          </form>
+        </section>
       </section>
 
       <section class="main_section" id="m21">
@@ -93,17 +195,17 @@
           <form id="edit_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="edit_user_form" value="true"/>
             <input class="user_id_storage" type="hidden" name="user_id" value="0"/>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="new_user_forename"><h4>Forename:</h4></label>
               <input id="new_user_forename" name="new_user_forename" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
             </div>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="new_user_surname"><h4>Surname:</h4></label>
               <input id="new_user_surname" name="new_user_surname" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
             </div>
             <div class="input_wrapper description">
               <label for="new_user_email"><h4>Email:</h4></label>
-              <textarea id="new_user_email" name="new_user_email"rows="4" cols="50" maxlength="320"></textarea>
+              <textarea id="new_user_email" name="new_user_email" rows="4" cols="50" maxlength="320"></textarea>
             </div>
             <div class="input_wrapper">
               <label for="new_user_room_num"><h4>Room Number:</h4></label>
@@ -198,11 +300,11 @@
           <form id="edit_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="edit_location_form" value="true"/>
             <input class="location_id_storage" type="hidden" name="location_id" value="0"/>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="new_location_name"><h4>Change Name:</h4></label>
               <input id="new_location_name" name="new_location_name" type="text" maxlength="20"></input>
             </div>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="new_location_alias"><h4>Change Alias:</h4></label>
               <input id="new_location_alias" name="new_location_alias" type="text" maxlength="20"></input>
             </div>

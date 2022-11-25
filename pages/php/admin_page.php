@@ -51,6 +51,133 @@ function databaseConnect() {
   return $con;
 }
 
+
+/*Used to add users to the database*/
+function addStaff($username, $forename, $surname, $email, $accessLevel) {
+  /*Data formatting:*/
+  /*Makes the forname and surname uppercase before being added to the database*/
+  $forename = ucwords($forename);
+  $surname = ucwords($surname);
+
+  $salt = "test";
+  $saltedHashedPassword = "test";
+  /*If the variable is an empty string, make it NULL*/
+  if ($email === "") { unset($email); }
+
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "INSERT INTO `Staff` (`StaffID`, `Username`, `Forename`, `Surname`, `Email`, `Salt`, `SaltedHashedPassword`, `AccessLevel`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("sssssss", $username, $forename, $surname, $email, $salt, $saltedHashedPassword, $accessLevel);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm11';
+  $_SESSION['active_button'] = 's11';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/* Detects if a user is being added and runs the code */
+if (isset($_POST['add_staff'])) {
+  addStaff($_POST['staff_username'], $_POST['staff_forename'], $_POST['staff_surname'], $_POST['staff_email'], $_POST['staff_access_level']);
+}
+
+
+/*Used to change a users database entries*/
+/*userID -> the id of the user being edited*/
+/*newValue -> the value replacing the old one*/
+/*fieldName -> the column where the data is being replaced*/
+function changeStaffEntry($staffID, $newValue, $fieldName) {
+  /*SQL query(s) used to change the location popularity stored on the table*/
+  if ($fieldName === "Username") {
+    $query = "UPDATE Staff SET Username=? WHERE staffID=?";
+  }
+  elseif ($fieldName === "Forename") {
+    $query = "UPDATE Staff SET Forename=? WHERE staffID=?";
+    $newValue = ucwords($newValue);
+  }
+  elseif ($fieldName === "Surname") {
+    $query = "UPDATE Staff SET Surname=? WHERE staffID=?";
+    $newValue = ucwords($newValue);
+  }
+  elseif ($fieldName === "Email") {
+    $query = "UPDATE Staff SET Email=? WHERE staffID=?";
+  }
+  elseif ($fieldName === "AccessLevel") {
+    $query = "UPDATE Staff SET AccessLevel=? WHERE staffID=?";
+  }
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $newValue, $staffID);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm11';
+  $_SESSION['active_button'] = 's11';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/* Detects if the edit location form has been submitted */
+if (isset($_POST['edit_staff_form'])) {
+  /*If the staff members username needs to be changed*/
+  if (isset($_POST['new_staff_username']) && !empty($_POST['new_staff_username'])) {
+    changeStaffEntry($_POST['staff_id'],$_POST['new_staff_username'],'Username');
+  }
+  /*If the staff members forename needs to be changed*/
+  if (isset($_POST['new_staff_forename']) && !empty($_POST['new_staff_forename'])) {
+    changeStaffEntry($_POST['staff_id'],$_POST['new_staff_forename'],'Forename');
+  }
+  /*If the staff members surname needs to be changed*/
+  if (isset($_POST['new_staff_surname']) && !empty($_POST['new_staff_surname'])) {
+    changeStaffEntry($_POST['staff_id'],$_POST['new_staff_surname'],'Surname');
+  }
+  /*If the staff members email needs to be changed*/
+  if (isset($_POST['new_staff_email']) && !empty($_POST['new_staff_email'])) {
+    changeStaffEntry($_POST['staff_id'],$_POST['new_staff_email'],'Email');
+  }
+  /*If the staff members access level needs to be changed*/
+  if (isset($_POST['new_staff_access_level']) && !empty($_POST['new_staff_access_level'])) {
+    changeStaffEntry($_POST['staff_id'],$_POST['new_staff_access_level'],'AccessLevel');
+  }
+}
+
+
+/*Used to remove users from the database*/
+function removeStaff($staffID) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "DELETE FROM `Staff` WHERE `Staff`.`StaffID` = ?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $staffID);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  session_start();
+  $_SESSION['active_section'] = 'm11';
+  $_SESSION['active_button'] = 's11';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*Detects if a location needs to be removed and executes the corresponding function*/
+if (isset($_POST['remove_staff'])) {
+  removeStaff($_POST['staff_id']);
+}
+
+
 /*Used to add users to the database*/
 function addUser($forename, $surname, $email, $gender, $roomNumber) {
   /*Data formatting:*/
@@ -64,7 +191,7 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
   if ($roomNumber === "") { unset($roomNumber); }
 
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO `Users` (`UserId`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Users` (`UserID`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
@@ -88,7 +215,7 @@ if (isset($_POST['add_user'])) {
 
 
 /*Used to update a users initials*/
-function updateUserInitials($userId) {
+function updateUserInitials($userID) {
   /*Sets the initials to the first character of the users first and last names*/
   $query = "UPDATE Users SET Users.Initials=CONCAT(LEFT(Users.Forename, 1), LEFT(Users.Surname, 1))";
   /*Connects to the database*/
@@ -101,33 +228,33 @@ function updateUserInitials($userId) {
   $con->close();
 }
 /*Used to change a users database entries*/
-/*userId -> the id of the user being edited*/
+/*userID -> the id of the user being edited*/
 /*newValue -> the value replacing the old one*/
 /*fieldName -> the column where the data is being replaced*/
-function changeUserEntry($userId, $newValue, $fieldName) {
+function changeUserEntry($userID, $newValue, $fieldName) {
   /*SQL query(s) used to change the location popularity stored on the table*/
   if ($fieldName === "Forename") {
-    $query = "UPDATE Users SET Forename=? WHERE userId=?";
+    $query = "UPDATE Users SET Forename=? WHERE userID=?";
     $newValue = ucwords($newValue);
   }
   elseif ($fieldName === "Surname") {
-    $query = "UPDATE Users SET Surname=? WHERE userId=?";
+    $query = "UPDATE Users SET Surname=? WHERE userID=?";
     $newValue = ucwords($newValue);
   }
   elseif ($fieldName === "Email") {
-    $query = "UPDATE Users SET Email=? WHERE userId=?";
+    $query = "UPDATE Users SET Email=? WHERE userID=?";
   }
   elseif ($fieldName === "RoomNumber") {
-    $query = "UPDATE Users SET RoomNumber=? WHERE userId=?";
+    $query = "UPDATE Users SET RoomNumber=? WHERE userID=?";
   }
   elseif ($fieldName === "Gender") {
-    $query = "UPDATE Users SET Gender=? WHERE userId=?";
+    $query = "UPDATE Users SET Gender=? WHERE userID=?";
   }
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("ss", $newValue, $userId);
+  $stmt->bind_param("ss", $newValue, $userID);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -167,14 +294,14 @@ if (isset($_POST['edit_user_form'])) {
 
 
 /*Used to remove users from the database*/
-function removeUser($userId) {
+function removeUser($userID) {
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "DELETE FROM `Users` WHERE `Users`.`UserId` = ?";
+  $query = "DELETE FROM `Users` WHERE `Users`.`UserID` = ?";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("s", $userId);
+  $stmt->bind_param("s", $userID);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -191,10 +318,11 @@ if (isset($_POST['remove_user'])) {
   removeUser($_POST['user_id']);
 }
 
+
 /*Used to add locations to the database*/
 function addLocation($name, $description, $popularity) {
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO Locations (LocationId, LocationName, Description, Popularity) VALUES (NULL, ?, ?, ?)";
+  $query = "INSERT INTO Locations (LocationID, LocationName, Description, Popularity) VALUES (NULL, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
@@ -217,25 +345,26 @@ if (isset($_POST['add_location'])) {
 }
 
 
-function changeLocationEntry($locationId, $newValue, $fieldName) {
+/*Used to change location entrys on the database*/
+function changeLocationEntry($locationID, $newValue, $fieldName) {
   /*SQL query(s) used to change the location popularity stored on the table*/
   if ($fieldName === "LocationName") {
-    $query = "UPDATE Locations SET LocationName=? WHERE LocationId=?";
+    $query = "UPDATE Locations SET LocationName=? WHERE LocationID=?";
   }
   elseif ($fieldName === "LocationAlias") {
-    $query = "UPDATE Locations SET LocationAlias=? WHERE LocationId=?";
+    $query = "UPDATE Locations SET LocationAlias=? WHERE LocationID=?";
   }
   elseif ($fieldName === "Description") {
-    $query = "UPDATE Locations SET Description=? WHERE LocationId=?";
+    $query = "UPDATE Locations SET Description=? WHERE LocationID=?";
   }
   elseif ($fieldName === "Popularity") {
-    $query = "UPDATE Locations SET Popularity=? WHERE LocationId=?";
+    $query = "UPDATE Locations SET Popularity=? WHERE LocationID=?";
   }
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("ss", ucwords($newValue), $locationId);
+  $stmt->bind_param("ss", ucwords($newValue), $locationID);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -269,14 +398,14 @@ if (isset($_POST['edit_location_form'])) {
 
 
 /*Used to remove locations from the database*/
-function removeLocation($locationId) {
+function removeLocation($locationID) {
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "DELETE FROM `Locations` WHERE `Locations`.`LocationId` = ?";
+  $query = "DELETE FROM `Locations` WHERE `Locations`.`LocationID` = ?";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("s", $locationId);
+  $stmt->bind_param("s", $locationID);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
