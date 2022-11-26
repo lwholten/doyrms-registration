@@ -70,7 +70,7 @@ function addStaff($username, $password, $forename, $surname, $email, $accessLeve
   $hash = password_hash($saltedPassword, PASSWORD_BCRYPT);
 
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO `Staff` (`StaffID`, `Username`, `Forename`, `Surname`, `Email`, `Salt`, `hash`, `AccessLevel`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Staff` (`StaffID`, `Username`, `Forename`, `Surname`, `Email`, `Salt`, `Hash`, `AccessLevel`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
@@ -93,10 +93,42 @@ if (isset($_POST['add_staff'])) {
 }
 
 
-/*Used to change a users database entries*/
-/*userID -> the id of the user being edited*/
-/*newValue -> the value replacing the old one*/
-/*fieldName -> the column where the data is being replaced*/
+// Used to change a staff users password
+function changeStaffPassword($staffID, $newPassword) {
+  // Used to get the salt associated with a staff user
+  $getSaltQuery = "SELECT Salt FROM Staff WHERE StaffID=? LIMIT 1;";
+  // Used to update the old hash
+  $updateHashQuery = "UPDATE Staff SET Hash=? WHERE staffID=?";
+  // Connects to the database
+  $con = databaseConnect();
+
+  // Prepares and executes the first statement
+  $stmt = $con->prepare($getSaltQuery);
+  $stmt->bind_param("s", $staffID);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($salt);
+  $stmt->fetch();
+  unset($stmt);
+
+  // Concatinates the salt to the START of the password
+  $saltedPassword = $salt.$newPassword;
+  // Hashes the salted password
+  $hash = password_hash($saltedPassword, PASSWORD_BCRYPT);
+
+  // Prepares the query used to update the hash
+  $stmt = $con->prepare($updateHashQuery);
+  $stmt->bind_param("ss", $hash, $staffID);
+  // Executes the second statement, updating the hash
+  $stmt->execute();
+
+  // Disconnects from the database
+  $con->close();
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+
+// Used to change a users database entries
 function changeStaffEntry($staffID, $newValue, $fieldName) {
   /*SQL query(s) used to change the location popularity stored on the table*/
   if ($fieldName === "Username") {
@@ -137,6 +169,10 @@ if (isset($_POST['edit_staff_form'])) {
   /*If the staff users username needs to be changed*/
   if (isset($_POST['new_staff_username']) && !empty($_POST['new_staff_username'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_username'],'Username');
+  }
+  /*If the staff users password needs to be changed*/
+  if (isset($_POST['new_staff_password']) && !empty($_POST['new_staff_password'])) {
+    changeStaffPassword($_POST['staff_id'], $_POST['new_staff_password']);
   }
   /*If the staff users forename needs to be changed*/
   if (isset($_POST['new_staff_forename']) && !empty($_POST['new_staff_forename'])) {
@@ -325,14 +361,14 @@ if (isset($_POST['remove_user'])) {
 
 
 /*Used to add locations to the database*/
-function addLocation($name, $description, $popularity) {
+function addLocation($name, $alias, $description, $popularity) {
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO Locations (LocationID, LocationName, Description, Popularity) VALUES (NULL, ?, ?, ?)";
+  $query = "INSERT INTO Locations (LocationID, LocationName, LocationAlias, Description, Popularity) VALUES (NULL, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sss", $name, $description, $popularity);
+  $stmt->bind_param("ssss", $name, $alias, $description, $popularity);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -346,7 +382,7 @@ function addLocation($name, $description, $popularity) {
 }
 /* Detects if a location is being added and runs the code */
 if (isset($_POST['add_location'])) {
-  addLocation($_POST['location_name'],$_POST['location_desc'],$_POST['location_pop']);
+  addLocation($_POST['location_name'],$_POST['location_alias'],$_POST['location_desc'],$_POST['location_pop']);
 }
 
 

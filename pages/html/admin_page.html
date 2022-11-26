@@ -31,9 +31,8 @@
           <li class="sidebar_subtitle"><h3>Information</h3></li>
           <li onclick="toggleMainSection(this.id,'m1')" class="sidebar_button sidebar_button_active" id="s1"><h4>Home</h4></li>
           <li onclick="toggleMainSection(this.id,'m2')" class="sidebar_button" id="s2"><h4>Activity</h4></li>
-          <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Sign In Log</h4></li>
-          <li onclick="toggleMainSection(this.id,'m4')" class="sidebar_button" id="s4"><h4>Sign Out Log</h4></li>
-          <li onclick="toggleMainSection(this.id,'m5')" class="sidebar_button" id="s5"><h4>Events</h4></li>
+          <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Roll Call</h4></li>
+          <li onclick="toggleMainSection(this.id,'m4')" class="sidebar_button" id="s4"><h4>Events</h4></li>
           <li class="sidebar_subtitle"><h3>Manage Staff</h3></li>
           <li onclick="toggleMainSection(this.id,'m11')" class="sidebar_button" id="s11"><h4>Edit Staff</h4></li>
           <li class="sidebar_subtitle"><h3>Manage Users</h3></li>
@@ -51,12 +50,9 @@
         <h2>Activity</h2>
       </section>
       <section class="main_section" id="m3">
-        <h2>Sign In Log</h2>
+        <h2>Roll Call</h2>
       </section>
       <section class="main_section" id="m4">
-        <h2>Sign Out Log</h2>
-      </section>
-      <section class="main_section" id="m5">
         <h2>Events</h2>
       </section>
 
@@ -91,6 +87,10 @@
             <div class="input_wrapper">
               <label for="new_staff_username"><h4>Username:</h4></label>
               <input id="new_staff_username" name="new_staff_username" type="text" maxlength="32" pattern="[a-zA-Z]+"></input>
+            </div>
+            <div class="input_wrapper">
+              <label for="new_staff_password"><h4>Password:</h4></label>
+              <input id="new_staff_password" name="new_staff_password" type="password" maxlength="32" pattern="/^[a-zA-Z0-9!@#\$%\^\&*_=+-]{8,12}$/g"></input>
             </div>
             <div class="input_wrapper capitalize">
               <label for="new_staff_forename"><h4>Forename:</h4></label>
@@ -185,8 +185,8 @@
               <th>Forename</th>
               <th>Surname</th>
               <th>Email</th>
-              <th>Room Number</th>
               <th>Gender</th>
+              <th>Room Number</th>
               <th>Initials</th>
               <th></th>
             </tr>
@@ -243,11 +243,11 @@
           <h3>Add User</h3>
           <form id="add_user_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="add_user" value="true"/>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="user_forename"><h4>Forename*:</h4></label>
               <input id="user_forename" name="user_forename" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
             </div>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="user_surname"><h4>Surname*:</h4></label>
               <input id="user_surname" name="user_surname" placeholder="Required" type="text" maxlength="32" pattern="[a-zA-Z]+" required></input>
             </div>
@@ -348,9 +348,13 @@
           <h3>Add Location</h3>
           <form id="add_location_form" autocomplete="off" class="text generic_form" action="" method="POST">
             <input type="hidden" name="add_location" value="true"/>
-            <div class="input_wrapper">
+            <div class="input_wrapper capitalize">
               <label for="location_name"><h4>Location Name*:</h4></label>
               <input id="location_name" name="location_name" placeholder="Required" type="text" maxlength="20" required></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="location_alias"><h4>Alias*:</h4></label>
+              <input id="location_alias" name="location_alias" placeholder="Required" type="text" maxlength="20"></input>
             </div>
             <div class="input_wrapper description">
               <label for="location_desc"><h4>Description:</h4></label>

@@ -107,11 +107,11 @@ if (isset($_POST['staff_login_form'])) {
       $_SESSION['loggedIn'] = 1;
 
       // Redirects the staff user to the correct page
-      if ($staffDetails['staffAccessLevel'] === 3) {
+      if ($staffDetails['staffAccessLevel'] >= 3) {
         // Admin page
         echo '<script type="text/javascript">window.location.href = "admin_page.php";</script>';
       }
-      elseif ($staffDetails['staffAccessLevel'] === 1 || $staffDetails['staffAccessLevel'] === 2) {
+      elseif ($staffDetails['staffAccessLevel'] >= 1) {
         // Staff page
         echo '<script type="text/javascript">window.location.href = "staff_page.php";</script>';
       }
