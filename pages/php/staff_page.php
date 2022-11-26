@@ -30,8 +30,16 @@ onPageLoad();
 /* A form on the staff page is used to POST a variable when the logout button is pressed;
    This code executes when that variable has been set*/
 if (isset($_POST['staff_sign_out'])) {
-  /*Logs the staff user out*/
+  /*Logs the user out*/
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  }
+  // Destroys the session, unsets all variables and unsets the logged in check
   session_destroy();
+  session_unset();
+  unset($_SESSION["loggedIn"]);
+  $_SESSION = array();
+  // Redirects back to the home page
   echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   exit();
 }
