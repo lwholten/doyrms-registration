@@ -23,17 +23,50 @@ function onPageLoad() {
   }
 }
 
+// Used to connect to the database
+function databaseConnect() {
+  // Connection details
+  $servername = "localhost";
+  $username = "dreg_user";
+  $password = "epq";
+  $database = 'dregDB';
+
+  // Create connection
+  $con = new mysqli($servername, $username, $password, $database);
+
+  // Check connection
+  if ($con->connect_error) {
+    die("Connection failed: " . $con->connect_error);
+    return 0;
+  }
+  return $con;
+}
+
 /*Executed when the page is first loaded*/
 onPageLoad();
 
+function logStaffSignOut($staffID) {
+  // SQL query used to store the login data
+  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `SignedIn`, `StaffID`, `DateTime`) VALUES (NULL, 0, ?, CURRENT_TIMESTAMP)";
+  // Connects to the database
+  $con = databaseConnect();
+  // turns the query into a statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $staffID);
+  // Executes the statement code
+  $stmt->execute();
+  // Disconnects from the database
+  $con->close();
+}
 /* Run the staff logout function if the staff user logs out*/
 /* A form on the staff page is used to POST a variable when the logout button is pressed;
    This code executes when that variable has been set*/
 if (isset($_POST['staff_sign_out'])) {
-  /*Logs the user out*/
+  /*Logs the staff user out*/
   if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
   }
+  logStaffSignOut($_SESSION['staffID']);
   // Destroys the session, unsets all variables and unsets the logged in check
   session_destroy();
   session_unset();

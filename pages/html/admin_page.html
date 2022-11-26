@@ -172,20 +172,35 @@
       </section>
       <section class="main_section" id="m12">
         <h2 class="title">Staff Activity</h2>
-        <div class="table_wrapper">
-          <header>
-            <h2>Login's</h2>
-          </header>
-          <table class='table' id='staff_accounts_table'>
-            <tr>
-              <th>ID</th>
-              <th>Staff Username</th>
-              <th>Date</th>
-              <th>Time</th>
-            </tr>
-            <?php @include('../php/tables/fill_staff_activity_table.php'); fillStaffActivityTable() ?>
-          </table>
-          <footer/>
+        <div class="adjacent_table_container">
+          <div class="table_wrapper">
+            <header>
+              <h2>Signed In</h2>
+            </header>
+            <table class='table' id='staff_signed_in_table'>
+              <tr>
+                <th>Staff Username</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+              <?php @include('../php/tables/fill_staff_signed_in_table.php'); fillStaffSignedInTable() ?>
+            </table>
+            <footer/>
+          </div>
+          <div class="table_wrapper">
+            <header>
+              <h2>Signed Out</h2>
+            </header>
+            <table class='table' id='staff_signed_out_table'>
+              <tr>
+                <th>Staff Username</th>
+                <th>Date</th>
+                <th>Time</th>
+              </tr>
+              <?php @include('../php/tables/fill_staff_signed_out_table.php'); fillStaffSignedOutTable() ?>
+            </table>
+            <footer/>
+          </div>
         </div>
       </section>
 

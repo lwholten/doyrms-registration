@@ -81,9 +81,9 @@ function fetchStaffDetails($username) {
   // Note that this function returns an INTEGER, NOT a STRING
   return $result;
 }
-function logStaffLogin($staffID) {
+function logStaffSignIn($staffID) {
   // SQL query used to store the login data
-  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `StaffID`, `DateTime`) VALUES (NULL, ?, CURRENT_TIMESTAMP)";
+  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `SignedIn`, `StaffID`, `DateTime`) VALUES (NULL, 1, ?, CURRENT_TIMESTAMP)";
   // Connects to the database
   $con = databaseConnect();
   // turns the query into a statement
@@ -122,7 +122,7 @@ if (isset($_POST['staff_login_form'])) {
       $_SESSION["activeSection"] = 'm1';
       $_SESSION["activeButton"] = 's1';
       // Sets the logged in state to true
-      logStaffLogin($staffDetails['staffID']);
+      logStaffSignIn($staffDetails['staffID']);
       $_SESSION['loggedIn'] = 1;
 
       // Redirects the staff user to the correct page

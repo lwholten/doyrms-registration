@@ -463,6 +463,19 @@ if (isset($_POST['remove_location'])) {
 }
 
 
+function logStaffSignOut($staffID) {
+  // SQL query used to store the login data
+  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `SignedIn`, `StaffID`, `DateTime`) VALUES (NULL, 0, ?, CURRENT_TIMESTAMP)";
+  // Connects to the database
+  $con = databaseConnect();
+  // turns the query into a statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $staffID);
+  // Executes the statement code
+  $stmt->execute();
+  // Disconnects from the database
+  $con->close();
+}
 /* Run the admin logout function if the admin user logs out*/
 /* A form on the admin page is used to POST a variable when the logout button is pressed;
    This code executes when that variable has been set*/
@@ -471,6 +484,7 @@ if (isset($_POST['admin_sign_out'])) {
   if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
   }
+  logStaffSignOut($_SESSION['staffID']);
   // Destroys the session, unsets all variables and unsets the logged in check
   session_destroy();
   session_unset();

@@ -83,6 +83,17 @@
 .input_area .radio_input_area {
   grid-template-columns: 30% 40% 30%;
 }
+.adjacent_table_container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  grid-auto-flow: row;
+  grid-gap: 40px;
+}
+.adjacent_table_container .table_wrapper footer {
+  margin-top: auto;
+}
 
 @media screen and (max-width: 1400px) {
   #locations_edit_section form {
