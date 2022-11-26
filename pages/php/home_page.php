@@ -81,6 +81,19 @@ function fetchStaffDetails($username) {
   // Note that this function returns an INTEGER, NOT a STRING
   return $result;
 }
+function logStaffLogin($staffID) {
+  // SQL query used to store the login data
+  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `StaffID`, `DateTime`) VALUES (NULL, ?, CURRENT_TIMESTAMP)";
+  // Connects to the database
+  $con = databaseConnect();
+  // turns the query into a statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $staffID);
+  // Executes the statement code
+  $stmt->execute();
+  // Disconnects from the database
+  $con->close();
+}
 
 // Executes if a staff login is detected
 if (isset($_POST['staff_login_form'])) {
@@ -96,14 +109,20 @@ if (isset($_POST['staff_login_form'])) {
       unset($correct);
       echo "password correct";
       // initiates a PHP session and binds the username
-      session_start();
+      if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+      }
       $_SESSION['staffUsername'] = $_POST['staff_username'];
       // Gets the staff users ID and access level from the database
       $staffDetails = fetchStaffDetails($_POST['staff_username']);
       // Binds the staff details to the session
       $_SESSION['staffID'] = $staffDetails['staffID'];
       $_SESSION['staffAccessLevel'] = $staffDetails['staffAccessLevel'];
+      // Sets the home section to be the active section
+      $_SESSION["activeSection"] = 'm1';
+      $_SESSION["activeButton"] = 's1';
       // Sets the logged in state to true
+      logStaffLogin($staffDetails['staffID']);
       $_SESSION['loggedIn'] = 1;
 
       // Redirects the staff user to the correct page

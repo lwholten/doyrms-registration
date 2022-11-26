@@ -6,12 +6,11 @@ function displayPage() {
   include("../../css/staff_page.css");
   include("../../css/admin_page.css");
   include("../html/admin_page.html");
-  include("../php/functions.php");
 
   /*Loads the navbar section that is currently active, that way if the page is refreshed
   the page will stay on the most recently selected navbar option - useful for when a form is submitted*/
-  $activeSection = $_SESSION["active_section"];
-  $activeButton = $_SESSION["active_button"];
+  $activeSection = $_SESSION["activeSection"];
+  $activeButton = $_SESSION["activeButton"];
   echo "<script>loadActiveSection('$activeSection', '$activeButton')</script>";
 }
 
@@ -82,8 +81,8 @@ function addStaff($username, $password, $forename, $surname, $email, $accessLeve
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm11';
-  $_SESSION['active_button'] = 's11';
+  $_SESSION['activeSection'] = 'm11';
+  $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -159,8 +158,8 @@ function changeStaffEntry($staffID, $newValue, $fieldName) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm11';
-  $_SESSION['active_button'] = 's11';
+  $_SESSION['activeSection'] = 'm11';
+  $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -208,8 +207,8 @@ function removeStaff($staffID) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm11';
-  $_SESSION['active_button'] = 's11';
+  $_SESSION['activeSection'] = 'm11';
+  $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -244,8 +243,8 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm21';
-  $_SESSION['active_button'] = 's21';
+  $_SESSION['activeSection'] = 'm21';
+  $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -302,8 +301,8 @@ function changeUserEntry($userID, $newValue, $fieldName) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm21';
-  $_SESSION['active_button'] = 's21';
+  $_SESSION['activeSection'] = 'm21';
+  $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -349,8 +348,8 @@ function removeUser($userID) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm21';
-  $_SESSION['active_button'] = 's21';
+  $_SESSION['activeSection'] = 'm21';
+  $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -375,8 +374,8 @@ function addLocation($name, $alias, $description, $popularity) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm31';
-  $_SESSION['active_button'] = 's31';
+  $_SESSION['activeSection'] = 'm31';
+  $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -412,8 +411,8 @@ function changeLocationEntry($locationID, $newValue, $fieldName) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm31';
-  $_SESSION['active_button'] = 's31';
+  $_SESSION['activeSection'] = 'm31';
+  $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -453,8 +452,8 @@ function removeLocation($locationID) {
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
   session_start();
-  $_SESSION['active_section'] = 'm31';
-  $_SESSION['active_button'] = 's31';
+  $_SESSION['activeSection'] = 'm31';
+  $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
@@ -469,7 +468,9 @@ if (isset($_POST['remove_location'])) {
    This code executes when that variable has been set*/
 if (isset($_POST['admin_sign_out'])) {
   /*Logs the admin user out*/
-  session_destroy();
+  if (session_status() === PHP_SESSION_ACTIVE) {
+    session_destroy();
+  }
   echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   exit();
 }

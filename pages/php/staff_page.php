@@ -4,8 +4,6 @@ function displayPage() {
   include("../../css/mainstyles.css");
   include("../../css/staff_page.css");
   include("../html/staff_page.html");
-  include("../php/functions.php");
-  $configs = include("../config/config.php");
 }
 
 /*Executes when this page is loaded*/
@@ -23,19 +21,6 @@ function onPageLoad() {
     /*Redirects the user back to the home page*/
     echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   }
-}
-
-// Used to connect to the database
-function databaseConnect() {
-  // Create connection
-  $con = new mysqli($config['hostname'], $config['username'], $config['password'], $config['database']);
-
-  // Check connection
-  if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
-    return 0;
-  }
-  return $con;
 }
 
 /*Executed when the page is first loaded*/
