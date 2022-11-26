@@ -12,14 +12,14 @@ function displayPage() {
 function onPageLoad() {
   /*Starts the PHP session so that the login status may be shared*/
   session_start();
-  /* If a staff member has logged in*/
-  /*  - prevents unauthorised users from pasting a URL*/
-  if ($_SESSION["logged_in"] === True && ($_SESSION["access_level"] === "staff" || $_SESSION["access_level"] === "admin")) {
+  /* If a staff user has logged in*/
+  /*  - prevents unauthorised users from accessing the page using a modified URL*/
+  if ($_SESSION["loggedIn"] === 1 && $_SESSION["staffAccessLevel"] >= 1) {
     displayPage();
-  /* If a staff member has not logged in, they will be redirected*/
+  /* If a staff user has not logged in, they will be redirected*/
   } else {
     /*Alerts the user that they must log in*/
-    echo '<script type="text/javascript">window.alert("DENIED: You must be logged in to access this page");</script>';
+    echo '<script type="text/javascript">window.alert("DENIED: You must be logged in as a staff user to access this page");</script>';
     /*Redirects the user back to the home page*/
     echo '<script type="text/javascript">window.location.href = "home_page.php";</script>';
   }

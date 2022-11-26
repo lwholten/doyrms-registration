@@ -19,11 +19,11 @@ function displayPage() {
 function onPageLoad() {
   /*Starts the PHP session so that the login status may be shared*/
   session_start();
-  /* If a staff member has logged in*/
-  /*  - prevents unauthorised users from pasting a URL*/
-  if ($_SESSION["logged_in"] === True && $_SESSION["access_level"] === "admin") {
+  /* If a staff user has logged in*/
+  /*  - prevents unauthorised users from accessing the page using a modified URL*/
+  if ($_SESSION["loggedIn"] === 1 && $_SESSION["staffAccessLevel"] >= 3) {
     displayPage();
-  /* If a staff member has not logged in, they will be redirected*/
+  /* If a staff user has not logged in, they will be redirected*/
   } else {
     /*Alerts the user that they must log in*/
     echo '<script type="text/javascript">window.alert("DENIED: You do not have access this page, please log in as an administrator");</script>';
@@ -53,24 +53,29 @@ function databaseConnect() {
 
 
 /*Used to add users to the database*/
-function addStaff($username, $forename, $surname, $email, $accessLevel) {
+function addStaff($username, $password, $forename, $surname, $email, $accessLevel) {
   /*Data formatting:*/
   /*Makes the forname and surname uppercase before being added to the database*/
   $forename = ucwords($forename);
   $surname = ucwords($surname);
 
-  $salt = "test";
-  $saltedHashedPassword = "test";
   /*If the variable is an empty string, make it NULL*/
   if ($email === "") { unset($email); }
 
+  /*Generates a random 32 character salt*/
+  $salt = bin2hex(random_bytes(16));
+  /*Concatinates it to the START of the password*/
+  $saltedPassword = $salt.$password;
+  /*Hashes the salted password*/
+  $hash = password_hash($saltedPassword, PASSWORD_BCRYPT);
+
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO `Staff` (`StaffID`, `Username`, `Forename`, `Surname`, `Email`, `Salt`, `SaltedHashedPassword`, `AccessLevel`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Staff` (`StaffID`, `Username`, `Forename`, `Surname`, `Email`, `Salt`, `hash`, `AccessLevel`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sssssss", $username, $forename, $surname, $email, $salt, $saltedHashedPassword, $accessLevel);
+  $stmt->bind_param("sssssss", $username, $forename, $surname, $email, $salt, $hash, $accessLevel);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -84,7 +89,7 @@ function addStaff($username, $forename, $surname, $email, $accessLevel) {
 }
 /* Detects if a user is being added and runs the code */
 if (isset($_POST['add_staff'])) {
-  addStaff($_POST['staff_username'], $_POST['staff_forename'], $_POST['staff_surname'], $_POST['staff_email'], $_POST['staff_access_level']);
+  addStaff($_POST['staff_username'], $_POST['staff_password'], $_POST['staff_forename'], $_POST['staff_surname'], $_POST['staff_email'], $_POST['staff_access_level']);
 }
 
 
@@ -129,23 +134,23 @@ function changeStaffEntry($staffID, $newValue, $fieldName) {
 }
 /* Detects if the edit location form has been submitted */
 if (isset($_POST['edit_staff_form'])) {
-  /*If the staff members username needs to be changed*/
+  /*If the staff users username needs to be changed*/
   if (isset($_POST['new_staff_username']) && !empty($_POST['new_staff_username'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_username'],'Username');
   }
-  /*If the staff members forename needs to be changed*/
+  /*If the staff users forename needs to be changed*/
   if (isset($_POST['new_staff_forename']) && !empty($_POST['new_staff_forename'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_forename'],'Forename');
   }
-  /*If the staff members surname needs to be changed*/
+  /*If the staff users surname needs to be changed*/
   if (isset($_POST['new_staff_surname']) && !empty($_POST['new_staff_surname'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_surname'],'Surname');
   }
-  /*If the staff members email needs to be changed*/
+  /*If the staff users email needs to be changed*/
   if (isset($_POST['new_staff_email']) && !empty($_POST['new_staff_email'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_email'],'Email');
   }
-  /*If the staff members access level needs to be changed*/
+  /*If the staff users access level needs to be changed*/
   if (isset($_POST['new_staff_access_level']) && !empty($_POST['new_staff_access_level'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_access_level'],'AccessLevel');
   }
