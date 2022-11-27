@@ -478,7 +478,6 @@ function addEvent($name, $startTime, $endTime, $daysDec, $alerts) {
   $con = databaseConnect();
   /*turns the query into a prepared statement*/
   $stmt = $con->prepare($query);
-  echo "<script>window.alert('$name, $startTime, $endTime, $daysDec, $alerts')</script>";
   $stmt->bind_param("sssii", $name, $startTime, $endTime, $daysDec, $alerts);
   /*Executes the statement code*/
   $stmt->execute();

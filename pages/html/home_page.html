@@ -51,6 +51,7 @@
         <h2>Sign In</h2>
       </header>
       <form id="user_sign_in_form" class="text" action="" method="POST">
+        <input type="hidden" name="user_sign_in" value="true"/>
         <label for="sign_in_initials_field"><h3>Your Initials</h3></label>
         <div class="input_wrapper">
           <input type="text" class="input_field capitalize" id="sign_in_initials_field" name="sign_in_initials_field" placeholder="" value="" autocomplete="off"/>
@@ -65,6 +66,7 @@
         <h2>Sign Out</h2>
       </header>
       <form id="user_sign_out_form" class="text" action="" method="POST">
+        <input type="hidden" name="user_sign_out" value="true"/>
         <label for="sign_out_initials_field"><h3>Your Initials</h3></label>
         <div class="input_wrapper">
           <input type="text" class="input_field capitalize" id="sign_out_initials_field" name="sign_out_initials_field" placeholder="" value="" autocomplete="off"/>
@@ -73,7 +75,7 @@
         <divider></divider>
         <label for="location"><h3>Location</h3></label>
         <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="locations_input_field" name="hint" autocomplete="off"></input>
+          <input type="text" class="input_field capitalize" id="locations_input_field" name="sign_out_locations_field" autocomplete="off"></input>
           <ul id="location_suggestions" class="suggested_inputs"></ul>
         </div>
         <divider></divider>
