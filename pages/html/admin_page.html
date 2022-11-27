@@ -40,6 +40,7 @@
           <li onclick="toggleMainSection(this.id,'m21')" class="sidebar_button" id="s21"><h4>Edit Users</h4></li>
           <li class="sidebar_subtitle"><h3>Manage Database</h3></li>
           <li onclick="toggleMainSection(this.id,'m31')" class="sidebar_button" id="s31"><h4>Edit Locations</h4></li>
+          <li onclick="toggleMainSection(this.id,'m32')" class="sidebar_button" id="s32"><h4>Edit Events</h4></li>
         </ul>
       </container>
     </div>
@@ -58,7 +59,7 @@
       </section>
 
       <section class="main_section" id="m11">
-        <h2 class="title">Manage Staff</h2>
+        <h2 class="title">Edit Staff</h2>
         <div class="table_wrapper">
           <header>
             <h2>Staff</h2>
@@ -205,7 +206,7 @@
       </section>
 
       <section class="main_section" id="m21">
-        <h2 class="title">Manage Users</h2>
+        <h2 class="title">Edit Users</h2>
         <div class="table_wrapper">
           <header>
             <h2>Users</h2>
@@ -312,7 +313,7 @@
       </section>
 
       <section class="main_section" id="m31">
-        <h2 class="title">Manage Database</h2>
+        <h2 class="title">Edit Locations</h2>
         <div class="table_wrapper">
           <header>
             <h2>Locations</h2>
@@ -411,6 +412,137 @@
             </div>
             <div class="input_wrapper">
               <input class="submit_button" type="submit" value="Add Location" />
+            </div>
+          </form>
+        </section>
+      </section>
+      <section class="main_section" id="m32">
+        <h2 class="title">Edit Events</h2>
+        <div class="table_wrapper">
+          <header>
+            <h2>Events</h2>
+            <div class="button_wrapper">
+              <button onclick="toggleHiddenSection('events_add_section');" class="add_button" id="add_event_button">Add Event</button>
+            </div>
+          </header>
+          <table class='table' id='events_table'>
+            <tr>
+              <th>ID</th>
+              <th>Event</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Days</th>
+              <th>Send Alerts</th>
+              <th></th>
+            </tr>
+            <?php @include('../php/tables/fill_events_table.php'); fillEventsTable() ?>
+          </table>
+          <footer/>
+        </div>
+        <section class="hidden_section input_area" id="events_edit_section">
+          <h3 id="events_edit_title">Edit event -</h3>
+          <form id="edit_event_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="edit_event_form" value="true"/>
+            <input class="event_id_storage" type="hidden" name="event_id" value="0"/>
+            <div class="input_wrapper capitalize">
+              <label for="new_event_name"><h4>Event Name:</h4></label>
+              <input id="new_event_name" name="new_event_name" type="text" maxlength="20"></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="new_event_start_time"><h4>Start Time:</h4></label>
+              <input id="new_event_start_time" name="new_event_start_time" type="time"></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="new_event_end_time"><h4>End Time:</h4></label>
+              <input id="new_event_end_time" name="new_event_end_time" type="time"></input>
+            </div>
+            <div class="checkbox_input_area">
+              <label><h4>Days:</h4></label>
+              <div class="checkbox_wrapper">
+                <input type="checkbox" name="mon" value="64"></input>
+                <label for="mon"><h5>Monday</h5></label>
+                <input type="checkbox" name="tue" value="32"></input>
+                <label for="tue"><h5>Tuesday</h5></label>
+                <input type="checkbox" name="wed" value="16"></input>
+                <label for="wed"><h5>Wednesday</h5></label>
+                <input type="checkbox" name="thu" value="8"></input>
+                <label for="thu"><h5>Thursday</h5></label>
+                <input type="checkbox" name="fri" value="4"></input>
+                <label for="fri"><h5>Friday</h5></label>
+                <input type="checkbox" name="sat" value="2"></input>
+                <label for="sat"><h5>Saturday</h5></label>
+                <input type="checkbox" name="sun" value="1"></input>
+                <label for="sun"><h5>Sunday</h5></label>
+              </div>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Alerts:</h4></label>
+              <div class="boolean_radio radio_wrapper">
+                <input type="radio" name="new_event_alerts" value="1">
+                <label>Yes</label>
+                <input type="radio" name="new_event_alerts" value="0">
+                <label>No</label>
+              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Make Changes" />
+            </div>
+          </form>
+          <form id="remove_event_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="remove_event" value="true"/>
+            <input class="event_id_storage" type="hidden" name="event_id" value="0"/>
+            <div class="input_wrapper">
+              <label for="remove_event"><h4>Remove Event:</h4></label>
+              <input class="submit_button remove_button" type="submit" value="Remove" />
+            </div>
+          </form>
+        </section>
+        <section class="hidden_section input_area" id="events_add_section">
+          <h3>Add event</h3>
+          <form id="add_event_form" autocomplete="off" class="text generic_form" action="" method="POST">
+            <input type="hidden" name="add_event" value="true"/>
+            <div class="input_wrapper capitalize">
+              <label for="event_name"><h4>Event Name*:</h4></label>
+              <input id="event_name" name="event_name" placeholder="Required" type="text" maxlength="20" required></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="event_start_time"><h4>Start Time*:</h4></label>
+              <input id="event_start_time" name="event_start_time" type="time" required></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for="event_end_time"><h4>End Time*:</h4></label>
+              <input id="event_end_time" name="event_end_time" type="time" required></input>
+            </div>
+            <div class="checkbox_input_area">
+              <label><h4>Days*:</h4></label>
+              <div class="checkbox_wrapper">
+                <input type="checkbox" name="mon" value="64" checked="checked"></input>
+                <label for="mon"><h5>Monday</h5></label>
+                <input type="checkbox" name="tue" value="32"></input>
+                <label for="tue"><h5>Tuesday</h5></label>
+                <input type="checkbox" name="wed" value="16"></input>
+                <label for="wed"><h5>Wednesday</h5></label>
+                <input type="checkbox" name="thu" value="8"></input>
+                <label for="thu"><h5>Thursday</h5></label>
+                <input type="checkbox" name="fri" value="4"></input>
+                <label for="fri"><h5>Friday</h5></label>
+                <input type="checkbox" name="sat" value="2"></input>
+                <label for="sat"><h5>Saturday</h5></label>
+                <input type="checkbox" name="sun" value="1"></input>
+                <label for="sun"><h5>Sunday</h5></label>
+              </div>
+            </div>
+            <div class="radio_input_area">
+              <label><h4>Alerts:</h4></label>
+              <div class="boolean_radio radio_wrapper">
+                <input type="radio" name="event_alerts" value="1">
+                <label>Yes</label>
+                <input type="radio" name="event_alerts" value="0" checked="checked">
+                <label>No</label>
+              </div>
+            </div>
+            <div class="input_wrapper">
+              <input class="submit_button" type="submit" value="Add event" />
             </div>
           </form>
         </section>

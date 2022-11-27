@@ -17,7 +17,9 @@ function displayPage() {
 /*Executes when this page is loaded*/
 function onPageLoad() {
   /*Starts the PHP session so that the login status may be shared*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   /* If a staff user has logged in*/
   /*  - prevents unauthorised users from accessing the page using a modified URL*/
   if ($_SESSION["loggedIn"] === 1 && $_SESSION["staffAccessLevel"] >= 3) {
@@ -80,7 +82,9 @@ function addStaff($username, $password, $forename, $surname, $email, $accessLeve
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm11';
   $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
@@ -90,8 +94,6 @@ function addStaff($username, $password, $forename, $surname, $email, $accessLeve
 if (isset($_POST['add_staff'])) {
   addStaff($_POST['staff_username'], $_POST['staff_password'], $_POST['staff_forename'], $_POST['staff_surname'], $_POST['staff_email'], $_POST['staff_access_level']);
 }
-
-
 // Used to change a staff users password
 function changeStaffPassword($staffID, $newPassword) {
   // Used to get the salt associated with a staff user
@@ -126,7 +128,6 @@ function changeStaffPassword($staffID, $newPassword) {
   /*Prevents form resubmission using a javascript function*/
   echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
 }
-
 // Used to change a users database entries
 function changeStaffEntry($staffID, $newValue, $fieldName) {
   /*SQL query(s) used to change the location popularity stored on the table*/
@@ -157,7 +158,9 @@ function changeStaffEntry($staffID, $newValue, $fieldName) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm11';
   $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
@@ -190,8 +193,6 @@ if (isset($_POST['edit_staff_form'])) {
     changeStaffEntry($_POST['staff_id'],$_POST['new_staff_access_level'],'AccessLevel');
   }
 }
-
-
 /*Used to remove users from the database*/
 function removeStaff($staffID) {
   /*SQL query used to change the location popularity stored on the table*/
@@ -206,7 +207,9 @@ function removeStaff($staffID) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm11';
   $_SESSION['activeButton'] = 's11';
   /*Prevents form resubmission using a javascript function*/
@@ -242,7 +245,9 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm21';
   $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
@@ -252,8 +257,6 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
 if (isset($_POST['add_user'])) {
   addUser($_POST['user_forename'],$_POST['user_surname'],$_POST['user_email'],$_POST['user_gender'],$_POST['user_room_num']);
 }
-
-
 /*Used to update a users initials*/
 function updateUserInitials($userID) {
   /*Sets the initials to the first character of the users first and last names*/
@@ -300,7 +303,9 @@ function changeUserEntry($userID, $newValue, $fieldName) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm21';
   $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
@@ -331,8 +336,6 @@ if (isset($_POST['edit_user_form'])) {
   /*Updates the initials in case the user forename or surname have been changed*/
   updateUserInitials($_POST['user_id']);
 }
-
-
 /*Used to remove users from the database*/
 function removeUser($userID) {
   /*SQL query used to change the location popularity stored on the table*/
@@ -347,7 +350,9 @@ function removeUser($userID) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm21';
   $_SESSION['activeButton'] = 's21';
   /*Prevents form resubmission using a javascript function*/
@@ -373,7 +378,9 @@ function addLocation($name, $alias, $description, $popularity) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm31';
   $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
@@ -383,8 +390,6 @@ function addLocation($name, $alias, $description, $popularity) {
 if (isset($_POST['add_location'])) {
   addLocation($_POST['location_name'],$_POST['location_alias'],$_POST['location_desc'],$_POST['location_pop']);
 }
-
-
 /*Used to change location entrys on the database*/
 function changeLocationEntry($locationID, $newValue, $fieldName) {
   /*SQL query(s) used to change the location popularity stored on the table*/
@@ -410,7 +415,9 @@ function changeLocationEntry($locationID, $newValue, $fieldName) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm31';
   $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
@@ -435,8 +442,6 @@ if (isset($_POST['edit_location_form'])) {
     changeLocationEntry($_POST['location_id'],$_POST['new_location_pop'],'Popularity');
   }
 }
-
-
 /*Used to remove locations from the database*/
 function removeLocation($locationID) {
   /*SQL query used to change the location popularity stored on the table*/
@@ -451,7 +456,9 @@ function removeLocation($locationID) {
   /*Disconnects from the database*/
   $con->close();
   /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
-  session_start();
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
   $_SESSION['activeSection'] = 'm31';
   $_SESSION['activeButton'] = 's31';
   /*Prevents form resubmission using a javascript function*/
@@ -460,6 +467,152 @@ function removeLocation($locationID) {
 /*Detects if a location needs to be removed and executes the corresponding function*/
 if (isset($_POST['remove_location'])) {
   removeLocation($_POST['location_id']);
+}
+
+
+/* Used to add an event to the database */
+function addEvent($name, $startTime, $endTime, $daysDec, $alerts) {
+  /*SQL query used to insert the event into the table*/
+  $query = "INSERT INTO `Events` (`EventID`, `Event`, `StartTime`, `EndTime`, `Days`, `Alerts`) VALUES (NULL, ?, ?, ?, ?, ?)";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a prepared statement*/
+  $stmt = $con->prepare($query);
+  echo "<script>window.alert('$name, $startTime, $endTime, $daysDec, $alerts')</script>";
+  $stmt->bind_param("sssii", $name, $startTime, $endTime, $daysDec, $alerts);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
+  $_SESSION['activeSection'] = 'm32';
+  $_SESSION['activeButton'] = 's32';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+};
+/* Detecs if an event is being added */
+if (isset($_POST['add_event'])) {
+  // The value associated with each day is added to form a number that corresponds to the days selected
+  // In binary this number can be used to decipher what days are enabled, without storing too much Information on the database
+  // e.g Monday = 64, Tuesday = 32, Friday = 4
+  // So Mon, Tue, Fri gives 64 + 32 + 4 = 100
+  // The 100 is then saved to the database as a 7-bit binary: 1100100;
+  $eventDaysDec = 0;
+  $days = ['mon','tue','wed','thu','fri','sat','sun'];
+  // Iterates through each day of the week and appends the days value if it has been selected
+  foreach($days as $day) {
+    if (isset($_POST[$day])) {
+      $eventDaysDec += $_POST[$day];
+    }
+  };
+  addEvent($_POST['event_name'],$_POST['event_start_time'],$_POST['event_end_time'],$eventDaysDec,$_POST['event_alerts']);
+}
+/*Used to remove locations from the database*/
+/*Used to change location entrys on the database*/
+function changeEventEntry($eventID, $newValue, $fieldName) {
+  /*SQL query(s) used to change the location popularity stored on the table*/
+  if ($fieldName === "EventName") {
+    $query = "UPDATE Events SET Event=? WHERE EventID=?";
+    $params = "si";
+  }
+  elseif ($fieldName === "EventStartTime") {
+    $query = "UPDATE Events SET StartTime=? WHERE EventID=?";
+    $params = "si";
+  }
+  elseif ($fieldName === "EventEndTime") {
+    $query = "UPDATE Events SET EndTime=? WHERE EventID=?";
+    $params = "si";
+  }
+  elseif ($fieldName === "EventAlerts") {
+    $query = "UPDATE Events SET Alerts=? WHERE EventID=?";
+    $params = "ii";
+  }
+  elseif ($fieldName === "EventDays") {
+    $query = "UPDATE Events SET Days=? WHERE EventID=?";
+    $params = "ii";
+  }
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param($params, ucwords($newValue), $eventID);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
+  $_SESSION['activeSection'] = 'm32';
+  $_SESSION['activeButton'] = 's32';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*Used to change the name of a location*/
+if (isset($_POST['edit_event_form'])) {
+  /*If the name needs to be changed*/
+  if (isset($_POST['new_event_name']) && !empty($_POST['new_event_name'])) {
+    changeEventEntry($_POST['event_id'],$_POST['new_event_name'],'EventName');
+  }
+  /*If the start time needs to be changed*/
+  if (isset($_POST['new_event_start_time']) && !empty($_POST['new_event_start_time'])) {
+    changeEventEntry($_POST['event_id'],$_POST['new_event_start_time'],'EventStartTime');
+  }
+  /*If the end time needs to change*/
+  if (isset($_POST['new_event_end_time']) && !empty($_POST['new_event_end_time'])) {
+    changeEventEntry($_POST['event_id'],$_POST['new_event_end_time'],'EventEndTime');
+  }
+  /*If the event alerts needs to be changed*/
+  if (isset($_POST['new_event_alerts']) && !empty($_POST['new_event_alerts'])) {
+    changeEventEntry($_POST['event_id'],$_POST['new_location_pop'],'EventAlerts');
+  }
+
+  $days = ['mon','tue','wed','thu','fri','sat','sun'];
+  // For each of the days if any have been changed, update the 'Days' value stored in the table
+  foreach ($days as $day) {
+    if (isset($_POST[$day])) {
+      // Calculates a new value for the 'Days' column of the table
+      $eventDaysDec = 0;
+      // This is done by iterating through all the days and appending their value if it had been set
+      foreach($days as $day) {
+        if (isset($_POST[$day])) {
+          $eventDaysDec += $_POST[$day];
+        }
+      };
+      // Updates the events days using the new value
+      changeEventEntry($_POST['event_id'],$eventDaysDec,'EventDays');
+      break;
+    }
+  }
+}
+function removeEvent($eventID) {
+  /*SQL query used to change the location popularity stored on the table*/
+  $query = "DELETE FROM Events WHERE EventID = ?";
+  /*Connects to the database*/
+  $con = databaseConnect();
+  /*turns the query into a statement*/
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $eventID);
+  /*Executes the statement code*/
+  $stmt->execute();
+  /*Disconnects from the database*/
+  $con->close();
+  /*Stores the active sidebar section to a variable so that when the page is refreshed it redirects the user to the section they had selected*/
+  if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+  };
+  $_SESSION['activeSection'] = 'm32';
+  $_SESSION['activeButton'] = 's32';
+  /*Prevents form resubmission using a javascript function*/
+  echo "<script>if(window.history.replaceState){window.history.replaceState(null, null, window.location.href);}</script>";
+}
+/*Detects if a location needs to be removed and executes the corresponding function*/
+if (isset($_POST['remove_event'])) {
+  removeEvent($_POST['event_id']);
 }
 
 

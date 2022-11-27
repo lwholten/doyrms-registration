@@ -287,6 +287,12 @@ body {
   resize: none;
   font-size: 16px;
 }
+.input_wrapper input[type="time"] {
+  width: 40%;
+}
+.boolean_radio {
+  max-width: 50%;
+}
 .radio_input_area {
   width: 100%;
   height: auto;
@@ -303,6 +309,34 @@ body {
   justify-content: space-around;
 }
 .radio_input_area .radio_wrapper label {
+  margin: auto auto auto 8px;
+}
+.checkbox_input_area {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 30% 40% 30%;
+  margin: 16px 0px;
+}
+.checkbox_wrapper {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 20px 1fr;
+  grid-auto-flow: row;
+  grid-row-gap: 16px;
+}
+.checkbox_wrapper input[type="checkbox"] {
+  width: 20px;
+  cursor: default;
+}
+.checkbox_wrapper label {
+  display: flex;
+  align-items: center;
+}
+.checkbox_wrapper label h5 {
   margin: auto auto auto 8px;
 }
 .submit_wrapper input {

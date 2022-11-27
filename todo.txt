@@ -10,7 +10,6 @@ This text file contains a list of everything that needs to be done before finali
 # Pages
 # These tasks involve the creation of certain pages and their attributes
 
-  - Link staff sign in system to the database
   - Timeouts
     - if a staff member has been idle for more than X minutes (which can be set by the admin),
       It will automatically log them out and send them to the home page
@@ -20,21 +19,13 @@ This text file contains a list of everything that needs to be done before finali
 # Server
 # These tasks involve making the website work with the server
 
-  - authenticate staff login information with that stored on the server
-  - get locations from the database on the server and display them in the
-    'locations' drop-down selection
-  - get names from database using the initials entered in the sign in and out field(s)
-  - get the main page to 'talk' to the server and retrieve some information
-    from the SQL database
+  - Ensure that all communications with the database save and retrieve the correct data
+    - e.g when an integer is being added, ensure that it is not saved as a string
 
 # Security
 # These tasks involve the security of the system
 
-  - use password hashing with the staff login information
   - limit attempted login attempts, and add a cool-down function
-  - make admin page inaccessible to non-admins using the access level function
-    from the 'pages' section
-    - This can be done by recycling code from the staff page PHP code
   - Preventing SQL injection attacks by cleansing data inputs
 
 # URGENT
