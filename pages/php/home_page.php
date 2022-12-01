@@ -82,14 +82,31 @@ function fetchStaffDetails($username) {
   // Note that this function returns an INTEGER, NOT a STRING
   return $result;
 }
-function logStaffSignIn($staffID) {
-  // SQL query used to store the login data
-  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `SignedIn`, `StaffID`, `DateTime`) VALUES (NULL, 1, ?, CURRENT_TIMESTAMP)";
+function completePreviousStaffLog($staffID) {
+  // This function is used to complete all previous sign in logs for a staff user
+
+  // SQL query used to complete the log
+  $query = "UPDATE StaffLog SET Complete=1 WHERE StaffID=? AND SignOutTime IS NULL AND Complete=0 ORDER BY SignInTime DESC";
   // Connects to the database
   $con = databaseConnect();
   // turns the query into a statement
   $stmt = $con->prepare($query);
-  $stmt->bind_param("s", $staffID);
+  $stmt->bind_param("i", $staffID);
+  // Executes the statement code
+  $stmt->execute();
+  // Disconnects from the database
+  $con->close();
+}
+function logStaffSignIn($staffID) {
+  // This function is used to save a log to the database for a given staff user
+
+  // SQL query used to create the log
+  $query = "INSERT INTO StaffLog ( StaffLogID, StaffID, SignInTime, SignOutTime, Complete ) VALUES (NULL, ?, CURRENT_TIMESTAMP, NULL, 0)";
+  // Connects to the database
+  $con = databaseConnect();
+  // turns the query into a statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("i", $staffID);
   // Executes the statement code
   $stmt->execute();
   // Disconnects from the database
@@ -121,7 +138,9 @@ if (isset($_POST['staff_login_form'])) {
       // Sets the home section to be the active section
       $_SESSION["activeSection"] = 'm1';
       $_SESSION["activeButton"] = 's1';
-      // Sets the logged in state to true
+      // Updates a previous log entry for this staff user if it exists
+      completePreviousStaffLog($staffDetails['staffID']);
+      // Sets the logged in state to true and logs the user in
       logStaffSignIn($staffDetails['staffID']);
       $_SESSION['loggedIn'] = 1;
 

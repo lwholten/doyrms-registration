@@ -63,7 +63,7 @@
               <button onclick="toggleHiddenSection('staff_add_section');" class="add_button" id="add_staff_button">Add Staff</button>
             </div>
           </header>
-          <table class='table' id='staff_accounts_table'>
+          <table class='table has_edit' id='staff_accounts_table'>
             <tr>
               <th>ID</th>
               <th>Username</th>
@@ -169,35 +169,35 @@
       </section>
       <section class="main_section" id="m12">
         <h2 class="title">Staff Activity</h2>
-        <div class="adjacent_table_container">
-          <div class="table_wrapper">
-            <header>
-              <h2>Signed In</h2>
-            </header>
-            <table class='table' id='staff_signed_in_table'>
-              <tr>
-                <th>Staff Username</th>
-                <th>Date</th>
-                <th>Time</th>
-              </tr>
-              <?php @include('../php/tables/fill_staff_signed_in_table.php'); fillStaffSignedInTable() ?>
-            </table>
-            <footer/>
-          </div>
-          <div class="table_wrapper">
-            <header>
-              <h2>Signed Out</h2>
-            </header>
-            <table class='table' id='staff_signed_out_table'>
-              <tr>
-                <th>Staff Username</th>
-                <th>Date</th>
-                <th>Time</th>
-              </tr>
-              <?php @include('../php/tables/fill_staff_signed_out_table.php'); fillStaffSignedOutTable() ?>
-            </table>
-            <footer/>
-          </div>
+        <div class="table_wrapper">
+          <header>
+            <h2>Currently Signed In</h2>
+          </header>
+          <table class='table' id='staff_signed_in_table'>
+            <tr>
+              <th>Staff Username</th>
+              <th>Date</th>
+              <th>Time</th>
+            </tr>
+            <?php @include('../php/tables/fill_staff_signed_in_table.php'); fillStaffSignedInTable() ?>
+          </table>
+          <footer/>
+        </div>
+        <div class="table_wrapper">
+          <header>
+            <h2>Sign In activity</h2>
+          </header>
+          <table class='table' id='staff_activity_table'>
+            <tr>
+              <th>Staff Username</th>
+              <th>Sign In Date</th>
+              <th>Sign In Time</th>
+              <th>Sign Out Date</th>
+              <th>Sign Out Time</th>
+            </tr>
+            <?php @include('../php/tables/fill_staff_activity_table.php'); fillStaffActivityTable() ?>
+          </table>
+          <footer/>
         </div>
       </section>
 
@@ -210,7 +210,7 @@
               <button onclick="toggleHiddenSection('users_add_section');" class="add_button" id="add_user_button">Add User</button>
             </div>
           </header>
-          <table class='table' id='user_accounts_table'>
+          <table class='table has_edit' id='user_accounts_table'>
             <tr>
               <th>ID</th>
               <th>Forename</th>
@@ -317,7 +317,7 @@
               <button onclick="toggleHiddenSection('locations_add_section');" class="add_button" id="add_location_button">Add Location</button>
             </div>
           </header>
-          <table class='table' id='locations_table'>
+          <table class='table has_edit' id='locations_table'>
             <tr>
               <th>ID</th>
               <th>Location</th>
@@ -421,7 +421,7 @@
               <button onclick="toggleHiddenSection('events_add_section');" class="add_button" id="add_event_button">Add Event</button>
             </div>
           </header>
-          <table class='table' id='events_table'>
+          <table class='table has_edit' id='events_table'>
             <tr>
               <th>ID</th>
               <th>Event</th>

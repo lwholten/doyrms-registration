@@ -46,13 +46,15 @@ function databaseConnect() {
 onPageLoad();
 
 function logStaffSignOut($staffID) {
-  // SQL query used to store the login data
-  $query = "INSERT INTO `StaffLog` (`StaffLogID`, `SignedIn`, `StaffID`, `DateTime`) VALUES (NULL, 0, ?, CURRENT_TIMESTAMP)";
+  // This is used to log a staff user sign out
+
+  // SQL query used to create the log
+  $query = "UPDATE StaffLog SET SignOutTime=CURRENT_TIME, Complete=1 WHERE StaffID=? AND SignOutTime IS NULL AND Complete=0 ORDER BY SignInTime DESC LIMIT 1;";
   // Connects to the database
   $con = databaseConnect();
   // turns the query into a statement
   $stmt = $con->prepare($query);
-  $stmt->bind_param("s", $staffID);
+  $stmt->bind_param("i", $staffID);
   // Executes the statement code
   $stmt->execute();
   // Disconnects from the database

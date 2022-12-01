@@ -225,7 +225,7 @@ body {
 .table td, .table th {
   padding: 8px;
 }
-.table th:last-of-type {
+.has_edit th:last-of-type {
   width: 60px;
 }
 .table tr:nth-child(even){
