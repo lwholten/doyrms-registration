@@ -471,14 +471,15 @@ if (isset($_POST['remove_location'])) {
 
 
 /* Used to add an event to the database */
-function addEvent($name, $startTime, $endTime, $daysDec, $alerts) {
+function addEvent($name, $startTime, $endTime, $deviation, $daysDec, $alerts) {
+  echo "<script>window.alert('$deviation')</script>";
   /*SQL query used to insert the event into the table*/
-  $query = "INSERT INTO `Events` (`EventID`, `Event`, `StartTime`, `EndTime`, `Days`, `Alerts`) VALUES (NULL, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Events` (`EventID`, `Event`, `StartTime`, `EndTime`, `Deviation`, `Days`, `Alerts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a prepared statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sssii", $name, $startTime, $endTime, $daysDec, $alerts);
+  $stmt->bind_param("sssiii", $name, $startTime, $endTime, $deviation, $daysDec, $alerts);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -507,7 +508,7 @@ if (isset($_POST['add_event'])) {
       $eventDaysDec += $_POST[$day];
     }
   };
-  addEvent($_POST['event_name'],$_POST['event_start_time'],$_POST['event_end_time'],$eventDaysDec,$_POST['event_alerts']);
+  addEvent($_POST['event_name'],$_POST['event_start_time'],$_POST['event_end_time'],$_POST['event_deviation'],$eventDaysDec,$_POST['event_alerts']);
 }
 /*Used to remove locations from the database*/
 /*Used to change location entrys on the database*/
@@ -524,6 +525,10 @@ function changeEventEntry($eventID, $newValue, $fieldName) {
   elseif ($fieldName === "EventEndTime") {
     $query = "UPDATE Events SET EndTime=? WHERE EventID=?";
     $params = "si";
+  }
+  elseif ($fieldName === "EventDeviation") {
+    $query = "UPDATE Events SET Deviation=? WHERE EventID=?";
+    $params = "ii";
   }
   elseif ($fieldName === "EventAlerts") {
     $query = "UPDATE Events SET Alerts=? WHERE EventID=?";
@@ -565,9 +570,13 @@ if (isset($_POST['edit_event_form'])) {
   if (isset($_POST['new_event_end_time']) && !empty($_POST['new_event_end_time'])) {
     changeEventEntry($_POST['event_id'],$_POST['new_event_end_time'],'EventEndTime');
   }
+  /*If the end time needs to change*/
+  if (isset($_POST['new_event_deviation'])) {
+    changeEventEntry($_POST['event_id'],$_POST['new_event_deviation'],'EventDeviation');
+  }
   /*If the event alerts needs to be changed*/
   if (isset($_POST['new_event_alerts']) && !empty($_POST['new_event_alerts'])) {
-    changeEventEntry($_POST['event_id'],$_POST['new_location_pop'],'EventAlerts');
+    changeEventEntry($_POST['event_id'],$_POST['new_event_alerts'],'EventAlerts');
   }
 
   $days = ['mon','tue','wed','thu','fri','sat','sun'];

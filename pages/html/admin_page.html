@@ -427,6 +427,7 @@
               <th>Event</th>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Deviation</th>
               <th>Days</th>
               <th>Send Alerts</th>
               <th></th>
@@ -443,6 +444,13 @@
             <div class="input_wrapper capitalize">
               <label for="new_event_name"><h4>Event Name:</h4></label>
               <input id="new_event_name" name="new_event_name" type="text" maxlength="20"></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for"new_event_deviation"><h4>Deviation:</h4></label>
+              <div class="range_wrapper">
+                <input id="new_event_deviation" name="new_event_deviation" value="0" type="range" step="1" min="0" max="30" oninput="this.nextElementSibling.value = this.value+' Minutes'"></input>
+                <output></output>
+              </div>
             </div>
             <div class="input_wrapper capitalize">
               <label for="new_event_start_time"><h4>Start Time:</h4></label>
@@ -500,6 +508,13 @@
             <div class="input_wrapper capitalize">
               <label for="event_name"><h4>Event Name*:</h4></label>
               <input id="event_name" name="event_name" placeholder="Required" type="text" maxlength="20" required></input>
+            </div>
+            <div class="input_wrapper capitalize">
+              <label for"event_deviation"><h4>Deviation*:</h4></label>
+              <div class="range_wrapper">
+                <input id="event_deviation" name="event_deviation" type="range" step="1" min="0" max="30" value="15" oninput="this.nextElementSibling.value = this.value+' Minutes'"></input>
+                <output>15 Minutes</output>
+              </div>
             </div>
             <div class="input_wrapper capitalize">
               <label for="event_start_time"><h4>Start Time*:</h4></label>

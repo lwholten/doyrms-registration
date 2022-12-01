@@ -14,10 +14,20 @@ function fillEventsTable() {
     echo "<tr>";
     // Iterates through each item of the record
     for ($i = 0; $i <= (count($record)-1); $i++) {
-      // 4 is the index for the 'Days' column
+      // 4 is the index of the 'deviation column'
+      // This determines the number of minutes that a user may be early or late to an event
+      if ($i === 4) {
+        if ($record[$i] === "0" || $record[$i] === 0 || $record[$i] === NULL) {
+          echo "<td>None</td>";
+        }
+        else {
+          echo "<td>$record[$i] Minutes</td>";
+        }
+      }
+      // 5 is the index for the 'Days' column
       // Rather of displaying the numerical value of this column
       // It will be displaying the days that correspond to the numerical value
-      if ($i === 4) {
+      else if ($i === 5) {
         echo "<td>";
         // Note, this could be made more efficient using a 'for' loop - maybe implement this in the future
         $dec = $record[$i];
@@ -51,8 +61,8 @@ function fillEventsTable() {
         }
         echo "</td>";
       }
-      // 5 is the index for the 'Alerts' column
-      else if ($i === 5) {
+      // 6 is the index for the 'Alerts' column
+      else if ($i === 6) {
         echo "<td>";
         if ($record[$i] === "1") {
           echo "Yes";
