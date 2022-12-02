@@ -290,6 +290,9 @@ body {
 .input_wrapper input[type="time"] {
   width: 40%;
 }
+.input_wrapper input[type="number"] {
+  width: 15%;
+}
 .boolean_radio {
   max-width: 50%;
 }
@@ -360,6 +363,14 @@ body {
   height: 100%;
   padding: 0px 0px 0px 16px;
   margin-left: auto;
+}
+.input_spacer {
+  display: block;
+  background: none;
+  margin: 0;
+  padding: 0;
+  height: 16px;
+  width: 100%;
 }
 
 @media screen and (max-width: 1400px), (max-height: 800px) {

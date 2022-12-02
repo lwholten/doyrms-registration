@@ -471,15 +471,14 @@ if (isset($_POST['remove_location'])) {
 
 
 /* Used to add an event to the database */
-function addEvent($name, $startTime, $endTime, $deviation, $daysDec, $alerts) {
-  echo "<script>window.alert('$deviation')</script>";
+function addEvent($name, $locationID, $startTime, $endTime, $deviation, $daysDec, $alerts, $nature) {
   /*SQL query used to insert the event into the table*/
-  $query = "INSERT INTO `Events` (`EventID`, `Event`, `StartTime`, `EndTime`, `Deviation`, `Days`, `Alerts`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Events` (`EventID`, `Event`, `LocationID`, `StartTime`, `EndTime`, `Deviation`, `Days`, `Alerts`, `Nature`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a prepared statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sssiii", $name, $startTime, $endTime, $deviation, $daysDec, $alerts);
+  $stmt->bind_param("sissiiii", $name, $locationID, $startTime, $endTime, $deviation, $daysDec, $alerts, $nature);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -502,13 +501,22 @@ if (isset($_POST['add_event'])) {
   // The 100 is then saved to the database as a 7-bit binary: 1100100;
   $eventDaysDec = 0;
   $days = ['mon','tue','wed','thu','fri','sat','sun'];
+  // Checks if the event nature is set to sign in ot sign out
+  // For sign out the location ID is requried
+  if (isset($_POST['event_nature']) && $_POST['event_nature'] === "0") {
+    $locationID = $_POST['event_location_id'];
+  }
+  // Otherwise the location ID is not required and is set to NULL
+  else {
+    $locationID = NULL;
+  }
   // Iterates through each day of the week and appends the days value if it has been selected
   foreach($days as $day) {
     if (isset($_POST[$day])) {
       $eventDaysDec += $_POST[$day];
     }
   };
-  addEvent($_POST['event_name'],$_POST['event_start_time'],$_POST['event_end_time'],$_POST['event_deviation'],$eventDaysDec,$_POST['event_alerts']);
+  addEvent($_POST['event_name'],$locationID,$_POST['event_start_time'],$_POST['event_end_time'],$_POST['event_deviation'],$eventDaysDec,$_POST['event_alerts'],$_POST['event_nature']);
 }
 /*Used to remove locations from the database*/
 /*Used to change location entrys on the database*/
@@ -534,6 +542,21 @@ function changeEventEntry($eventID, $newValue, $fieldName) {
     $query = "UPDATE Events SET Alerts=? WHERE EventID=?";
     $params = "ii";
   }
+  elseif ($fieldName === "EventNature") {
+    $query = "UPDATE Events SET Nature=? WHERE EventID=?";
+    $params = "ii";
+  }
+  elseif ($fieldName === "EventLocationID") {
+    if ($newValue === NULL) {
+      $query = "UPDATE Events SET LocationID=NULL WHERE EventID=?";
+      $params = "i";
+    }
+    else {
+      $query = "UPDATE Events SET LocationID=? WHERE EventID=?";
+      $params = "ii";
+    }
+
+  }
   elseif ($fieldName === "EventDays") {
     $query = "UPDATE Events SET Days=? WHERE EventID=?";
     $params = "ii";
@@ -542,7 +565,13 @@ function changeEventEntry($eventID, $newValue, $fieldName) {
   $con = databaseConnect();
   /*turns the query into a statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param($params, ucwords($newValue), $eventID);
+  // Checks whether the new value is NULL and corrects the statement
+  if ($newValue === NULL) {
+    $stmt->bind_param($params, $eventID);
+  }
+  else {
+    $stmt->bind_param($params, ucwords($newValue), $eventID);
+  }
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -575,8 +604,28 @@ if (isset($_POST['edit_event_form'])) {
     changeEventEntry($_POST['event_id'],$_POST['new_event_deviation'],'EventDeviation');
   }
   /*If the event alerts needs to be changed*/
-  if (isset($_POST['new_event_alerts']) && !empty($_POST['new_event_alerts'])) {
+  if (isset($_POST['new_event_alerts'])) {
     changeEventEntry($_POST['event_id'],$_POST['new_event_alerts'],'EventAlerts');
+  }
+  /*If the event nature needs to be changed*/
+  if (isset($_POST['new_event_nature'])) {
+    // For sign out the location ID is requried
+    if (isset($_POST['new_event_nature']) && $_POST['new_event_nature'] === "0") {
+      // If the location ID has been set and the field was not left empty
+      if (isset($_POST['new_event_location_id']) && $_POST['new_event_location_id'] === None) {
+        $locationID = $_POST['new_event_location_id'];
+      }
+      // Else
+      else {
+        $locationID = NULL;
+      }
+    }
+    // Otherwise the location ID is not required and is set to NULL
+    else {
+      $locationID = NULL;
+    }
+    changeEventEntry($_POST['event_id'],$_POST['new_event_nature'],'EventNature');
+    changeEventEntry($_POST['event_id'],$locationID,'EventLocationID');
   }
 
   $days = ['mon','tue','wed','thu','fri','sat','sun'];

@@ -3,7 +3,8 @@ function fillEventsTable() {
   /*Connects to the database*/
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
-  $sql = "SELECT * FROM `Events`";
+  $sql = " SELECT EventID, Event, LocationName, StartTime, EndTime, Deviation, Days, Alerts, Nature FROM Events INNER JOIN Locations ON Events.LocationID = Locations.LocationID UNION
+SELECT EventID, Event, LocationID, StartTime, EndTime, Deviation, Days, Alerts, Nature FROM Events WHERE LocationID IS NULL";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/
@@ -16,7 +17,7 @@ function fillEventsTable() {
     for ($i = 0; $i <= (count($record)-1); $i++) {
       // 4 is the index of the 'deviation column'
       // This determines the number of minutes that a user may be early or late to an event
-      if ($i === 4) {
+      if ($i === 5) {
         if ($record[$i] === "0" || $record[$i] === 0 || $record[$i] === NULL) {
           echo "<td>None</td>";
         }
@@ -27,7 +28,7 @@ function fillEventsTable() {
       // 5 is the index for the 'Days' column
       // Rather of displaying the numerical value of this column
       // It will be displaying the days that correspond to the numerical value
-      else if ($i === 5) {
+      else if ($i === 6) {
         echo "<td>";
         // Note, this could be made more efficient using a 'for' loop - maybe implement this in the future
         $dec = $record[$i];
@@ -62,13 +63,27 @@ function fillEventsTable() {
         echo "</td>";
       }
       // 6 is the index for the 'Alerts' column
-      else if ($i === 6) {
+      else if ($i === 7) {
         echo "<td>";
         if ($record[$i] === "1") {
           echo "Yes";
         }
         else if ($record[$i] === "0") {
           echo "No";
+        }
+        else {
+          echo "N/A";
+        }
+        echo "</td>";
+      }
+      // 7 is the index for the 'Nature' column
+      else if ($i === 8) {
+        echo "<td>";
+        if ($record[$i] === "1") {
+          echo "In";
+        }
+        else if ($record[$i] === "0") {
+          echo "Out";
         }
         else {
           echo "N/A";

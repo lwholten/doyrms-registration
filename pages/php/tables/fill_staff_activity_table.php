@@ -13,7 +13,7 @@ function fillStaffActivityTable() {
   while($record = $result -> fetch_array(MYSQLI_NUM)) {
     echo "<tr>";
     foreach ($record as $value) {
-      if ($value === NULL || $value === None || $value === 0) {
+      if ($value === NULL) {
         echo "<td> N/A </td>";
       }
       else {

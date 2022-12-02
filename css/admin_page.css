@@ -95,6 +95,13 @@
   margin-top: auto;
 }
 
+#event_nature_toggle:checked {
+  background: red;
+}
+#event_nature_toggle:not(:checked) {
+  background: lime;
+}
+
 @media screen and (max-width: 1400px) {
   #locations_edit_section form {
     width: 100%;

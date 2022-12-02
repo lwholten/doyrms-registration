@@ -22,6 +22,19 @@ function formatEditSection(section_id, storage_class, title_content, record_id=0
   toggleHiddenSection(section_id);
 }
 
+// Used to disable inputs
+function disableInput(id) {
+  document.getElementById(id).style.textDecoration = 'line-through';
+  document.getElementById(id).querySelector('input').style.backgroundColor = '#DDDDDD';
+  document.getElementById(id).querySelector('input').disabled = true;
+}
+// Used to enable inputs
+function enableInput(id) {
+  document.getElementById(id).style.textDecoration = 'none';
+  document.getElementById(id).querySelector('input').style.backgroundColor = '#FFFFFF';
+  document.getElementById(id).querySelector('input').disabled = false;
+}
+
 /*Used to swith hidden sections*/
 function toggleHiddenSection(section_id) {
   /*Gets an array of all edit section*/
