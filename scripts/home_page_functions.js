@@ -1,3 +1,4 @@
+// Used to toggle the back button
 function backButton() {
   const student_selection_preset = document.getElementById('student_selection_preset');
   const staff_login_preset = document.getElementById('staff_login_preset');
@@ -19,6 +20,7 @@ function backButton() {
   resetForm('user_sign_out_form');
 }
 
+// Used to toggle between the staff login form and the sign in/out forms
 function toggleStaffLoginPreset() {
   const student_selection_preset = document.getElementById('student_selection_preset');
   const staff_login_preset = document.getElementById('staff_login_preset');
@@ -33,6 +35,7 @@ function toggleStaffLoginPreset() {
   back_button.style.display = 'flex';
 }
 
+// Used to toggle between sign in and sign out forms
 function toggleStudentPreset(preset) {
   const student_selection_preset = document.getElementById('student_selection_preset');
   const staff_login_preset = document.getElementById('staff_login_preset');
@@ -62,11 +65,13 @@ function toggleStudentPreset(preset) {
   staff_login_preset.style.display = 'none';
 }
 
+// Used to reset a form
 function resetForm(formID) {
   /*Resets the form passed through the parameters*/
   document.getElementById(formID).reset();
 }
 
+// Used for the idle overlay
 function hideOverlay() {
   /*Hides the overlay*/
   overlay = document.getElementById('idle_overlay');
@@ -106,6 +111,60 @@ function idleTimer() {
       time = setTimeout(showOverlay, 30000)
       /*Note 1 second = 1000ms*/
   }
+}
+
+// Used to display a notification
+function notification(message, type, duration) {
+  // Gets the notification wrapper from the DOM and strips all children nodes
+  const notification = document.getElementById('notification_wrapper');
+  notification.innerHTML = '';
+  // Styles the notification based on its type
+  types = ['info','success','warning','error','validation'];
+  type = type.toLowerCase();
+  // If the notification type is allowed
+  if (types.includes(type)) {
+    // Iterate through the notification types and strip all type classes from the notification
+    for (var i = 0; i < types.length; i++) {
+      if (notification.classList.contains(types[i])) {
+        // Removes the current class in the list from the element
+        notification.classList.remove(types[i])
+      }
+      else {
+        continue
+      }
+    }
+    notification.classList.add(type);
+  }
+  // If the notification type is not allowed, return an error message
+  else {
+    console.error('Could not show notification: \''+type+'\' is not a valid notification type ');
+    return;
+  }
+  // Formats the message and adds it to the notification
+  formattedMessage = '<div class="message"><h4>'+message+'</h4></div>';
+  notification.innerHTML = formattedMessage;
+  // Displays the notification
+  notification.style.cssText = `
+    height: 80px;
+    border: 1px solid;
+  `;
+  // Corrects the message duration if it is too short or too long
+  if (duration > 5000) {
+    console.warn('Notification duration was too long, set it to 5000ms by default');
+    duration = 5000;
+  }
+  else if (duration < 1000) {
+    console.warn('Notification duration was too long, set it to 1000ms by default');
+    duration = 1000;
+  }
+  // Waits some time before hiding the notification
+  setTimeout(function(){
+    // Hides the notification
+    notification.style.cssText = `
+      height: 0px;
+      border: 0px solid;
+    `;
+  }, duration);
 }
 
 /*When the window is loaded, start the idle timer*/

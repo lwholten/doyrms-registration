@@ -13,7 +13,8 @@ function databaseConnect() {
 
   // Check connection
   if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
+    echo "<script>notification('Something went wrong, please try again later','error',3000)</script>";
+    echo "<script>console.error('The system could not connect to the database!')</script>";
     return 0;
   }
   return $con;
@@ -157,13 +158,15 @@ if (isset($_POST['staff_login_form'])) {
     // If the password is incorrect
     else {
       unset($correct);
-      exit("The password was incorrect");
+      echo "<script>notification('The username or password you entered were incorrect','validation',2000)</script>";
+      exit();
     }
   }
   // If they do not exist
   else {
     unset($exists);
-    exit("Could not find account on database");
+    echo "<script>notification('The username or password you entered were incorrect','validation',2000)</script>";
+    exit();
   }
 }
 
@@ -281,6 +284,7 @@ function createUserLog($name, $location) {
   $stmt->execute();
   // Disconnects from the database
   $con->close();
+  return true;
 }
 function updateUserLog($name) {
   // This function updates the most recent log for a user
@@ -303,6 +307,7 @@ function updateUserLog($name) {
   $stmt->execute();
   // Disconnects from the database
   $con->close();
+  return true;
 }
 // Executes if a user sign out is detected
 if (isset($_POST['user_sign_out'])) {
@@ -317,22 +322,36 @@ if (isset($_POST['user_sign_out'])) {
     // This is merely a measure to ensure that logs are completed in the event a user forgets to sign back in
     completePreviousUserLog($_POST['sign_out_initials_field']);
     // Creates a new log for this user, since all previous logs have been completed
-    createUserLog($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+    $success = createUserLog($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+    // If this was successful, it will relay the message to the user
+    if ($success) {
+      echo "<script>notification('You have been signed out successfully!','success',2000)</script>";
+      unset($success);
+    }
+    // If this was unsuccessful, it will relay the message to the user and output an error
+    else {
+      echo "<script>notification('Something went wrong, please try again later','validation',3000)</script>";
+      echo "<script>console.error('The system could not sign a user out: The function \'CreateUserLog()\' was unsuccessful!')</script>";
+      unset($success);
+    }
   }
   // If the location exists but not the user
   elseif ($userExists === 0 && $locationExists === 1) {
     unset($userExists, $locationExists);
-    exit("The name selected was invalid");
+    echo "<script>notification('Please make sure the name you entered is valid','validation',2000)</script>";
+    exit();
   }
   // If the user exists but not the location
   elseif ($userExists === 1 && $locationExists === 0) {
     unset($userExists, $locationExists);
-    exit("The location selected was invalid");
+    echo "<script>notification('Please make sure the location you selected is valid','validation',2000)</script>";
+    exit();
   }
   // If neither the location nor user exists
   else {
     unset($userExists, $locationExists);
-    exit("The name and location were invalid");
+    echo "<script>notification('Please make sure the name and location you entered are valid','validation',2000)</script>";
+    exit();
   }
 }
 // Executes if a user sign in is detected
@@ -348,20 +367,34 @@ if (isset($_POST['user_sign_in'])) {
     if ($userSignedIn === 1) {
       unset($userSignedIn);
       // Updates the previous log created, in this case it was created when the user signed out
-      updateUserLog($_POST['sign_in_initials_field']);
+      $success = updateUserLog($_POST['sign_in_initials_field']);
+      // If this was successful, it will relay the message to the user
+      if ($success) {
+        echo "<script>notification('You have been signed in successfully!','success',2000)</script>";
+        unset($success);
+      }
+      // If this was unsuccessful, it will relay the message to the user and output an error
+      else {
+        echo "<script>notification('Something went wrong, please try again later','error',3000)</script>";
+        echo "<script>console.error('The system could not sign a user out: The function \'UpdateUserLog()\' was unsuccessful!')</script>";
+        unset($success);
+      }
     }
     elseif ($userSignedIn === 0) {
       unset($userSignedIn);
-      exit("You are already signed in!");
+      echo "<script>notification('It looks like you are already signed in!','warning',2000)</script>";
+      exit();
     }
     else {
       unset($userSignedIn);
-      exit("An error occured when trying to sign in!");
+      echo "<script>notification('Sorry, we can't sign you in at the moment, please try again later.','error',3000)</script>";
+      exit();
     }
   }
   else {
     unset($userExists);
-    exit("The name selected was invalid");
+    echo "<script>notification('Please make sure the name you entered is valid','validation',2000)</script>";
+    exit();
   }
 }
 ?>
