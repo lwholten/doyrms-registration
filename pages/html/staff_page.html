@@ -30,7 +30,9 @@
           <li class="sidebar_subtitle"><h3>Information</h3></li>
           <li onclick="toggleMainSection(this.id,'m1')" class="sidebar_button sidebar_button_active" id="s1"><h4>Home</h4></li>
           <li onclick="toggleMainSection(this.id,'m2')" class="sidebar_button" id="s2"><h4>Activity</h4></li>
-          <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Events</h4></li>
+          <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Users</h4></li>
+          <li onclick="toggleMainSection(this.id,'m4')" class="sidebar_button" id="s4"><h4>Events</h4></li>
+          <li onclick="toggleMainSection(this.id,'m10')" class="sidebar_button" id="s10"><h4>About</h4></li>
           <li class="sidebar_subtitle"><h3>Account</h3></li>
           <li onclick="toggleMainSection(this.id,'m11')" class="sidebar_button" id="s11"><h4>Change Password</h4></li>
           <li onclick="toggleMainSection(this.id,'m12')" class="sidebar_button" id="s12"><h4>Customise</h4></li>
@@ -40,11 +42,36 @@
     <div class="text main">
       <section class="main_section main_section_active" id="m1">
         <h2>Welcome, <?=$_SESSION["staffUsername"]?>.</h2>
+        <div class="info_wrapper text">
+          <p>Welcome to DOYRMS registration, a web application programmed by Luke Holten.</p>
+        </div>
       </section>
       <section class="main_section" id="m2">
         <h2>Activity</h2>
         <div class="info_wrapper text">
-          <p>Welcome to the activity area. Using this area, you are able to see where users are at a glance. Need to know where someone is? You can quickly glance at the table to find out where they are.</p>
+          <p>Welcome to the activity area. In this area you are able to see the most recent user activity. By looking at the table below, you can see users which have recently signed in and out. In addition to this, you may also receive alerts when a user have forgotten to sign in.</p>
+        </div>
+        <spacer></spacer>
+        <div class="table_wrapper">
+          <header>
+            <h2>Recent Activity</h2>
+          </header>
+          <table class='table'>
+            <tr>
+              <th>In/Out</th>
+              <th>Time</th>
+              <th>Message</th>
+              <th>Date</th>
+            </tr>
+            <?php @include('../php/tables/fill_recent_activity_table.php'); fillRecentActivityTable() ?>
+          </table>
+          <footer/>
+        </div>
+      </section>
+      <section class="main_section" id="m3">
+        <h2>Users</h2>
+        <div class="info_wrapper text">
+          <p>Welcome to the users area. In this area, you are able to see where users are at a glance. Need to know where someone is? You can quickly glance at the table to find out where they are.</p>
         </div>
         <spacer></spacer>
         <div class="table_wrapper">
@@ -53,7 +80,7 @@
           </header>
           <table class='table'>
             <tr>
-              <th>In/Out</th>
+              <th>Status</th>
               <th>Forename</th>
               <th>Surname</th>
               <th>Current Location</th>
@@ -65,8 +92,15 @@
           <footer/>
         </div>
       </section>
-      <section class="main_section" id="m3">
+      <section class="main_section" id="m4">
         <h2>Events</h2>
+      </section>
+      <section class="main_section" id="m10">
+        <h2>About</h2>
+        <div class="info_wrapper text">
+          <p>This system was designed to improve paper based registration systems by re-innovating the process using technology. By doing this, an improved link can be established between its users and the authorities monitoring their activity.</p>
+          <p>To summarise, DOYRMS registration allows users to sign in and out of a location using a digital kiosk. By being digital, staff users are able to see where users are located at all times, as well as further functionality through a designated search area which allows staff to search for specific users.  By defining events, administrators can set quotas that must be met by users. If a user fails to sign in or out for an event, staff users will be notified through the web interface.</p>
+        </div>
       </section>
       <section class="main_section" id="m11">
         <h2>Account - Change Password</h2>

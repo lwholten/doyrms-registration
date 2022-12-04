@@ -30,8 +30,6 @@
           <li class="sidebar_subtitle"><h2>Menu</h2></li>
           <li class="sidebar_subtitle"><h3>Information</h3></li>
           <li onclick="toggleMainSection(this.id,'m1')" class="sidebar_button sidebar_button_active" id="s1"><h4>Home</h4></li>
-          <li onclick="toggleMainSection(this.id,'m2')" class="sidebar_button" id="s2"><h4>Activity</h4></li>
-          <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Events</h4></li>
           <li class="sidebar_subtitle"><h3>Manage Staff</h3></li>
           <li onclick="toggleMainSection(this.id,'m11')" class="sidebar_button" id="s11"><h4>Edit Staff</h4></li>
           <li onclick="toggleMainSection(this.id,'m12')" class="sidebar_button" id="s12"><h4>Staff Activity</h4></li>
@@ -46,12 +44,6 @@
     <div class="text main">
       <section class="main_section" id="m1">
         <h2>Welcome, <?=$_SESSION["staffUsername"]?>.</h2>
-      </section>
-      <section class="main_section" id="m2">
-        <h2>Activity</h2>
-      </section>
-      <section class="main_section" id="m3">
-        <h2>Events</h2>
       </section>
 
       <section class="main_section" id="m11">

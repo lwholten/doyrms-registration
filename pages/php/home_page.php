@@ -210,17 +210,16 @@ function checkUserExists($name) {
 
   return $result;
 }
-function checkUserLogExists($name) {
-  // This function is used to check if there is an active user log
-  // This can be used to infer whether a user is currently signed in or out
+function checkUserSignedIn($name) {
+  // This function is used to check whether a user is already signed in
 
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
   $lname = $tempArray[1];
   unset($tempArray);
-  // Used to check whether a the user has an uncompleted log
-  $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Log INNER JOIN Users ON Log.UserID = Users.UserID WHERE Users.Forename=? AND Users.Surname=? AND Log.Complete=0) THEN 1 ELSE 0 END;";
+  // Used to check whether a the user is already signed in
+  $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=? AND Users.LocationID IS NULL) THEN 1 ELSE 0 END";
   // Connects to the database
   $con = databaseConnect();
   // Prepares and executes the statement
@@ -233,47 +232,17 @@ function checkUserLogExists($name) {
   // Disconnects from the database
   $con->close();
 
-  // Note, Returns 1 IF there is an uncompleted log (user is signed out)
-  // 0 -> NO LOG
-  // NOTe, Returns 0 IF there are no uncompleted logs (user is signed in)
-  // 1 -> LOG EXISTS
+  // Returns 1 if the user is signed in, 0 if the user is signed out
   return $result;
 }
-function completePreviousUserLog($name) {
-  // This function is used to complete all previous logs for a user
-  // This is useful for when a user forgets to sign back in after having signed out previously
-  // As it will set their previous sign in time to NULL and complete the log
-
-  // Splits the name input into first and last names using a temporary array
-  $tempArray = explode(" ", $name);
-  $fname = $tempArray[0];
-  $lname = $tempArray[1];
-  unset($tempArray);
-  // SQL query used to complete the log
-  $query = "UPDATE Log SET Complete=1 WHERE UserID IN ( SELECT UserID FROM Users WHERE Forename=? AND Surname=? ) AND TimeIn IS NULL AND Complete=0 ORDER BY TimeOut DESC";
-  // Connects to the database
-  $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("ss", $fname, $lname);
-  // Executes the statement code
-  $stmt->execute();
-  // Disconnects from the database
-  $con->close();
-}
-function createUserLog($name, $location) {
-  // This function is used to save a sign out log to the database for a given user
-  // It sets the sign out time to the current time and sets the sign in time to NULL
-  // A field in the log specifies whether the user has signed in since signing out (Complete)
-  // And this field is used to determing completed logs
-
+function userSignOut($name, $location) {
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
   $lname = $tempArray[1];
   unset($tempArray);
   // SQL query used to create the log
-  $logQuery = "INSERT INTO Log ( UserID, LocationID, TimeOut, TimeIn, EventID, Complete ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
+  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, Auto ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
   // SQL query used to update the users location
   $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
@@ -292,30 +261,26 @@ function createUserLog($name, $location) {
   $con->close();
   return true;
 }
-function updateUserLog($name) {
-  // This function updates the most recent log for a user
-  // It is executed when a user signs back in to the system
-  // When executed, it sets the sign in time to the current time and completes the log
-
+function userSignIn($name, $auto) {
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
   $lname = $tempArray[1];
   unset($tempArray);
-  // SQL query used to create the log
-  $logQuery = "UPDATE Log SET TimeIn=CURRENT_TIME, Complete=1 WHERE UserID IN ( SELECT UserID FROM Users WHERE Forename=? AND Surname=? ) AND TimeIn IS NULL AND Complete=0 ORDER BY TimeOut DESC LIMIT 1";
+  // SQL query used to create a user log
+  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, Auto ) SELECT  Users.UserID, NULL, CURRENT_TIMESTAMP, NULL, ? FROM Users WHERE Users.Forename=? AND Users.Surname=?";
   // SQL query used to update the users location
-  $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=NULL WHERE Forename=? AND Surname=?";
+  $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
   // turns the log query into a statement
   $logStmt = $con->prepare($logQuery);
-  $logStmt->bind_param("ss", $fname, $lname);
+  $logStmt->bind_param("iss", $auto, $fname, $lname);
   // Executes the statement code
   $logStmt->execute();
   // turns the location query into a statement
   $locationStmt = $con->prepare($locationQuery);
-  $locationStmt->bind_param("ss", $fname, $lname);
+  $locationStmt->bind_param("sss", $location, $fname, $lname);
   // Executes the statement code
   $locationStmt->execute();
   // Disconnects from the database
@@ -330,12 +295,18 @@ if (isset($_POST['user_sign_out'])) {
   // If they exist
   if ($userExists === 1 && $locationExists === 1) {
     unset($userExists, $locationExists);
-    // Complete the users previous log(s)
-    // Note that if the user signs in after signing out, all their logs would be completed anyway
-    // This is merely a measure to ensure that logs are completed in the event a user forgets to sign back in
-    completePreviousUserLog($_POST['sign_out_initials_field']);
-    // Creates a new log for this user, since all previous logs have been completed
-    $success = createUserLog($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+    $signedIn = checkUserSignedIn($_POST['sign_out_initials_field']);
+    // If the user is not signed in, sign them in automatically then sign them out
+    if ($signedIn === 0) {
+      unset($signedIn);
+      userSignIn($_POST['sign_out_initials_field'],1);
+      $success = userSignOut($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+    }
+    // If the user is already signed in, don't automatically sign them in
+    elseif ($signedIn === 1) {
+      unset($signedIn);
+      $success = userSignOut($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+    }
     // If this was successful, it will relay the message to the user
     if ($success) {
       echo "<script>notification('You have been signed out successfully!','success',2000)</script>";
@@ -376,11 +347,11 @@ if (isset($_POST['user_sign_in'])) {
     unset($userExists);
     // Checks whether the user is already signed in by searching for an uncompleted log
     // If there are no uncompleted logs, it can be assumed that the user is signed in
-    $userSignedIn = checkUserLogExists($_POST['sign_in_initials_field']);
-    if ($userSignedIn === 1) {
+    $userSignedIn = checkUserSignedIn($_POST['sign_in_initials_field']);
+    // If the user is not already signed in, sign them in
+    if ($userSignedIn === 0) {
       unset($userSignedIn);
-      // Updates the previous log created, in this case it was created when the user signed out
-      $success = updateUserLog($_POST['sign_in_initials_field']);
+      $success = userSignIn($_POST['sign_in_initials_field'],0);
       // If this was successful, it will relay the message to the user
       if ($success) {
         echo "<script>notification('You have been signed in successfully!','success',2000)</script>";
@@ -393,7 +364,8 @@ if (isset($_POST['user_sign_in'])) {
         unset($success);
       }
     }
-    elseif ($userSignedIn === 0) {
+    // If the user is already signed in, relay a message to the user
+    elseif ($userSignedIn === 1) {
       unset($userSignedIn);
       echo "<script>notification('It looks like you are already signed in!','warning',2000)</script>";
       exit();
