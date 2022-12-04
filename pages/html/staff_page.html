@@ -43,6 +43,27 @@
       </section>
       <section class="main_section" id="m2">
         <h2>Activity</h2>
+        <div class="info_wrapper text">
+          <p>Welcome to the activity area. Using this area, you are able to see where users are at a glance. Need to know where someone is? You can quickly glance at the table to find out where they are.</p>
+        </div>
+        <spacer></spacer>
+        <div class="table_wrapper">
+          <header>
+            <h2>User Activity</h2>
+          </header>
+          <table class='table'>
+            <tr>
+              <th>In/Out</th>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Current Location</th>
+              <th>Time last active</th>
+              <th>Date last active</th>
+            </tr>
+            <?php @include('../php/tables/fill_activity_table.php'); fillActivityTable() ?>
+          </table>
+          <footer/>
+        </div>
       </section>
       <section class="main_section" id="m3">
         <h2>Events</h2>

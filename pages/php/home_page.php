@@ -275,7 +275,7 @@ function createUserLog($name, $location) {
   // SQL query used to create the log
   $logQuery = "INSERT INTO Log ( UserID, LocationID, TimeOut, TimeIn, EventID, Complete ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
   // SQL query used to update the users location
-  $locationQuery = "UPDATE Users SET LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
+  $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
   // turns the log query into a statement
@@ -305,7 +305,7 @@ function updateUserLog($name) {
   // SQL query used to create the log
   $logQuery = "UPDATE Log SET TimeIn=CURRENT_TIME, Complete=1 WHERE UserID IN ( SELECT UserID FROM Users WHERE Forename=? AND Surname=? ) AND TimeIn IS NULL AND Complete=0 ORDER BY TimeOut DESC LIMIT 1";
   // SQL query used to update the users location
-  $locationQuery = "UPDATE Users SET LocationID=NULL WHERE Forename=? AND Surname=?";
+  $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=NULL WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
   // turns the log query into a statement

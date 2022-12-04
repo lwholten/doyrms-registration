@@ -373,6 +373,38 @@ body {
   width: 100%;
 }
 
+.inline-dot {
+  height: 12px;
+  width: 12px;
+  background-color: none;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+.green {
+  background-color: #96d42b;
+}
+.orange {
+  background-color: #fbca04;
+}
+.red {
+  background-color: #ff3333;
+}
+.blue {
+  background-color: #75c9f0;
+}
+.info_wrapper {
+  width: 100%;
+  height: auto;
+  margin: 8px 0px;;
+}
+spacer {
+  height: 32px;
+  width: 100%;
+  display: block;
+  background: none;
+}
+
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
     min-height: 80px;
