@@ -234,7 +234,7 @@ function addUser($forename, $surname, $email, $gender, $roomNumber) {
   if ($roomNumber === "") { unset($roomNumber); }
 
   /*SQL query used to change the location popularity stored on the table*/
-  $query = "INSERT INTO `Users` (`UserID`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Users` (`UserID`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials`, `LocationID`) VALUES (NULL, ?, ?, ?, ?, ?, ?, NULL)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a statement*/

@@ -146,7 +146,8 @@ function notification(message, type, duration) {
   // Displays the notification
   notification.style.cssText = `
     height: 80px;
-    border: 1px solid;
+    border-bottom: 1px solid;
+    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.5);
   `;
   // Corrects the message duration if it is too short or too long
   if (duration > 5000) {
@@ -163,6 +164,7 @@ function notification(message, type, duration) {
     notification.style.cssText = `
       height: 0px;
       border: 0px solid;
+      box-shadow: none;
     `;
   }, duration);
 }

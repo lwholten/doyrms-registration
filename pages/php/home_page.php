@@ -125,7 +125,6 @@ if (isset($_POST['staff_login_form'])) {
     // If the password is correct
     if ($correct === 1) {
       unset($correct);
-      echo "password correct";
       // initiates a PHP session and binds the username
       if (session_status() !== PHP_SESSION_ACTIVE) {
         session_start();
@@ -274,14 +273,21 @@ function createUserLog($name, $location) {
   $lname = $tempArray[1];
   unset($tempArray);
   // SQL query used to create the log
-  $query = "INSERT INTO Log ( UserID, LocationID, TimeOut, TimeIn, EventID, Complete ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
+  $logQuery = "INSERT INTO Log ( UserID, LocationID, TimeOut, TimeIn, EventID, Complete ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
+  // SQL query used to update the users location
+  $locationQuery = "UPDATE Users SET LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("sss", $fname, $lname, $location);
+  // turns the log query into a statement
+  $logStmt = $con->prepare($logQuery);
+  $logStmt->bind_param("sss", $fname, $lname, $location);
   // Executes the statement code
-  $stmt->execute();
+  $logStmt->execute();
+  // turns the location query into a statement
+  $locationStmt = $con->prepare($locationQuery);
+  $locationStmt->bind_param("sss", $location, $fname, $lname);
+  // Executes the statement code
+  $locationStmt->execute();
   // Disconnects from the database
   $con->close();
   return true;
@@ -297,14 +303,21 @@ function updateUserLog($name) {
   $lname = $tempArray[1];
   unset($tempArray);
   // SQL query used to create the log
-  $query = "UPDATE Log SET TimeIn=CURRENT_TIME, Complete=1 WHERE UserID IN ( SELECT UserID FROM Users WHERE Forename=? AND Surname=? ) AND TimeIn IS NULL AND Complete=0 ORDER BY TimeOut DESC LIMIT 1";
+  $logQuery = "UPDATE Log SET TimeIn=CURRENT_TIME, Complete=1 WHERE UserID IN ( SELECT UserID FROM Users WHERE Forename=? AND Surname=? ) AND TimeIn IS NULL AND Complete=0 ORDER BY TimeOut DESC LIMIT 1";
+  // SQL query used to update the users location
+  $locationQuery = "UPDATE Users SET LocationID=NULL WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("ss", $fname, $lname);
+  // turns the log query into a statement
+  $logStmt = $con->prepare($logQuery);
+  $logStmt->bind_param("ss", $fname, $lname);
   // Executes the statement code
-  $stmt->execute();
+  $logStmt->execute();
+  // turns the location query into a statement
+  $locationStmt = $con->prepare($locationQuery);
+  $locationStmt->bind_param("ss", $fname, $lname);
+  // Executes the statement code
+  $locationStmt->execute();
   // Disconnects from the database
   $con->close();
   return true;
