@@ -1,10 +1,10 @@
 <?php
-function fillEventsTable() {
+function loadEventsTable() {
   /*Connects to the database*/
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
   $sql = " SELECT EventID, Event, LocationName, StartTime, EndTime, Deviation, Days, Alerts, Nature FROM Events INNER JOIN Locations ON Events.LocationID = Locations.LocationID UNION
-SELECT EventID, Event, LocationID, StartTime, EndTime, Deviation, Days, Alerts, Nature FROM Events WHERE LocationID IS NULL";
+SELECT EventID, Event, LocationID, StartTime, EndTime, Deviation, Days, Alerts, Nature FROM Events WHERE LocationID IS NULL LIMIT 25";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/

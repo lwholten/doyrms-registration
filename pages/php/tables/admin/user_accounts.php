@@ -1,9 +1,9 @@
 <?php
-function fillUsersTable() {
+function loadUserAccountsTable() {
   /*Connects to the database*/
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
-  $sql = "SELECT `UserID`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials` FROM `Users`";
+  $sql = "SELECT `UserID`, `Forename`, `Surname`, `Email`, `Gender`, `RoomNumber`, `Initials` FROM `Users` LIMIT 25";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/

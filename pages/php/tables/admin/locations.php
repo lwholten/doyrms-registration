@@ -1,9 +1,9 @@
 <?php
-function fillStaffSignedInTable() {
+function loadLocationsTable() {
   /*Connects to the database*/
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
-  $sql = "SELECT Username, cast(SignInTime AS date), cast(SignInTime AS time) FROM StaffLog INNER JOIN Staff ON StaffLog.StaffID = Staff.StaffID WHERE Complete=0 ORDER BY SignInTime DESC";
+  $sql = "SELECT * FROM `Locations` LIMIT 25";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/
@@ -15,6 +15,10 @@ function fillStaffSignedInTable() {
     foreach ($record as $value) {
       echo "<td> $value </td>";
     }
+    /*Makes the edit section appear for the selected record, passes the record id and location name as parameters*/
+    /*record[0] --> The ID of that record | record[1] --> The name of that location*/
+    echo "<td><button onclick=\"formatEditSection('locations_edit_section','location_id_storage','$record[1]','$record[0]');\" class=\"blue_button edit_button\">Edit</button></td>";
+    echo "</tr>";
   }
 }
 ?>

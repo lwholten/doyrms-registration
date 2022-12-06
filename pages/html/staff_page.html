@@ -32,6 +32,7 @@
           <li onclick="toggleMainSection(this.id,'m2')" class="sidebar_button" id="s2"><h4>Activity</h4></li>
           <li onclick="toggleMainSection(this.id,'m3')" class="sidebar_button" id="s3"><h4>Users</h4></li>
           <li onclick="toggleMainSection(this.id,'m4')" class="sidebar_button" id="s4"><h4>Events</h4></li>
+          <li onclick="toggleMainSection(this.id,'m5')" class="sidebar_button" id="s5"><h4>Off Site</h4></li>
           <li onclick="toggleMainSection(this.id,'m10')" class="sidebar_button" id="s10"><h4>About</h4></li>
           <li class="sidebar_subtitle"><h3>Account</h3></li>
           <li onclick="toggleMainSection(this.id,'m11')" class="sidebar_button" id="s11"><h4>Change Password</h4></li>
@@ -56,14 +57,14 @@
           <header>
             <h2>Recent Activity</h2>
           </header>
-          <table class='table'>
+          <table class='table' id="recent_activity_table">
             <tr>
               <th>In/Out</th>
               <th>Time</th>
               <th>Message</th>
               <th>Date</th>
             </tr>
-            <?php @include('../php/tables/fill_recent_activity_table.php'); fillRecentActivityTable() ?>
+            <?php @include('../php/tables/staff/recent_activity.php'); fillRecentActivityTable() ?>
           </table>
           <footer/>
         </div>
@@ -76,9 +77,9 @@
         <spacer></spacer>
         <div class="table_wrapper">
           <header>
-            <h2>User Activity</h2>
+            <h2>User Status</h2>
           </header>
-          <table class='table'>
+          <table class='table' id="user_status_table">
             <tr>
               <th>Status</th>
               <th>Forename</th>
@@ -87,13 +88,16 @@
               <th>Time last active</th>
               <th>Date last active</th>
             </tr>
-            <?php @include('../php/tables/fill_activity_table.php'); fillActivityTable() ?>
+            <?php @include('../php/tables/staff/user_status.php'); fillUserStatusTable() ?>
           </table>
           <footer/>
         </div>
       </section>
       <section class="main_section" id="m4">
         <h2>Events</h2>
+      </section>
+      <section class="main_section" id="m5">
+        <h2>Off Site</h2>
       </section>
       <section class="main_section" id="m10">
         <h2>About</h2>
@@ -102,6 +106,7 @@
           <p>To summarise, DOYRMS registration allows users to sign in and out of a location using a digital kiosk. By being digital, staff users are able to see where users are located at all times, as well as further functionality through a designated search area which allows staff to search for specific users.  By defining events, administrators can set quotas that must be met by users. If a user fails to sign in or out for an event, staff users will be notified through the web interface.</p>
         </div>
       </section>
+      
       <section class="main_section" id="m11">
         <h2>Account - Change Password</h2>
       </section>

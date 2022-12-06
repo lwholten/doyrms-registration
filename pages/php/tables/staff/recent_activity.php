@@ -10,7 +10,7 @@ function fillRecentActivityTable() {
   n = 2 -> Sign In (Auto)
   n = 3 -> Sign Out (Auto)
   NULL -> User was automatically signed in (forgot to sign back in)*/
-  $sql = "SELECT (CASE WHEN Log.LocationID IS NULL AND Log.Auto=0 THEN 0 WHEN Log.LocationID IS NOT NULL AND Log.Auto=0 THEN 1 WHEN Log.LocationID IS NULL AND Log.Auto=1 THEN 2 WHEN Log.LocationID IS NOT NULL AND Log.Auto=1 THEN 3 ELSE NULL END), Forename, Surname, LocationName, CAST(LogTime AS time), CAST(LogTime AS date) FROM Log LEFT JOIN Locations ON Locations.LocationID = Log.LocationID LEFT JOIN Users ON Users.UserID = Log.UserID ORDER BY LogTime DESC";
+  $sql = "SELECT (CASE WHEN Log.LocationID IS NULL AND Log.Auto=0 THEN 0 WHEN Log.LocationID IS NOT NULL AND Log.Auto=0 THEN 1 WHEN Log.LocationID IS NULL AND Log.Auto=1 THEN 2 WHEN Log.LocationID IS NOT NULL AND Log.Auto=1 THEN 3 ELSE NULL END), Forename, Surname, LocationName, CAST(LogTime AS time), CAST(LogTime AS date) FROM Log LEFT JOIN Locations ON Locations.LocationID = Log.LocationID LEFT JOIN Users ON Users.UserID = Log.UserID ORDER BY LogTime DESC LIMIT 25";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/

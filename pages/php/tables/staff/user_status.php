@@ -1,9 +1,9 @@
 <?php
-function fillActivityTable() {
+function fillUserStatusTable() {
   /*Connects to the database*/
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
-  $sql = "SELECT (CASE WHEN Users.LocationID IS NULL THEN 1 ELSE 0 END), Forename, Surname, LocationName, cast(LastActive AS time), cast(LastActive AS date) FROM Users LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY Users.Forename ASC";
+  $sql = "SELECT (CASE WHEN Users.LocationID IS NULL THEN 1 ELSE 0 END), Forename, Surname, LocationName, cast(LastActive AS time), cast(LastActive AS date) FROM Users LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY Users.Forename ASC LIMIT 25";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/

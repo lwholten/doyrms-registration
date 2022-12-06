@@ -46,17 +46,26 @@ function databaseConnect() {
 onPageLoad();
 
 function logStaffSignOut($staffID) {
-  // This is used to log a staff user sign out
+  // This function is used to save a log when a staff user signs out
+  // It also sets the active state of this user to false
 
-  // SQL query used to create the log
-  $query = "UPDATE StaffLog SET SignOutTime=CURRENT_TIME, Complete=1 WHERE StaffID=? AND SignOutTime IS NULL AND Complete=0 ORDER BY SignInTime DESC LIMIT 1;";
+  // An array of SQL queries used to update the staff users login status
+  $queries = array(
+    "INSERT INTO StaffLog ( StaffID, SignedIn, LogTime ) VALUES (?, 0, CURRENT_TIMESTAMP)",
+    "UPDATE Staff SET Active=0, LastActive=CURRENT_TIMESTAMP WHERE StaffID=?"
+  );
+
   // Connects to the database
   $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("i", $staffID);
-  // Executes the statement code
-  $stmt->execute();
+  // Iterates through the array and executes the queries
+  foreach ($queries as $query) {
+    // turns the query into a statement
+    $stmt = $con->prepare($query);
+    // Binds the staffID to the query
+    $stmt->bind_param("i", $staffID);
+    // Executes the statement code
+    $stmt->execute();
+  }
   // Disconnects from the database
   $con->close();
 }

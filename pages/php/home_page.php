@@ -83,33 +83,27 @@ function fetchStaffDetails($username) {
   // Note that this function returns an INTEGER, NOT a STRING
   return $result;
 }
-function completePreviousStaffLog($staffID) {
-  // This function is used to complete all previous sign in logs for a staff user
-
-  // SQL query used to complete the log
-  $query = "UPDATE StaffLog SET Complete=1 WHERE StaffID=? AND SignOutTime IS NULL AND Complete=0 ORDER BY SignInTime DESC";
-  // Connects to the database
-  $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("i", $staffID);
-  // Executes the statement code
-  $stmt->execute();
-  // Disconnects from the database
-  $con->close();
-}
 function logStaffSignIn($staffID) {
-  // This function is used to save a log to the database for a given staff user
+  // This function is used to save a log when a staff user signs in
+  // It also sets the active state of this user to true
 
-  // SQL query used to create the log
-  $query = "INSERT INTO StaffLog ( StaffLogID, StaffID, SignInTime, SignOutTime, Complete ) VALUES (NULL, ?, CURRENT_TIMESTAMP, NULL, 0)";
+  // An array of SQL queries used to update the staff users login status
+  $queries = array(
+    "INSERT INTO StaffLog ( StaffID, SignedIn, LogTime ) VALUES (?, 1, CURRENT_TIMESTAMP)",
+    "UPDATE Staff SET Active=1, LastActive=CURRENT_TIMESTAMP WHERE StaffID=?"
+  );
+
   // Connects to the database
   $con = databaseConnect();
-  // turns the query into a statement
-  $stmt = $con->prepare($query);
-  $stmt->bind_param("i", $staffID);
-  // Executes the statement code
-  $stmt->execute();
+  // Iterates through the array and executes the queries
+  foreach ($queries as $query) {
+    // turns the query into a statement
+    $stmt = $con->prepare($query);
+    // Binds the staffID to the query
+    $stmt->bind_param("i", $staffID);
+    // Executes the statement code
+    $stmt->execute();
+  }
   // Disconnects from the database
   $con->close();
 }
@@ -138,8 +132,6 @@ if (isset($_POST['staff_login_form'])) {
       // Sets the home section to be the active section
       $_SESSION["activeSection"] = 'm1';
       $_SESSION["activeButton"] = 's1';
-      // Updates a previous log entry for this staff user if it exists
-      completePreviousStaffLog($staffDetails['staffID']);
       // Sets the logged in state to true and logs the user in
       logStaffSignIn($staffDetails['staffID']);
       $_SESSION['loggedIn'] = 1;
