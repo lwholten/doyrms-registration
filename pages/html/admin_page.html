@@ -189,7 +189,11 @@
 
 
       <section class="main_section" id="m21">
-        <h2 class="title">Edit Users</h2>
+        <h2>Edit Users</h2>
+        <div class="info_wrapper text">
+          <p>Welcome to the edit users area. In this area, you are able to add, edit and remove users to and from the system. These users may then use the system to sign in and out.</p>
+        </div>
+        <spacer></spacer>
         <div class="table_wrapper">
           <header>
             <h2>Users</h2>
@@ -387,7 +391,6 @@
               <th>Deviation</th>
               <th>Days</th>
               <th>Alerts</th>
-              <th>Nature</th>
               <th></th>
             </tr>
             <?php @include('../php/tables/admin/events.php'); loadEventsTable() ?>
@@ -421,19 +424,19 @@
             <div class="checkbox_input_area">
               <label><h4>Days:</h4></label>
               <div class="checkbox_wrapper">
-                <input type="checkbox" name="mon" value="64"></input>
+                <input type="checkbox" name="mon" value="M"></input>
                 <label for="mon"><h5>Monday</h5></label>
-                <input type="checkbox" name="tue" value="32"></input>
+                <input type="checkbox" name="tue" value="T"></input>
                 <label for="tue"><h5>Tuesday</h5></label>
-                <input type="checkbox" name="wed" value="16"></input>
+                <input type="checkbox" name="wed" value="W"></input>
                 <label for="wed"><h5>Wednesday</h5></label>
-                <input type="checkbox" name="thu" value="8"></input>
+                <input type="checkbox" name="thu" value="R"></input>
                 <label for="thu"><h5>Thursday</h5></label>
-                <input type="checkbox" name="fri" value="4"></input>
+                <input type="checkbox" name="fri" value="F"></input>
                 <label for="fri"><h5>Friday</h5></label>
-                <input type="checkbox" name="sat" value="2"></input>
+                <input type="checkbox" name="sat" value="U"></input>
                 <label for="sat"><h5>Saturday</h5></label>
-                <input type="checkbox" name="sun" value="1"></input>
+                <input type="checkbox" name="sun" value="S"></input>
                 <label for="sun"><h5>Sunday</h5></label>
               </div>
             </div>
@@ -447,19 +450,6 @@
               </div>
             </div>
             <spacer class="input_spacer"></spacer>
-            <div class="radio_input_area">
-              <label><h4>Event Nature:</h4></label>
-              <div class="boolean_radio radio_wrapper">
-                <input type="radio" name="new_event_nature" value="1" onclick="disableInput('new_event_location_toggle')">
-                <label>Sign In</label>
-                <input type="radio" name="new_event_nature" value="0" onclick="enableInput('new_event_location_toggle')">
-                <label>Sign Out</label>
-              </div>
-            </div>
-            <div class="input_wrapper capitalize" id="new_event_location_toggle">
-              <label for="new_event_location_id"><h4>Location ID:</h4></label>
-              <input id="new_event_location_id" name="new_event_location_id" type="number" min="1" max="999" required></input>
-            </div>
             <div class="input_wrapper">
               <input class="submit_button" type="submit" value="Make Changes" />
             </div>
@@ -499,19 +489,19 @@
             <div class="checkbox_input_area">
               <label><h4>Days*:</h4></label>
               <div class="checkbox_wrapper">
-                <input type="checkbox" name="mon" value="64" checked="checked"></input>
+                <input type="checkbox" name="mon" value="M" checked="checked"></input>
                 <label for="mon"><h5>Monday</h5></label>
-                <input type="checkbox" name="tue" value="32"></input>
+                <input type="checkbox" name="tue" value="T"></input>
                 <label for="tue"><h5>Tuesday</h5></label>
-                <input type="checkbox" name="wed" value="16"></input>
+                <input type="checkbox" name="wed" value="W"></input>
                 <label for="wed"><h5>Wednesday</h5></label>
-                <input type="checkbox" name="thu" value="8"></input>
+                <input type="checkbox" name="thu" value="R"></input>
                 <label for="thu"><h5>Thursday</h5></label>
-                <input type="checkbox" name="fri" value="4"></input>
+                <input type="checkbox" name="fri" value="F"></input>
                 <label for="fri"><h5>Friday</h5></label>
-                <input type="checkbox" name="sat" value="2"></input>
+                <input type="checkbox" name="sat" value="U"></input>
                 <label for="sat"><h5>Saturday</h5></label>
-                <input type="checkbox" name="sun" value="1"></input>
+                <input type="checkbox" name="sun" value="S"></input>
                 <label for="sun"><h5>Sunday</h5></label>
               </div>
             </div>
@@ -525,19 +515,6 @@
               </div>
             </div>
             <spacer class="input_spacer"></spacer>
-            <div class="radio_input_area">
-              <label><h4>Event Nature:</h4></label>
-              <div class="boolean_radio radio_wrapper">
-                <input type="radio" name="event_nature" value="1" onclick="disableInput('event_location_toggle')">
-                <label>Sign In</label>
-                <input type="radio" name="event_nature" value="0" checked="checked" onclick="enableInput('event_location_toggle')">
-                <label>Sign Out</label>
-              </div>
-            </div>
-            <div class="input_wrapper capitalize" id="event_location_toggle">
-              <label for="event_location_id"><h4>Location ID:</h4></label>
-              <input id="event_location_id" name="event_location_id" type="number" min="1" max="999" required></input>
-            </div>
             <div class="input_wrapper">
               <input class="submit_button" type="submit" value="Add event" />
             </div>

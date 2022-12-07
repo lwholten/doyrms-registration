@@ -227,21 +227,88 @@ function checkUserSignedIn($name) {
   // Returns 1 if the user is signed in, 0 if the user is signed out
   return $result;
 }
+function fetchEventID($location) {
+  // This function uses the location and nature of a sign in/out to decide whether the user has signed out for an event or not
+  // NOTES:
+  // $location -> STRING: Must be the name of a location
+  // $nature -> BOOLEAN: Must determine the nature of the event, whether signing in (1) or signing out (0)
+  // SQL query used to get all events the correspond to the time, location and nature of the user sign in/out
+  $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) AND Days LIKE ? ORDER BY StartTime ASC LIMIT 5";
+  // Gets the current day and sets it to the corresponding 'day' value for the event
+  // Concatinates '%' to the beginning and end so that the 'LIKE' statement functions correctly
+  // Note: date('w') returns a numerical value for the current day of the week
+  $day = '%'.substr("MTWRFUS", date('w')-1, date('w')-2).'%';
+  // Connects to the database
+  $con = databaseConnect();
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $location, $day);
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+  while ($row = $result->fetch_array(MYSQLI_NUM)) {
+    // NOTES:
+    // for $row[n] when n=0 -> EventID, n=1 -> StartTime, n=2 -> EndTime, n=3 -> Deviation
+    if ($row[3] === NULL || $row[3] === "") {
+      $deviation = 0;
+    }
+    else {
+      $deviation = $row[3];
+    }
+    // Calculates the early and late times by adding and subtracting the deviation time respectively
+    $earlyTime = date('H:i:s', strtotime($row[1]) - (60*$deviation));
+    $lateTime = date('H:i:s', strtotime($row[2]) + (60*$deviation));
+    // Sets the start and end times for the event using the data fetched from the table
+    $startTime = $row[1];
+    $endTime = $row[2];
+    // Gets the current time
+    $currentTime = date('H:i:s', time());
+
+    // Checks whether the user is early for this event
+    if ($currentTime >= $earlyTime && $currentTime <= $startTime) {
+      // Calculates how early the user is
+      $minutesEarly = -1*intval(date('i', (strtotime($startTime) - strtotime($currentTime))));
+      // Returns the eventID, breaking the while loop
+      return [$row[0], $minutesEarly];
+      exit();
+    }
+    else if ($currentTime >= $startTime && $currentTime <= $endTime) {
+      // Returns the eventID, breaking the while loop
+      echo "<script>window.alert('asdasd')</script>";
+      return [$row[0], 0];
+      exit();
+    }
+    else if ($currentTime >= $endTime && $currentTime <= $lateTime) {
+      // Calculates how late the user is
+      $minutesLate = intval(date('i', (strtotime($LateTime) - strtotime($currentTime))));
+      // Returns the eventID, breaking the while loop
+      return [$row[0], $minutesLate];
+      exit();
+    }
+  }
+  // Disconnects from the database
+  $con->close();
+  // Returns the EventID and MinutesLate as NULL since no event was triggered
+  return [NULL, NULL];
+}
 function userSignOut($name, $location) {
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
   $lname = $tempArray[1];
   unset($tempArray);
+  // Fetches an eventID if a user triggers an event on signing out, if an event did not trigger '[NULL, 0]' is returned
+  // Note that the '1' implies that it is a 'sign out event'
+  $eventDetails = fetchEventID($location);
   // SQL query used to create the log
-  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, Auto ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, NULL, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
+  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, MinutesLate, Auto ) SELECT  Users.UserID, Locations.LocationID, CURRENT_TIMESTAMP, ?, ?, 0 FROM Users, Locations WHERE Users.Forename=? AND Users.Surname=? AND Locations.LocationName=?";
   // SQL query used to update the users location
   $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
   $con = databaseConnect();
   // turns the log query into a statement
   $logStmt = $con->prepare($logQuery);
-  $logStmt->bind_param("sss", $fname, $lname, $location);
+  $logStmt->bind_param("iisss", $eventDetails[0], $eventDetails[1], $fname, $lname, $location);
   // Executes the statement code
   $logStmt->execute();
   // turns the location query into a statement
@@ -260,7 +327,7 @@ function userSignIn($name, $auto) {
   $lname = $tempArray[1];
   unset($tempArray);
   // SQL query used to create a user log
-  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, Auto ) SELECT  Users.UserID, NULL, CURRENT_TIMESTAMP, NULL, ? FROM Users WHERE Users.Forename=? AND Users.Surname=?";
+  $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, MinutesLate, Auto ) SELECT  Users.UserID, NULL, CURRENT_TIMESTAMP, NULL, NULL, ? FROM Users WHERE Users.Forename=? AND Users.Surname=?";
   // SQL query used to update the users location
   $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database

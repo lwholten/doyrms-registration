@@ -471,14 +471,14 @@ if (isset($_POST['remove_location'])) {
 
 
 /* Used to add an event to the database */
-function addEvent($name, $locationID, $startTime, $endTime, $deviation, $daysDec, $alerts, $nature) {
+function addEvent($name, $locationID, $startTime, $endTime, $deviation, $days, $alerts) {
   /*SQL query used to insert the event into the table*/
-  $query = "INSERT INTO `Events` (`EventID`, `Event`, `LocationID`, `StartTime`, `EndTime`, `Deviation`, `Days`, `Alerts`, `Nature`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO `Events` (`EventID`, `Event`, `LocationID`, `StartTime`, `EndTime`, `Deviation`, `Days`, `Alerts`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
   /*Connects to the database*/
   $con = databaseConnect();
   /*turns the query into a prepared statement*/
   $stmt = $con->prepare($query);
-  $stmt->bind_param("sissiiii", $name, $locationID, $startTime, $endTime, $deviation, $daysDec, $alerts, $nature);
+  $stmt->bind_param("sissisi", $name, $locationID, $startTime, $endTime, $deviation, $days, $alerts);
   /*Executes the statement code*/
   $stmt->execute();
   /*Disconnects from the database*/
@@ -499,7 +499,7 @@ if (isset($_POST['add_event'])) {
   // e.g Monday = 64, Tuesday = 32, Friday = 4
   // So Mon, Tue, Fri gives 64 + 32 + 4 = 100
   // The 100 is then saved to the database as a 7-bit binary: 1100100;
-  $eventDaysDec = 0;
+  $eventDays = "";
   $days = ['mon','tue','wed','thu','fri','sat','sun'];
   // Checks if the event nature is set to sign in ot sign out
   // For sign out the location ID is requried
@@ -513,10 +513,11 @@ if (isset($_POST['add_event'])) {
   // Iterates through each day of the week and appends the days value if it has been selected
   foreach($days as $day) {
     if (isset($_POST[$day])) {
-      $eventDaysDec += $_POST[$day];
+      $eventDays .= $_POST[$day];
     }
   };
-  addEvent($_POST['event_name'],$locationID,$_POST['event_start_time'],$_POST['event_end_time'],$_POST['event_deviation'],$eventDaysDec,$_POST['event_alerts'],$_POST['event_nature']);
+  echo "<script>'window.alert($eventDays)'</script>";
+  addEvent($_POST['event_name'],$locationID,$_POST['event_start_time'],$_POST['event_end_time'],$_POST['event_deviation'],$eventDays,$_POST['event_alerts'],$_POST['event_nature']);
 }
 /*Used to remove locations from the database*/
 /*Used to change location entrys on the database*/
@@ -542,10 +543,6 @@ function changeEventEntry($eventID, $newValue, $fieldName) {
     $query = "UPDATE Events SET Alerts=? WHERE EventID=?";
     $params = "ii";
   }
-  elseif ($fieldName === "EventNature") {
-    $query = "UPDATE Events SET Nature=? WHERE EventID=?";
-    $params = "ii";
-  }
   elseif ($fieldName === "EventLocationID") {
     if ($newValue === NULL) {
       $query = "UPDATE Events SET LocationID=NULL WHERE EventID=?";
@@ -559,7 +556,7 @@ function changeEventEntry($eventID, $newValue, $fieldName) {
   }
   elseif ($fieldName === "EventDays") {
     $query = "UPDATE Events SET Days=? WHERE EventID=?";
-    $params = "ii";
+    $params = "si";
   }
   /*Connects to the database*/
   $con = databaseConnect();
@@ -607,41 +604,21 @@ if (isset($_POST['edit_event_form'])) {
   if (isset($_POST['new_event_alerts'])) {
     changeEventEntry($_POST['event_id'],$_POST['new_event_alerts'],'EventAlerts');
   }
-  /*If the event nature needs to be changed*/
-  if (isset($_POST['new_event_nature'])) {
-    // For sign out the location ID is requried
-    if (isset($_POST['new_event_nature']) && $_POST['new_event_nature'] === "0") {
-      // If the location ID has been set and the field was not left empty
-      if (isset($_POST['new_event_location_id']) && $_POST['new_event_location_id'] === None) {
-        $locationID = $_POST['new_event_location_id'];
-      }
-      // Else
-      else {
-        $locationID = NULL;
-      }
-    }
-    // Otherwise the location ID is not required and is set to NULL
-    else {
-      $locationID = NULL;
-    }
-    changeEventEntry($_POST['event_id'],$_POST['new_event_nature'],'EventNature');
-    changeEventEntry($_POST['event_id'],$locationID,'EventLocationID');
-  }
 
   $days = ['mon','tue','wed','thu','fri','sat','sun'];
   // For each of the days if any have been changed, update the 'Days' value stored in the table
   foreach ($days as $day) {
     if (isset($_POST[$day])) {
       // Calculates a new value for the 'Days' column of the table
-      $eventDaysDec = 0;
+      $eventDays = "";
       // This is done by iterating through all the days and appending their value if it had been set
       foreach($days as $day) {
         if (isset($_POST[$day])) {
-          $eventDaysDec += $_POST[$day];
+          $eventDays .= $_POST[$day];
         }
       };
       // Updates the events days using the new value
-      changeEventEntry($_POST['event_id'],$eventDaysDec,'EventDays');
+      changeEventEntry($_POST['event_id'],$eventDays,'EventDays');
       break;
     }
   }

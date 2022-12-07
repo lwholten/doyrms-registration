@@ -13,7 +13,12 @@ function loadUserAccountsTable() {
   while($record = $result -> fetch_array(MYSQLI_NUM)) {
     echo "<tr>";
     foreach ($record as $value) {
-      echo "<td> $value </td>";
+      if ($value === NULL || $value === "") {
+        echo "<td> - </td>";
+      }
+      else {
+        echo "<td> $value </td>";
+      }
     }
     /*Makes the edit section appear for the selected record, passes the record id and user forename + surname as parameters*/
     /*record[0] --> The ID of that record | record[1] --> The name of that location*/
