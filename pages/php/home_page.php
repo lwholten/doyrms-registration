@@ -249,7 +249,7 @@ function fetchEventID($location) {
   while ($row = $result->fetch_array(MYSQLI_NUM)) {
     // NOTES:
     // for $row[n] when n=0 -> EventID, n=1 -> StartTime, n=2 -> EndTime, n=3 -> Deviation
-    if ($row[3] === NULL || $row[3] === "") {
+    if ($row[3] === NULL || $row[3] === "") {      echo "<script>window.alert('asdasd')</script>";
       $deviation = 0;
     }
     else {
@@ -274,7 +274,6 @@ function fetchEventID($location) {
     }
     else if ($currentTime >= $startTime && $currentTime <= $endTime) {
       // Returns the eventID, breaking the while loop
-      echo "<script>window.alert('asdasd')</script>";
       return [$row[0], 0];
       exit();
     }
