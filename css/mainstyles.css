@@ -4,16 +4,21 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 :root {
+  --white-pure: #FFFFFF;
   --white: #F8F5FA;
   --black: #000000;
   --navy: #0A2240;
   --grey: #6E7C8E;
   --light-grey: #D9D9D9;
-  --burgundy: #72253D;
+
+  --header-bg: var(--white-pure);
+  --navbar-button: var(--black);
+  --navbar-button-hover: var(--blue);
+  --text-primary: var(--black);
   --bookmark_border: var(--black);
   --bookmark_background: var(--burgundy);
-  --green: rgba(162, 242, 178, 1);
-  --red: rgba(248, 200, 220, 1);
+
+  --dynamic_background: 'linear-gradient(rgb(183, 234, 255) 0%, rgb(148, 223, 255) 100%)';
 }
 
 body {
@@ -26,7 +31,7 @@ body {
   height: auto;
   min-height: 120px;
   max-height: 100%;
-  background: var(--white);
+  background: var(--header-bg);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -65,18 +70,18 @@ navbar button {
   background: none;
   width: auto;
   height: auto;
-  color: var(--black);
+  color: var(--navbar-button);
   cursor: pointer;
   display: inline-block;
   white-space: nowrap;
 }
 navbar button:hover {
-  color: var(--blue);
+  color: var(--navbar-button-hover);
 }
 navbar .divider {
   display: block;
   width: 2px;
-  background: var(--black);
+  background: var(--navbar-button);
   height: 22px;
   border-radius: 1px;
   margin: 0px 20px;
@@ -139,7 +144,7 @@ navbar .divider {
 
 .text {
   font-family: 'Montserrat';
-  color: var(--black);
+  color: var(--text-primary);
   display: inline-block;
 }
 .text * {

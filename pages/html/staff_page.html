@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <head>
+<!-- jQuery UI -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<!-- dynamic  background -->
+<script type="text/javascript" src="../../scripts/jquery/dynamic_background.js"></script>
+
+<!-- staff page javascript functions -->
 <script src="../../scripts/staff_page_functions.js"></script>
+
 <meta charset="UTF-8" lang="en">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Staff | DOYRMS Registration</title>
+<title>Home | DOYRMS Registration</title>
 </head>
 
 <body>
@@ -36,6 +46,7 @@
           <li class="sidebar_subtitle"><h3>Events</h3></li>
           <li onclick="toggleMainSection(this.id,'events_summary_section')" class="sidebar_button" id="events_summary_button"><h4>Summary</h4></li>
           <?php @include('../php/sidebar/staff/event_buttons.php'); loadSidebarEventButtons() ?>
+
           <li class="sidebar_subtitle"><h3>Account</h3></li>
           <li onclick="toggleMainSection(this.id,'change_password_section')" class="sidebar_button" id="change_password_button"><h4>Change Password</h4></li>
           <li onclick="toggleMainSection(this.id,'customise_section')" class="sidebar_button" id="customise_button"><h4>Customise</h4></li>

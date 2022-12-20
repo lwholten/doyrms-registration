@@ -28,42 +28,42 @@ function toggleSidebar() {
 function toggleMainSection(button_id, section_id) {
   var section = document.getElementById(section_id);
   var button = document.getElementById(button_id);
-  /*If the parameters are left empty*/
+  // If the parameters are left empty
   if (section === null) {
-    /*Outputs an error message to the console*/
+    // Outputs an error message to the console
     console.log('ERROR: the \'section_id\' is invalid');
   }
   else if (button === null) {
-    /*Outputs an error message to the console*/
+    // Outputs an error message to the console
     console.log('ERROR: the \'button_id\' is invalid');
   }
   else {
-    /*Saves active sections and active buttons to an array*/
+    // Saves active sections and active buttons to an array
     var active_sections = document.getElementsByClassName('main_section_active');
     var active_buttons = document.getElementsByClassName('sidebar_button_active');
-    /*Selects the first element of the arrays*/
+    // Selects the first element of the arrays
     var old_section = active_sections[0];
     var old_button = active_buttons[0];
-    /*Hides the old section and removes the active class*/
+    // Hides the old section and removes the active class
     old_section.style.display = 'none';
     old_section.classList.remove('main_section_active');
-    /*resets the background color of the old button and removes the active class*/
+    // resets the background color of the old button and removes the active class
     old_button.classList.remove('sidebar_button_active');
-    /*Shows the new section and adds the active class*/
+    // Shows the new section and adds the active class
     section.style.display = 'block';
     section.classList.add('main_section_active');
-    /*Updates the background color of the selected button and adds the active class*/
+    // Updates the background color of the selected button and adds the active class
     button.classList.add('sidebar_button_active');
   }
 }
 
 function loadActiveSection(section_id, button_id) {
-  /*Precautions in case the variables are undefined, will load the welcome page instead*/
+  // Precautions in case the variables are undefined, will load the welcome page instead
   if (section_id === null || section_id === undefined || section_id === "") { section_id = 'm1'; };
   if (button_id === null || section_id === undefined || button_id === "") {button_id = 's1'; };
-  /*Sets the correspoding section and button to be displayed on the page*/
+  // Sets the correspoding section and button to be displayed on the page
   document.getElementById(section_id).classList.add('main_section_active');
   document.getElementById(button_id).classList.add('sidebar_button_active');
-  /*Strips all the other sections and buttons of the active class*/
+  // Strips all the other sections and buttons of the active class
   toggleMainSection(button_id, section_id);
 }

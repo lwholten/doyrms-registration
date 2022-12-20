@@ -7,7 +7,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('../../images/poly1.png');
+  background: var(--dynamic_background);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;

@@ -1,8 +1,8 @@
-/* This file contains all of the scripts used to autocomplete text fields*/
+// This file contains all of the scripts used to autocomplete text fields
 
-/* Used to display the location suggestions when a user is selecting a location*/
+// Used to display the location suggestions when a user is selecting a location
 $(document).ready(function() {
-  /* Detects when the locations input field is being used and displays locations from the database */
+  // Detects when the locations input field is being used and displays locations from the database
   $("#locations_input_field").keyup(function() {
     $.ajax({
         type: 'POST',
@@ -24,10 +24,10 @@ function selectLocation(val) {
 	$("#location_suggestions").empty();
 }
 
-/* Used to display the name of users entering their initials*/
+// Used to display the name of users entering their initials
 $(document).ready(function() {
-  /* Detects when the initials have been entered and displays available names from the database */
-  /* For the sign in field */
+  // Detects when the initials have been entered and displays available names from the database
+  // For the sign in field
   $("#sign_in_initials_field").keyup(function() {
     $.ajax({
         type: 'POST',
@@ -42,7 +42,7 @@ $(document).ready(function() {
       }
     });
   });
-  /* For the sign out field */
+  // For the sign out field
   $("#sign_out_initials_field").keyup(function() {
     $.ajax({
         type: 'POST',
@@ -59,7 +59,7 @@ $(document).ready(function() {
   });
 });
 
-/* Since this updates both the sign in and sign out initials fields, the user doesn't have to restype their name if they clicked the wrong in/out option*/
+// Since this updates both the sign in and sign out initials fields, the user doesn't have to restype their name if they clicked the wrong in/out option
 function selectInitials(val) {
 	$("#sign_in_initials_field").val(val.substr(5));
   $("#sign_out_initials_field").val(val.substr(5));

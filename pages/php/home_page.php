@@ -267,7 +267,8 @@ function fetchEventID($location) {
     // Checks whether the user is early for this event
     if ($currentTime >= $earlyTime && $currentTime <= $startTime) {
       // Calculates how early the user is
-      $minutesEarly = -1*intval(date('i', (strtotime($startTime) - strtotime($currentTime))));
+      // Time early is stored as a positive integer
+      $minutesEarly = intval(date('i', (strtotime($startTime) - strtotime($currentTime))));
       // Returns the eventID, breaking the while loop
       return [$row[0], $minutesEarly];
       exit();
@@ -279,7 +280,8 @@ function fetchEventID($location) {
     }
     else if ($currentTime >= $endTime && $currentTime <= $lateTime) {
       // Calculates how late the user is
-      $minutesLate = intval(date('i', (strtotime($LateTime) - strtotime($currentTime))));
+      // Lateness is stored as a negative integer
+      $minutesLate = -1*intval(date('i', (strtotime($LateTime) - strtotime($currentTime))));
       // Returns the eventID, breaking the while loop
       return [$row[0], $minutesLate];
       exit();
