@@ -20,7 +20,7 @@
 
 <body>
   <header class="text" id="main_header">
-    <img src="../../images/logo.png"></img>
+    <img src="../../images/png/logo.png"></img>
     <h1>DOYRMS Registration</h1>
     <navbar>
       <form method="post">
@@ -66,10 +66,29 @@
           <p>This is the home area. Using the control panel located here, you can carry out many operations such as searching for a specific user or signing a user in/out.</p>
         </div>
         <spacer></spacer>
-        <div id="control_panel" class="text">
+        <div id="dashboard" class="text">
           <header>
-            <h3>Control Panel</h3>
+            <h3>Your Dashboard</h3>
           </header>
+          <div class="dashboard_body text">
+            <aside class="body_section">
+              <h3>Quick Access</h3>
+              <divider></divider>
+              <ul>
+                <li><img src="../../images/svg/search.svg" alt="Search SVG"><h4>Search for a user</h4></li>
+                <li><img src="../../images/svg/download.svg" alt="Download SVG"><h4>Download data</h4></li>
+                <li><img src="../../images/svg/sign-in-out.svg" class="flip" alt="Download SVG"><h4>Sign user out</h4></li>
+                <li><img src="../../images/svg/sign-in-out.svg" alt="Download SVG"><h4>Sign user in</h4></li>
+                <li><img src="../../images/svg/padlock.svg" alt="Download SVG"><h4>Restrict user</h4></li>
+                <li><img src="../../images/svg/sign-away.svg" alt="Download SVG"><h4>Mark user as away</h4></li>
+              </ul>
+            </aside>
+            <section class="body_section">
+              <h3>Analytics</h3>
+              <divider></divider>
+              <container class="analytics_wrapper"></container>
+            </section>
+          </div>
           <footer/>
         </div>
       </section>
