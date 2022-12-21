@@ -5,6 +5,8 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
+<!-- Load icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- dynamic  background -->
 <script type="text/javascript" src="../../scripts/jquery/dynamic_background.js"></script>
 
@@ -25,9 +27,12 @@
         <button type="submit" class="navbar_button blue_button" id="sign_out_button" name="staff_sign_out"><span class="left_arrow"></span><spacer></spacer><h5>LOG OUT</h5></button>
       </form>
       <span class="divider"></span>
-      <button><h5>CONTACT</h5></button>
-      <span class="divider"></span>
-      <button><h5>HELP</h5></button>
+      <div class="search_bar_wrapper">
+        <input id="ita" type="search" name="search" placeholder="Search..."></input>
+        <button type="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
     </navbar>
   </header>
   <div class="wrapper">
@@ -41,14 +46,14 @@
           <li onclick="toggleMainSection(this.id,'home_section')" class="sidebar_button sidebar_button_active" id="home_button"><h4>Home</h4></li>
           <li onclick="toggleMainSection(this.id,'activity_section')" class="sidebar_button" id="activity_button"><h4>Activity</h4></li>
           <li onclick="toggleMainSection(this.id,'users_section')" class="sidebar_button" id="users_button"><h4>Users</h4></li>
-          <li onclick="toggleMainSection(this.id,'off_site_section')" class="sidebar_button" id="off_site_button"><h4>Off Site</h4></li>
+          <li onclick="toggleMainSection(this.id,'away_section')" class="sidebar_button" id="away_button"><h4>Away</h4></li>
           <li onclick="toggleMainSection(this.id,'about_section')" class="sidebar_button" id="about_button"><h4>About</h4></li>
           <li class="sidebar_subtitle"><h3>Events</h3></li>
           <li onclick="toggleMainSection(this.id,'events_summary_section')" class="sidebar_button" id="events_summary_button"><h4>Summary</h4></li>
           <?php @include('../php/sidebar/staff/event_buttons.php'); loadSidebarEventButtons() ?>
 
           <li class="sidebar_subtitle"><h3>Account</h3></li>
-          <li onclick="toggleMainSection(this.id,'change_password_section')" class="sidebar_button" id="change_password_button"><h4>Change Password</h4></li>
+          <li onclick="toggleMainSection(this.id,'edit_details_section')" class="sidebar_button" id="edit_details_button"><h4>Edit Details</h4></li>
           <li onclick="toggleMainSection(this.id,'customise_section')" class="sidebar_button" id="customise_button"><h4>Customise</h4></li>
         </ul>
       </container>
@@ -58,6 +63,14 @@
         <h2>Welcome, <?=$_SESSION["staffUsername"]?>.</h2>
         <div class="info_wrapper text">
           <p>Welcome to DOYRMS registration, a web application programmed by Luke Holten.</p>
+          <p>This is the home area. Using the control panel located here, you can carry out many operations such as searching for a specific user or signing a user in/out.</p>
+        </div>
+        <spacer></spacer>
+        <div id="control_panel" class="text">
+          <header>
+            <h3>Control Panel</h3>
+          </header>
+          <footer/>
         </div>
       </section>
       <section class="main_section" id="activity_section">
@@ -68,7 +81,7 @@
         <spacer></spacer>
         <div class="table_wrapper">
           <header>
-            <h2>Recent Activity</h2>
+            <h3>Recent Activity</h2>
           </header>
           <table class='table' id="recent_activity_table">
             <tr>
@@ -91,7 +104,7 @@
         <spacer></spacer>
         <div class="table_wrapper">
           <header>
-            <h2>User Status</h2>
+            <h3>User Status</h2>
           </header>
           <table class='table' id="user_status_table">
             <tr>
@@ -107,8 +120,28 @@
           <footer/>
         </div>
       </section>
-      <section class="main_section" id="off_site_section">
-        <h2>Off Site</h2>
+      <section class="main_section" id="away_section">
+        <h2>Away</h2>
+        <div class="info_wrapper text">
+          <p>Need to see who is currently away? This section can provide you will all the relevant information you may need.</p>
+        </div>
+        <spacer></spacer>
+        <div class="table_wrapper">
+          <header>
+            <h3>Away Users</h2>
+          </header>
+          <table class='table' id="away_table">
+            <tr>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Location</th>
+              <th>Date signed out</th>
+              <th>Date expected back</th>
+            </tr>
+            <?php @include('../php/tables/staff/away_users.php'); fillAwayUsersTable() ?>
+          </table>
+          <footer/>
+        </div>
       </section>
       <section class="main_section" id="about_section">
         <h2>About</h2>
@@ -131,11 +164,17 @@
       </section>
       <?php @include('../php/sections/staff/event_sections.php'); loadEventSections() ?>
 
-      <section class="main_section" id="change_password_section">
-        <h2>Account - Change Password</h2>
+      <section class="main_section" id="edit_details_section">
+        <h2>Account - Edit Details</h2>
+        <div class="info_wrapper text">
+          <p>In this section you can edit your account details. New email address? no problem, you can change it here.</p>
+        </div>
       </section>
       <section class="main_section" id="customise_section">
         <h2>Account - Customise</h2>
+        <div class="info_wrapper text">
+          <p>In this section you can customise your site experience. Fancy trying dark mode? You can enable it here.</p>
+        </div>
       </section>
     </div>
   </div>

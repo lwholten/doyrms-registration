@@ -40,6 +40,10 @@ function updateBackground() {
   }
   // Else, update tha background
   else {
+    // Allows the background to be set during midnight, since at midnight hours is set to 0 and must be 24 instead
+    if (currentHour === 0) {
+      currentHour = 24;
+    }
     // Sets the css variable 'dynamic_background' to the backgrounds array indexed with the current hour
     document.documentElement.style.setProperty('--dynamic_background', backgrounds[currentHour-1]);
   }

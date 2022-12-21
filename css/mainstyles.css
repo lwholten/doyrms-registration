@@ -29,7 +29,7 @@ body {
   position: sticky;
   width: 100%;
   height: auto;
-  min-height: 120px;
+  min-height: 100px;
   max-height: 100%;
   background: var(--header-bg);
   display: flex;
@@ -39,11 +39,10 @@ body {
   top: 0;
   white-space: nowrap;
   z-index: 2;
-  transition: min-height 200ms linear;
 }
 #main_header img {
-  height: 90px;
-  width: 98px;
+  height: 60px;
+  width: 64px;
   margin: 16px 0px 16px 16px;
   border: none;
   outline: 0;
@@ -54,6 +53,7 @@ body {
   align-self: center;
   width: auto;
   text-align: left;
+  font-size: 32px;
 }
 
 navbar {
@@ -82,19 +82,19 @@ navbar .divider {
   display: block;
   width: 2px;
   background: var(--navbar-button);
-  height: 22px;
-  border-radius: 1px;
+  height: 28px;
+  border-radius: 2px;
   margin: 0px 20px;
 }
 
 .blue_button {
   background: var(--navy);
-  height: 40px;
+  height: 34px;
   width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 16px;
+  border-radius: 12px;
   color: var(--white);
   padding: 0px 16px;
   transition: color 100ms;

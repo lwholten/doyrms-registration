@@ -114,7 +114,7 @@ function loadEventSections() {
     echo "<p>$description</p><spacer></spacer>";
     // Declares the start of a table
     $table_id = strtolower("$record[1]_event_table");
-    echo "<div class='table_wrapper event_table_wrapper' style='background: $tableBackground'><header><h2>$title</h2></header><table class='table' id='$table_id'><tr><th>Nature</th><th>Forename</th><th>Surname</th><th>Timing</th></tr>";
+    echo "<div class='table_wrapper event_table_wrapper' style='background: $tableBackground'><header><h3>$title</h3></header><table class='table' id='$table_id'><tr><th>Nature</th><th>Forename</th><th>Surname</th><th>Timing</th></tr>";
     // Populates the table with data
     populateTable($record[0]);
     // Declares the end of the table and section
