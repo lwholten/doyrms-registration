@@ -44,7 +44,7 @@ FROM Users
           "inr"  => $record[2],
           // Out = (out - out & restricted - away - away & restricted)
           // This simplifies to: (out - out & restricted - away)
-          "out"  => ($record[1] - $record[4] - $record[5]),
+          "out"  => ($record[3] - $record[4] - $record[5]),
           // Out & restricted = (out & restricted - away & restricted)
           "outr"  => ($record[4] - $record[6])
       );
