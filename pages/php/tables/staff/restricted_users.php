@@ -11,7 +11,7 @@ function fillRestrictedUsersTable() {
   $con->close();
   // Iterates through the table records and displays them on the web page's table
   while($record = $result -> fetch_array(MYSQLI_NUM)) {
-    echo "<tr><td>$record[1]</td><td>$record[2]</td><td>$record[3]</td>";
+    echo "<tr><td class='restricted'>$record[1]</td><td class='restricted'>$record[2]</td><td>$record[3]</td>";
     // Outputs the date expected back or N/A if it has not been set
     if ($record[4] != NULL) {
 
@@ -26,18 +26,20 @@ function fillRestrictedUsersTable() {
       // An array of the time remaining in the format: time, suffix
       $timeRemaining = [
         // Note, ltrim() removes all leading 0's from the value, this prevents '05' hours etc.
-        [ltrim(strval($interval->format("%m")), "0"), "Months "],
-        [ltrim(strval($interval->format("%d")), "0"), "Days "],
-        [ltrim(strval($interval->format("%H")), "0"), "Hours "],
-        [ltrim(strval($interval->format("%i")), "0"), "Minutes "]
+        [strval($interval->format("%m")), "Months "],
+        [strval($interval->format("%d")), "Days "],
+        [strval($interval->format("%H")), "Hours "],
+        [strval($interval->format("%i")), "Minutes "],
+        [strval($interval->format("%s")), "Seconds "]
       ];
 
       // If the time difference is positive (before the end date)
+      // (uses the time to create a +1 or -1)
       if (intval($interval->format("%R1")) > 0) {
 
         // removes (unsets) all elements contained within the array which has a value of 0 or NULL
         for ($i = 0; $i <= (count($timeRemaining)-1); $i++) {
-          if (intval($timeRemaining[$i][0]) === 0 || $timeRemaining[$i][0] === NULL) {
+          if (strval($timeRemaining[$i][0]) === "0" || strval($timeRemaining[$i][0]) === "00" || $timeRemaining[$i][0] === NULL) {
             // This stops it from being output if the value is zero
             // e.g 0 Months, 0 Days, 5 Hours, 9 Minutes -> 5 Hours, 9 Minutes
             unset($timeRemaining[$i]);
@@ -48,7 +50,11 @@ function fillRestrictedUsersTable() {
         $max = 0;
         foreach($timeRemaining as $value) {
           // Output the time and suffix
-          echo "$value[0] $value[1]";
+          if (strval($value[0]) === "0" || strval($value[0]) === "00") {
+            continue;
+          } else {
+            echo "$value[0] $value[1]";
+          }
           // Limits it so only 2 may be present per record
           if (++$max == 2) break;
         }
@@ -59,10 +65,9 @@ function fillRestrictedUsersTable() {
       else {
         echo "<td>None</td>";
       }
-
     }
     else {
-      echo "<td>N/A</td><td>-</td>";
+      echo "<td>N/A<td><td>-</td>";
     }
     // Outputs the description
     if ($record[5] != NULL) {

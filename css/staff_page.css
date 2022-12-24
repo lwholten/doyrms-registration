@@ -516,12 +516,17 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .grey {
   background-color: var(--grey);
 }
+.restricted {
+  color: var(--red);
+  font-weight: bold;
+}
+
 .info_wrapper {
   width: 100%;
   height: auto;
 }
 spacer {
-  height: 32px;
+  height: 16px;
   width: 100%;
   display: block;
   background: none;

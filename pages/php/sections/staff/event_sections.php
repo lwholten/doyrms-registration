@@ -4,7 +4,7 @@ function populateTable($eventID) {
   $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
   /*SQL code to get the table data*/
   /*Note, this code MUST be changed in the future not to use a PHP variable in the query statement*/
-  $sql = "SELECT Users.UserID, Users.Forename, Users.Surname, (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END) FROM Users ORDER BY (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END), Users.Forename ASC;";
+  $sql = "SELECT Users.UserID, Users.Forename, Users.Surname, (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END) AS Timing, (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Users ORDER BY (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END), Users.Forename, Users.Surname ASC";
   /*Saves the result of the SQL code to a variable*/
   $result = $con->query($sql);
   /*Disconnects from the database*/
@@ -36,8 +36,15 @@ function populateTable($eventID) {
     }
     echo "</td>";
     // Outputs the first and last names of the user
-    echo "<td> $record[1] </td>";
-    echo "<td> $record[2] </td>";
+    if ($record[4] === 1 || $record[4] === "1") {
+      // If the user is restricted, change the font
+      echo "<td class='restricted'> $record[1] </td>";
+      echo "<td class='restricted'> $record[2] </td>";
+    }
+    else {
+      echo "<td> $record[1] </td>";
+      echo "<td> $record[2] </td>";
+    }
     // Outputs the timing for the event (how many minutes late/early)
     echo "<td>";
     if (intval($record[3]) > 0) {
