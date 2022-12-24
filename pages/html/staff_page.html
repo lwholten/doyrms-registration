@@ -47,6 +47,7 @@
           <li onclick="toggleMainSection(this.id,'activity_section')" class="sidebar_button" id="activity_button"><h4>Activity</h4></li>
           <li onclick="toggleMainSection(this.id,'users_section')" class="sidebar_button" id="users_button"><h4>Users</h4></li>
           <li onclick="toggleMainSection(this.id,'away_section')" class="sidebar_button" id="away_button"><h4>Away</h4></li>
+          <li onclick="toggleMainSection(this.id,'restricted_section')" class="sidebar_button" id="restricted_button"><h4>Restricted</h4></li>
           <li onclick="toggleMainSection(this.id,'about_section')" class="sidebar_button" id="about_button"><h4>About</h4></li>
           <li class="sidebar_subtitle"><h3>Events</h3></li>
           <li onclick="toggleMainSection(this.id,'events_summary_section')" class="sidebar_button" id="events_summary_button"><h4>Summary</h4></li>
@@ -86,7 +87,7 @@
             <section class="body_section">
               <h3>Analytics</h3>
               <divider></divider>
-              <container class="analytics_wrapper"></container>
+              <?php @include('../php/sections/staff/dashboard_analytics.php'); fillDashboardAnalytics() ?>
             </section>
           </div>
           <footer/>
@@ -155,9 +156,36 @@
               <th>Surname</th>
               <th>Location</th>
               <th>Date signed out</th>
+              <th>Time</th>
               <th>Date expected back</th>
+              <th>Time</th>
             </tr>
             <?php @include('../php/tables/staff/away_users.php'); fillAwayUsersTable() ?>
+          </table>
+          <footer/>
+        </div>
+      </section>
+      <section class="main_section" id="restricted_section">
+        <h2>Restricted</h2>
+        <div class="info_wrapper text">
+          <p>In this section, you are able to see all restricted users.</p>
+          <p>Restricted users are unable to use the system unless they are signing in or out for an event. Staff are also alerted when a restricted user performs an action like an attempted sign out.</p>
+        </div>
+        <spacer></spacer>
+        <div class="table_wrapper">
+          <header>
+            <h3>Restricted Users</h2>
+          </header>
+          <table class='table' id="away_table">
+            <tr>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Date Restricted</th>
+              <th>Until</th>
+              <th>Time Remaining</th>
+              <th>Description</th>
+            </tr>
+            <?php @include('../php/tables/staff/restricted_users.php'); fillRestrictedUsersTable() ?>
           </table>
           <footer/>
         </div>
