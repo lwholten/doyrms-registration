@@ -12,6 +12,10 @@
 
 <!-- staff page javascript functions -->
 <script src="../../scripts/staff_page_functions.js"></script>
+<!-- searchbar autocompletion -->
+<script src="../../scripts/jquery/staff/searchbar_autocomplete.js"></script>
+<!-- keep data on the page refreshed and up to date -->
+<script src="../../scripts/jquery/staff/page_refresh.js"></script>
 
 <meta charset="UTF-8" lang="en">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -27,12 +31,15 @@
         <button type="submit" class="navbar_button blue_button" id="sign_out_button" name="staff_sign_out"><span class="left_arrow"></span><spacer></spacer><h5>LOG OUT</h5></button>
       </form>
       <span class="divider"></span>
-      <div class="search_bar_wrapper">
-        <input id="ita" type="search" name="search" placeholder="Search..."></input>
-        <button type="submit">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
+      <container class="search_bar_container">
+        <div class="search_bar_wrapper">
+          <input id="staff_searchbar" type="search" name="search" placeholder="Search..."></input>
+          <button type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+        <ul id="staff_searchbar_suggestions" class="suggested"></ul>
+      </container>
     </navbar>
   </header>
   <div class="wrapper">
@@ -50,7 +57,7 @@
           <li onclick="toggleMainSection(this.id,'away_section')" class="sidebar_button" id="away_button"><h4>Away</h4></li>
           <li class="sidebar_subtitle"><h3>Events</h3></li>
           <li onclick="toggleMainSection(this.id,'events_summary_section')" class="sidebar_button" id="events_summary_button"><h4>Summary</h4></li>
-          <?php @include('../php/sidebar/staff/event_buttons.php'); loadSidebarEventButtons() ?>
+          <?php @include('../php/sidebar/staff/event_buttons.php')?>
 
           <li class="sidebar_subtitle"><h3>Account</h3></li>
           <li onclick="toggleMainSection(this.id,'edit_details_section')" class="sidebar_button" id="edit_details_button"><h4>Edit Details</h4></li>
@@ -66,7 +73,7 @@
           <p>This is the home area. Using the control panel located here, you can carry out many operations such as searching for a specific user or signing a user in/out.</p>
         </div>
         <spacer></spacer>
-        <div id="dashboard" class="text">
+        <div id="dashboard" class="text home_panel">
           <header>
             <h3>Your Dashboard</h3>
           </header>
@@ -75,20 +82,62 @@
               <h3>Quick Access</h3>
               <divider></divider>
               <ul>
-                <li><img src="../../images/svg/search.svg" alt="Search SVG"><h4>Search for a user</h4></li>
                 <li><img src="../../images/svg/download.svg" alt="Download SVG"><h4>Download data</h4></li>
-                <li><img src="../../images/svg/sign-in-out.svg" class="flip" alt="Download SVG"><h4>Sign user out</h4></li>
-                <li><img src="../../images/svg/sign-in-out.svg" alt="Download SVG"><h4>Sign user in</h4></li>
-                <li><img src="../../images/svg/padlock.svg" alt="Download SVG"><h4>Restrict user</h4></li>
-                <li><img src="../../images/svg/sign-away.svg" alt="Download SVG"><h4>Mark user as away</h4></li>
+                <li><img src="../../images/svg/sign-in-out.svg" class="flip" alt="Out SVG"><h4>Sign user out</h4></li>
+                <li><img src="../../images/svg/sign-in-out.svg" alt="In SVG"><h4>Sign user in</h4></li>
+                <li><img src="../../images/svg/padlock.svg" alt="Padlock SVG"><h4>Restrict user</h4></li>
+                <li><img src="../../images/svg/sign-away.svg" alt="Door SVG"><h4>Mark user as away</h4></li>
               </ul>
             </aside>
             <section class="body_section">
               <h3>Analytics</h3>
               <divider></divider>
-              <?php @include('../php/sections/staff/dashboard_analytics.php'); fillDashboardAnalytics() ?>
+              <container id="dashboard_analytics"></container>
             </section>
           </div>
+        </div>
+        <div id="user_details">
+          <header><h3>User Details</h3></header>
+          <article>
+            <div class="details">
+              <h3>Luke Holten</h3>
+              <span class="current_location">
+                <h5>Current Location</h5>
+                <spacer></spacer>
+                <h5>The Dining Hall</h5>
+              </span>
+              <divider></divider>
+              <h4>Details</h4>
+              <ul>
+                <li><img src="../../images/svg/email.svg" alt="Email SVG"><spacer></spacer><h5>Email: luke.holten@doyrms.com</h5></li>
+                <li><img src="../../images/svg/genders.svg" alt="Genders SVG"><spacer></spacer><h5>Gender: Male</h5></li>
+                <li><img src="../../images/svg/house.svg" alt="House SVG"><spacer></spacer><h5>Room: 68</h5></li>
+                <li>
+                  <img src="../../images/svg/padlock.svg" alt="Padlock SVG">
+                  <spacer></spacer>
+                  <div>
+                    <h5>Restricted: No</h5>
+                  </div>
+                </li>
+                <li>
+                  <img src="../../images/svg/sign-away.svg" alt="Door SVG">
+                  <spacer></spacer>
+                  <div>
+                    <h5>Away: No</h5>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <spacer></spacer>
+            <div class="embedded_table_wrapper activity">
+              <h4>Activity</h4>
+              <container class="scroll_container">
+                <table id="user_details_activity_table">
+                  <?php @include('../php/tables/staff/temp.php'); temp_fillRecentActivityTable(2) ?>
+                </table>
+              </container>
+            </div>
+          </article>
           <footer/>
         </div>
       </section>
@@ -103,16 +152,7 @@
           <header>
             <h3>Recent Activity</h2>
           </header>
-          <table class='table' id="recent_activity_table">
-            <tr>
-              <th>In/Out</th>
-              <th>Time</th>
-              <th>Message</th>
-              <th>Event</th>
-              <th>Date</th>
-            </tr>
-            <?php @include('../php/tables/staff/recent_activity.php'); fillRecentActivityTable() ?>
-          </table>
+          <table id="recent_activity_table"></table>
           <footer/>
         </div>
       </section>
@@ -127,17 +167,7 @@
           <header>
             <h3>User Status</h2>
           </header>
-          <table class='table' id="user_status_table">
-            <tr>
-              <th>Status</th>
-              <th>Forename</th>
-              <th>Surname</th>
-              <th>Current Location</th>
-              <th>Time last active</th>
-              <th>Date last active</th>
-            </tr>
-            <?php @include('../php/tables/staff/user_status.php'); fillUserStatusTable() ?>
-          </table>
+          <table id="user_status_table"></table>
           <footer/>
         </div>
       </section>
@@ -151,18 +181,7 @@
           <header>
             <h3>Away Users</h2>
           </header>
-          <table class='table' id="away_table">
-            <tr>
-              <th>Forename</th>
-              <th>Surname</th>
-              <th>Location</th>
-              <th>Date signed out</th>
-              <th>Time</th>
-              <th>Date expected back</th>
-              <th>Time</th>
-            </tr>
-            <?php @include('../php/tables/staff/away_users.php'); fillAwayUsersTable() ?>
-          </table>
+          <table id="away_users_table"></table>
           <footer/>
         </div>
       </section>
@@ -177,17 +196,7 @@
           <header>
             <h3>Restricted Users</h2>
           </header>
-          <table class='table' id="away_table">
-            <tr>
-              <th>Forename</th>
-              <th>Surname</th>
-              <th>Date Restricted</th>
-              <th>Until</th>
-              <th>Time Remaining</th>
-              <th>Description</th>
-            </tr>
-            <?php @include('../php/tables/staff/restricted_users.php'); fillRestrictedUsersTable() ?>
-          </table>
+          <table id="restricted_users_table"></table>
           <footer/>
         </div>
       </section>
@@ -198,12 +207,12 @@
           <p>Welcome to the events summary area. In this area, you can see all active events. This includes when the event starts and ends, as well as how early or late users may be when signing out.</p>
           <spacer></spacer>
           <ul class="event_card_container">
-            <?php @include('../php/sections/staff/event_cards.php'); loadEventCards() ?>
+            <?php @include('../php/sections/staff/event_cards.php')?>
           </ul>
         </div>
         <spacer></spacer>
       </section>
-      <?php @include('../php/sections/staff/event_sections.php'); loadEventSections() ?>
+      <container id="event_sections"></container>
 
       <section class="main_section" id="edit_details_section">
         <h2>Account - Edit Details</h2>
