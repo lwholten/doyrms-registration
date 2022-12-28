@@ -15,6 +15,13 @@ $result = $con->query($sql);
 // Disconnects from the database
 $con->close();
 
+// If the table is empty, echo the placeholder for an empty table
+if (!(mysqli_num_rows($result) > 0)) {
+  $tableContents = "<div class='empty_table_placeholder'><h3>Hmm...</h3><text>¯\_(ツ)_/¯</text><h3>...It seems that no one is away at the moment</h3></div>";
+  echo json_encode($tableContents);
+  exit();
+}
+
 // The tables header
 $tableContents .= '<thead><tr><th>Forename</th><th>Surname</th><th>Location</th><th>Date signed out</th><th>Time</th><th>Date expected back</th><th>Time</th></tr></thead>';
 // Iterates through the table records and displays them on the web page's table

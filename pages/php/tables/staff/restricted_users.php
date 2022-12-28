@@ -14,6 +14,14 @@ $sql = "SELECT RestrictedUsers.UserID, Forename, Surname, Cast(TimeRestricted AS
 $result = $con->query($sql);
 // Disconnects from the database
 $con->close();
+
+// If the table is empty, echo the placeholder for an empty table
+if (!(mysqli_num_rows($result) > 0)) {
+  $tableContents = "<div class='empty_table_placeholder'><h3>Hmm...</h3><text>¯\_(ツ)_/¯</text><h3>...There seem to be no restricted users</h3></div>";
+  echo json_encode($tableContents);
+  exit();
+}
+
 // The table header and start of the table body
 $tableContents .= '<thead><tr><th>Forename</th><th>Surname</th><th>Date Restricted</th><th>Until</th><th>Time Remaining</th><th>Description</th></tr></thead><tbody>';
 // Iterates through the table records and displays them on the web page's table

@@ -123,7 +123,7 @@ $(document).ready(function () {
     updateDashboardAnalytics();
     populateAllTables();
     populateAllEventTables();
-  }, 5000);
+  },60000);
 
   // Loads all the event sections when the page is first loaded
   updateDashboardAnalytics();
