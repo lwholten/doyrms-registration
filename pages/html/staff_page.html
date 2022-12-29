@@ -96,50 +96,7 @@
             </section>
           </div>
         </div>
-        <div id="user_details">
-          <header><h3>User Details</h3></header>
-          <article>
-            <div class="details">
-              <h3>Luke Holten</h3>
-              <span class="current_location">
-                <h5>Current Location</h5>
-                <spacer></spacer>
-                <h5>The Dining Hall</h5>
-              </span>
-              <divider></divider>
-              <h4>Details</h4>
-              <ul>
-                <li><img src="../../images/svg/email.svg" alt="Email SVG"><spacer></spacer><h5>Email: luke.holten@doyrms.com</h5></li>
-                <li><img src="../../images/svg/genders.svg" alt="Genders SVG"><spacer></spacer><h5>Gender: Male</h5></li>
-                <li><img src="../../images/svg/house.svg" alt="House SVG"><spacer></spacer><h5>Room: 68</h5></li>
-                <li>
-                  <img src="../../images/svg/padlock.svg" alt="Padlock SVG">
-                  <spacer></spacer>
-                  <div>
-                    <h5>Restricted: No</h5>
-                  </div>
-                </li>
-                <li>
-                  <img src="../../images/svg/sign-away.svg" alt="Door SVG">
-                  <spacer></spacer>
-                  <div>
-                    <h5>Away: No</h5>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <spacer></spacer>
-            <div class="embedded_table_wrapper activity">
-              <h4>Activity</h4>
-              <container class="scroll_container">
-                <table id="user_details_activity_table">
-                  <?php @include('../php/tables/staff/temp.php'); temp_fillRecentActivityTable(2) ?>
-                </table>
-              </container>
-            </div>
-          </article>
-          <footer/>
-        </div>
+        <container id="search_user"></container>
       </section>
       <section class="main_section" id="activity_section">
         <h2>Activity</h2>

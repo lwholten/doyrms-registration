@@ -1,6 +1,6 @@
 <?php
 // SQL query used to change the location popularity stored on the table
-$query = "SELECT Users.Forename, Users.Surname FROM `Users` WHERE CONCAT(Users.Forename, ' ', Users.Surname) LIKE ? LIMIT 0, 5;";
+$query = "SELECT Users.Forename, Users.Surname, Users.UserID FROM `Users` WHERE CONCAT(Users.Forename, ' ', Users.Surname) LIKE ? LIMIT 0, 5";
 // Connects to the database
 $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
 // turns the query into a statement
@@ -27,6 +27,6 @@ $con->close();
 
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
-  echo "<li>$record[0] $record[1]</li>";
+  echo "<li onclick='displayUserDetails($record[2])'>$record[0] $record[1]</li>";
 }
 ?>

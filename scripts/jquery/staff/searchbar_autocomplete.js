@@ -20,9 +20,11 @@ $(document).ready(function() {
   });
   // Clears the searchbar when it is not selected
   document.getElementById('staff_searchbar').addEventListener('focusout', function() {
-      // Clear all text from searchbar
-      $('#staff_searchbar').val('');
-      // Remove all list items from the suggested inputs
-      $('#staff_searchbar_suggestions').empty();
+      setTimeout(function() {
+        // Clear all text from searchbar
+        $('#staff_searchbar').val('');
+        // Remove all list items from the suggested inputs
+        $('#staff_searchbar_suggestions').empty();
+      }, 200);
     });
 });

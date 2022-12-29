@@ -67,3 +67,23 @@ function loadActiveSection(section_id, button_id) {
   // Strips all the other sections and buttons of the active class
   toggleMainSection(button_id, section_id);
 }
+
+function displayUserDetails(user_id) {
+  // POSTS the userID to a PHP form and returns the appropriate HTML code for this user
+  $.ajax({
+    url: '../php/sections/staff/search_user.php',
+    type: 'POST',
+    dataType: 'json',
+    data: ({userID: user_id}),
+    // Not asynchronous since we require the response in order to show the users details
+    async: false,
+    success: function(html) {
+      // Appends the HTML code to the search user section
+      $('#search_user').html(html);
+      // Sets the home section to the main section
+      toggleMainSection('home_button','home_section');
+      // Scrolls the search user section into view
+      $("#search_user")[0].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}

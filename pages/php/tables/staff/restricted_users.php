@@ -76,7 +76,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
     }
   }
   else {
-    $tableContents .= "<td>N/A<td><td>-</td>";
+    $tableContents .= "<td>N/A<td>";
   }
   // Appends the description
   if ($record[5] != NULL) {

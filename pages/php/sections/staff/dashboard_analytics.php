@@ -48,8 +48,9 @@ function analytics_users() {
         // In & restricted
         "inr"  => $record[2],
         // Out = (out - out & restricted - away - away & restricted)
-        // This simplifies to: (out - out & restricted - away)
-        "out"  => ($record[3] - $record[4] - $record[5]),
+        // This simplifies to: (out - out & restricted + away & restricted - away)
+        // I honestly don't know why, but this combination works, so lets role with it anyway ¯\_(ツ)_/¯
+        "out"  => ($record[3] - $record[4] + $record[6] - $record[5]),
         // Out & restricted = (out & restricted - away & restricted)
         "outr"  => ($record[4] - $record[6])
     );
