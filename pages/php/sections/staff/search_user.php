@@ -56,7 +56,7 @@ function populateUsersActivityTable($userID) {
       // Sets the font color depending on whether the user is restricted or not
       $tableContents .= setRestrictedClass($record[7]);
       // The message displayed, the event, the date
-      $tableContents .= "$record[1] $record[2] signed in</td><td>$record[5]</td><td>$record[6]</td></tr>";
+      $tableContents .= "$record[1] $record[2] signed in</td><td>$record[4]</td><td>$record[6]</td></tr>";
     }
     // If the user manually signed out
     else if ($record[0] === 1 || $record[0] === "1") {
@@ -67,7 +67,7 @@ function populateUsersActivityTable($userID) {
       // Sets the font color depending on whether the user is restricted or not
       $tableContents .= setRestrictedClass($record[7]);
       // The message displayed, the event, the date
-      $tableContents .= "$record[1] $record[2] signed out to $record[3]</td><td>$record[5]</td><td>$record[6]</td></tr>";
+      $tableContents .= "$record[1] $record[2] signed out to $record[3]</td><td>$record[4]</td><td>$record[6]</td></tr>";
     }
     // If the user automatically signed in
     else if ($record[0] === 2 || $record[0] === "2") {
@@ -78,7 +78,7 @@ function populateUsersActivityTable($userID) {
       // Sets the font color depending on whether the user is restricted or not
       $tableContents .= setRestrictedClass($record[7]);
       // The message displayed, the event, the date
-      $tableContents .= "$record[1] $record[2] forgot to sign back in!</td><td>$record[5]</td><td>$record[6]</td></tr>";
+      $tableContents .= "$record[1] $record[2] forgot to sign back in!</td><td>$record[4]</td><td>$record[6]</td></tr>";
     }
     // If the user manually signed out
     else {
@@ -176,7 +176,7 @@ function calcMaxTableHeight($restricted, $away) {
 
 // Main
 
-$sql = "SELECT Users.Forename, Users.Surname, Users.Email, Users.Gender, Users.RoomNumber, (CASE WHEN Users.UserID IN (SELECT RestrictedUsers.UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted, (CASE WHEN Users.UserID IN (SELECT AwayUsers.UserID FROM AwayUsers) THEN 1 ELSE 0 END) AS Away, Locations.LocationName FROM Users INNER JOIN Locations ON Users.LocationID = Locations.LocationID WHERE Users.UserID=? LIMIT 1";
+$sql = "SELECT Users.Forename, Users.Surname, Users.Email, Users.Gender, Users.RoomNumber, (CASE WHEN Users.UserID IN (SELECT RestrictedUsers.UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted, (CASE WHEN Users.UserID IN (SELECT AwayUsers.UserID FROM AwayUsers) THEN 1 ELSE 0 END) AS Away, (CASE WHEN Users.LocationID IS NULL THEN NULL ELSE LocationName END) AS CurrentLocation FROM Users INNER JOIN Locations ON Users.LocationID = Locations.LocationID OR (Users.LocationID IS NULL) WHERE Users.UserID=? LIMIT 1";
 // Connects to the database
 $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
 // Creates a prepared statement
@@ -222,6 +222,10 @@ else {
 // If the users room is null, replace it with 'not specified'
 if (is_null($userData[4])) {
   $userData[4] = 'Not Specified';
+}
+// If the users location is null, set it to 'the boarding house'
+if (is_null($userData[7])) {
+  $userData[7] = 'The Boarding House';
 }
 
 // Start of section and section header
