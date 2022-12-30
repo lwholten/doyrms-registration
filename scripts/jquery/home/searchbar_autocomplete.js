@@ -1,95 +1,169 @@
 // This file contains all of the scripts used to autocomplete text fields located on the home page
 
-// Function to search database for current value(s)
-function locationSearch() {
-  $.ajax({
-      type: 'POST',
-      url: 'autocomplete/autocomplete_locations_input_field.php',
-      data: { term: $("#locations_input_field").val() },
-      beforeSend: function() {
-        document.getElementById('locations_input_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
-      },
-      success: function(data) {
-        $('#location_suggestions').empty();
-        $('#location_suggestions').append(data);
-    }
-  });
-}
-// Function to search database for current sign in value(s)
-function signInSearch() {
-  $.ajax({
-      type: 'POST',
-      url: 'autocomplete/autocomplete_initials_field.php',
-      data: { term: $("#sign_in_initials_field").val() },
-      beforeSend: function() {
-        document.getElementById('sign_in_initials_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
-      },
-      success: function(data) {
-        $('#sign_in_initials_suggestions').empty();
-        $('#sign_in_initials_suggestions').append(data);
-    }
-  });
-}
-// Function to search database for current sign out value(s)
-function signOutSearch() {
-  $.ajax({
-      type: 'POST',
-      url: 'autocomplete/autocomplete_initials_field.php',
-      data: { term: $("#sign_out_initials_field").val() },
-      beforeSend: function() {
-        document.getElementById('sign_out_initials_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
-      },
-      success: function(data) {
-        $('#sign_out_initials_suggestions').empty();
-        $('#sign_out_initials_suggestions').append(data);
-    }
-  });
-}
-// Function used when the user clicks on a suggested location
+// Functions
+// When the user clicks on a suggested location
 function selectLocation(val) {
 	$("#locations_input_field").val(val);
-	$("#location_suggestions").empty();
 }
-// Function used when the user clicks on suggested user inputs
+// When the user clicks on suggested users
 function selectInitials(val) {
 	$("#sign_in_initials_field").val(val.substr(5));
   $("#sign_out_initials_field").val(val.substr(5));
-	$("#sign_in_initials_suggestions").empty();
-  $("#sign_out_initials_suggestions").empty();
 }
 
-// Used to display the location suggestions when a user is selecting a location
+// Main
 $(document).ready(function() {
-  // Detects when the locations is being input and displays locations from the database
-  $("#locations_input_field").keyup(function() {locationSearch();});
-  $("#locations_input_field").focus(function() {locationSearch();});
-  // Detects when the sign out field is in use and outputs user suggestions from the database
-  $("#sign_in_initials_field").keyup(function() {signInSearch();});
-  $("#sign_in_initials_field").focus(function() {signInSearch();});
-  // Detects when the sign out field is in use and outputs user suggestions from the database
-  $("#sign_out_initials_field").keyup(function() {signOutSearch();});
-  $("#sign_out_initials_field").focus(function() {signOutSearch();});
+  // Variables
+  // Associative array used to cache whether suggestions have been hidden manually (by being clicked on)
+  var selected = new Map([
+   ['locations', false],
+   ['signin', false],
+   ['signout', false],
+ ]);
 
-  // Sign out field
-  document.getElementById('sign_out_initials_field').addEventListener('focusout', function() {
-      // Remove all list items from the suggested inputs after a 50ms delay
-      // This is to allow a 'click' to be registered if the user clicked a suggested value
+  // Events for the locations input field
+  $('#locations_input_field').on({
+    // If the user inputs any data into the search bar, a search is performed and suggestions are added and displayed
+    keyup : function () {
+      // Searches for all applicable location suggestions
+      $.ajax({
+          type: 'POST',
+          url: 'autocomplete/autocomplete_locations_input_field.php',
+          data: { term: $("#locations_input_field").val() },
+          beforeSend: function() {
+            document.getElementById('locations_input_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
+          },
+          success: function(data) {
+            $('#location_suggestions').empty();
+            $('#location_suggestions').append(data);
+            $('#location_suggestions').css('display', 'block');
+        }
+      });
+    },
+    // If the user clicks on the search bar, it shows the current suggestions (rather than performing another search)
+    focus: function () {
+      // Shows the suggestions
+      $('#location_suggestions').css('display','block');
+    },
+    // If the user clicks away from the search bar, it hides the current suggestions
+    focusout: function () {
+      // Hides the suggestions after 1000ms
       setTimeout(function() {
-          $('#sign_out_initials_suggestions').empty();
-      }, 200);
-    });
-  // Sign in field
-  document.getElementById('sign_in_initials_field').addEventListener('focusout', function() {
-      // Remove all list items from the suggested inputs after a 50ms delay
+        // If the suggestions are not hidden, hide them
+        // (this is to prevent the timeout from carrying over until something else is searched, hidding the suggestions mid-search)
+        if (!selected['locations']) {
+          $('#location_suggestions').css('display','none');
+        }
+      }, 500);
+    }
+  });
+  // Events for when a location is clicked (Hides the suggestions when one has been clicked)
+  $('#location_suggestions').on({
+    // When a suggestion is selected
+    click : function() {
+      // Hides the suggestions
+      $('#location_suggestions').css('display','none');
+      selected['locations']=true
+      // Removes all suggestions (to prevent future searches containing old search results)
+      $('#location_suggestions').empty();
+      // Clears the search bar of all text
+      $('#location_suggestions').val('');
+    }
+  });
+
+  // Events for the sign in input field
+  $('#sign_in_initials_field').on({
+    // If the user inputs any data into the search bar, a search is performed and suggestions are added and displayed
+    keyup : function () {
+      // Searches for all applicable user initials suggestions
+      $.ajax({
+          type: 'POST',
+          url: 'autocomplete/autocomplete_initials_field.php',
+          data: { term: $("#sign_in_initials_field").val() },
+          beforeSend: function() {
+            document.getElementById('sign_in_initials_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
+          },
+          success: function(data) {
+            $('#sign_in_initials_suggestions').empty();
+            $('#sign_in_initials_suggestions').append(data);
+            $('#sign_in_initials_suggestions').css('display', 'block');
+        }
+      });
+    },
+    // If the user clicks on the search bar, it shows the current suggestions (rather than performing another search)
+    focus: function () {
+      // Shows the suggestions
+      $('#sign_in_initials_suggestions').css('display','block');
+    },
+    // If the user clicks away from the search bar, it hides the current suggestions
+    focusout: function () {
+      // Hides the suggestions after 1000ms
       setTimeout(function() {
-          $('#sign_in_initials_suggestions').empty();
-      }, 200);
-    });
-  // Locations field
-  document.getElementById('locations_input_field').addEventListener('focusout', function() {
-      // Remove all list items from the suggested inputs after a 50ms delay
+        // If the suggestions are not hidden, hide them
+        // (this is to prevent the timeout from carrying over until something else is searched, hidding the suggestions mid-search)
+        if (!selected['signin']) {
+          $('#sign_in_initials_suggestions').css('display','none');
+        }
+      }, 500);
+    }
+  });
+
+  // Events for the sign out input field
+  $('#sign_out_initials_field').on({
+    // If the user inputs any data into the search bar, a search is performed and suggestions are added and displayed
+    keyup : function () {
+      // Searches for all applicable user initials suggestions
+      $.ajax({
+          type: 'POST',
+          url: 'autocomplete/autocomplete_initials_field.php',
+          data: { term: $("#sign_out_initials_field").val() },
+          beforeSend: function() {
+            document.getElementById('sign_out_initials_field').scrollIntoView({ block: 'center',  behavior: 'smooth' });
+          },
+          success: function(data) {
+            $('#sign_out_initials_suggestions').empty();
+            $('#sign_out_initials_suggestions').append(data);
+            $('#sign_out_initials_suggestions').css('display', 'block');
+        }
+      });
+    },
+    // If the user clicks on the search bar, it shows the current suggestions (rather than performing another search)
+    focus: function () {
+      // Shows the suggestions
+      $('#sign_out_initials_suggestions').css('display','block');
+    },
+    // If the user clicks away from the search bar, it hides the current suggestions
+    focusout: function () {
+      // Hides the suggestions after 1000ms
       setTimeout(function() {
-          $('#location_suggestions').empty();
-      }, 200);
+        // If the suggestions are not hidden, hide them
+        // (this is to prevent the timeout from carrying over until something else is searched, hidding the suggestions mid-search)
+        if (!selected['signout']) {
+          $('#sign_out_initials_suggestions').css('display','none');
+        }
+      }, 500);
+    }
+  });
+
+  // An indexed two-dimensional array containing every suggestion container and its corresponding input field
+  const suggestionContainers = [
+    // Note: [ContainerID, corresponding input field]
+    ['#location_suggestions', '#locations_input_field'],
+    ['#sign_in_initials_suggestions', '#sign_in_initials_field'],
+    ['#sign_out_initials_suggestions', '#sign_out_initials_field']
+  ]
+  // For each suggestion container, if a suggestion is selected it hides all the suggestions
+  for (let i = 0; i < suggestionContainers.length; i++) {
+    // Events for when a suggestion is clicked
+    $(suggestionContainers[i][0]).on({
+      // When a suggestion is selected
+      click : function() {
+        // Hides the suggestions
+        $(suggestionContainers[i][0]).css('display','none');
+        selected['locations']=true;
+        // Removes all suggestions (to prevent future searches containing old search results)
+        $(suggestionContainers[i][0]).empty();
+      }
     });
+  }
 });
