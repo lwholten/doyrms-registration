@@ -1,9 +1,7 @@
 <?php
-/*Initiates a session when the page is first loaded*/
+// Initiates a session when the page is first loaded
 session_start();
-/*Includes all files used in the main page*/
-include("../../css/mainstyles.css");
-include("../../css/main_page.css");
+// Includes all files used in the main page
 include("../html/home_page.html");
 
 // Used to connect to the database

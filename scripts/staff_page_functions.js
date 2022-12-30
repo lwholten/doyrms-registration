@@ -87,3 +87,13 @@ function displayUserDetails(user_id) {
     }
   });
 }
+
+function triggerButton(button_id) {
+  try {
+    document.querySelector(button_id).click();
+  }
+  catch(err) {
+    console.error(err);
+    console.warn('Could not trigger button as the button ID provided is invalid');
+  }
+}

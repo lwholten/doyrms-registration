@@ -1,4 +1,30 @@
 <?php
+// Used to search through a list of possible actions
+function searchActions($term) {
+  // Array of all applicable actions
+  $actionIndex = [
+    ["download data", "#download_data_button"],
+    ["sign out", "#sign_out_button"],
+    ["sign out user", "#sign_out_user_button"],
+    ["sign in user", "#sign_in_user_button"],
+    ["restrict user", "#restrict_user_button"],
+    ["mark user away", "#away_user_button"]
+  ];
+  // A string is used to contain all 'suggestion' list elements
+  $suggestions = "";
+  // For each menu item, check whether the search term is similar
+  for ($i = 0; $i < count($actionIndex); $i++) {
+    // If the term is similar to the current menu item, suggest the menu item
+    if (stripos($actionIndex[$i][0], $term) !== FALSE) {
+      // Function called when the suggested item is clicked
+      $function = "triggerButton('".$actionIndex[$i][1]."')";
+      // The HTML used to display the list item
+      $suggestions .= htmlspecialchars('<li onclick="'.$function.'">'.ucwords($actionIndex[$i][0]).'</li>');
+    }
+  }
+  // Return the suggestions
+  return $suggestions;
+}
 // Used to search through all menu items
 function searchMenu($term) {
   // Array of all applicable menu
@@ -93,6 +119,7 @@ function search($term) {
   // The values are displayed in order of the functions where the top functions' results takes priority
   $searchResults .= searchMenu($term);
   $searchResults .= searchEvents($term);
+  $searchResults .= searchActions($term);
   $searchResults .= searchUsers($term);
   // The returned value is encoded using 'htmlspecialchars()' so it will need decoding
   return $searchResults;
