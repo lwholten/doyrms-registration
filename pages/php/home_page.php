@@ -1,29 +1,16 @@
 <?php
-// Initiates a session when the page is first loaded
-session_start();
-// Includes all files used in the main page
-include("../html/home_page.html");
+// This file contains the code that is executed when the home page is loaded
 
-// Used to connect to the database
-function databaseConnect() {
-  // Create connection
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
-
-  // Check connection
-  if ($con->connect_error) {
-    echo "<script>notification('Something went wrong, please try again later','error',3000)</script>";
-    echo "<script>console.error('The system could not connect to the database!')</script>";
-    return 0;
-  }
-  return $con;
-}
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
 
 // Functions used for the staff login process
 function checkStaffExists($username) {
+  global $ini;
   // Used to check whether a staff user exists within the database
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Staff WHERE Username=?) THEN 1 ELSE 0 END";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("s", $username);
@@ -38,10 +25,11 @@ function checkStaffExists($username) {
   return $result;
 }
 function checkStaffPassword($username, $password) {
+  global $ini;
   // Used to verify  associated with the staff username
   $query = "SELECT Salt, Hash FROM Staff WHERE Username=?";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("s", $username);
@@ -64,10 +52,11 @@ function checkStaffPassword($username, $password) {
   }
 }
 function fetchStaffDetails($username) {
+  global $ini;
   // used to get the access level and id associated with a staff user
   $query = "SELECT Staff.StaffID, Staff.AccessLevel FROM Staff WHERE Username=? LIMIT 1";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("s", $username);
@@ -82,6 +71,7 @@ function fetchStaffDetails($username) {
   return $result;
 }
 function logStaffSignIn($staffID) {
+  global $ini;
   // This function is used to save a log when a staff user signs in
   // It also sets the active state of this user to true
 
@@ -92,7 +82,7 @@ function logStaffSignIn($staffID) {
   );
 
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Iterates through the array and executes the queries
   foreach ($queries as $query) {
     // turns the query into a statement
@@ -105,6 +95,13 @@ function logStaffSignIn($staffID) {
   // Disconnects from the database
   $con->close();
 }
+
+// Main (staff sign in)
+// Initiates a session when the page is first loaded
+session_start();
+// Includes all files used in the main page
+include("../html/home_page.html");
+
 // Executes if a staff login is detected
 if (isset($_POST['staff_login_form'])) {
 
@@ -161,10 +158,11 @@ if (isset($_POST['staff_login_form'])) {
 
 // Functions used for the user sign out process
 function checkLocationExists($location) {
+  global $ini;
   // Used to check whether a location exists within the database
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Locations WHERE Locations.LocationName=?) THEN 1 ELSE 0 END";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("s", $location);
@@ -178,6 +176,7 @@ function checkLocationExists($location) {
   return $result;
 }
 function checkUserExists($name) {
+  global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
@@ -187,7 +186,7 @@ function checkUserExists($name) {
   // Used to check whether a user exists in the database
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=?) THEN 1 ELSE 0 END";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("ss", $fname, $lname);
@@ -201,6 +200,7 @@ function checkUserExists($name) {
   return $result;
 }
 function checkUserSignedIn($name) {
+  global $ini;
   // This function is used to check whether a user is already signed in
 
   // Splits the name input into first and last names using a temporary array
@@ -211,7 +211,7 @@ function checkUserSignedIn($name) {
   // Used to check whether a the user is already signed in
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=? AND Users.LocationID IS NULL) THEN 1 ELSE 0 END";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("ss", $fname, $lname);
@@ -226,6 +226,7 @@ function checkUserSignedIn($name) {
   return $result;
 }
 function fetchEventID($location) {
+  global $ini;
   // This function uses the location and nature of a sign in/out to decide whether the user has signed out for an event or not
   // NOTES:
   // $location -> STRING: Must be the name of a location
@@ -237,7 +238,7 @@ function fetchEventID($location) {
   // Note: date('w') returns a numerical value for the current day of the week
   $day = '%'.substr("MTWRFUS", date('w')-1, date('w')-2).'%';
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
   $stmt->bind_param("ss", $location, $day);
@@ -291,6 +292,7 @@ function fetchEventID($location) {
   return [NULL, NULL];
 }
 function userSignOut($name, $location) {
+  global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
@@ -304,7 +306,7 @@ function userSignOut($name, $location) {
   // SQL query used to update the users location
   $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the log query into a statement
   $logStmt = $con->prepare($logQuery);
   $logStmt->bind_param("iisss", $eventDetails[0], $eventDetails[1], $fname, $lname, $location);
@@ -320,6 +322,7 @@ function userSignOut($name, $location) {
   return true;
 }
 function userSignIn($name, $auto) {
+  global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
   $fname = $tempArray[0];
@@ -330,7 +333,7 @@ function userSignIn($name, $auto) {
   // SQL query used to update the users location
   $locationQuery = "UPDATE Users SET LastActive=CURRENT_TIMESTAMP, LocationID=(SELECT LocationID FROM Locations WHERE LocationName=?) WHERE Forename=? AND Surname=?";
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the log query into a statement
   $logStmt = $con->prepare($logQuery);
   $logStmt->bind_param("iss", $auto, $fname, $lname);
@@ -345,6 +348,8 @@ function userSignIn($name, $auto) {
   $con->close();
   return true;
 }
+
+// Main (User login/logout)
 // Executes if a user sign out is detected
 if (isset($_POST['user_sign_out'])) {
   // If the user and location exist within the database

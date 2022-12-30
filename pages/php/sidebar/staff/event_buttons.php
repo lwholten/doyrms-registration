@@ -3,8 +3,11 @@
 // Note that it is not json encoded since they are loaded only once, when the page is loaded
 // Ajax is not required to refresh the event buttons at regular intervals
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get all the event data (maximum of 25 events)
 $sql = "SELECT LOWER(REPLACE(Event, ' ', '_')) AS Event, Event FROM Events";
 // Saves the result of the SQL code to a variable

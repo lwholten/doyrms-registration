@@ -3,9 +3,12 @@
 // Note that it is not json encoded since it is loaded once when the page is loaded
 // Ajax is not required to refresh the event cards at regular intervals
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Variables
-// Creates an array containing all of the background gradients
-// Indexing this array gives the gradient that corresponds to the time of the index + 1 (e.g. for 12PM, array[13])
+// An array containing all time-based background gradients
+// Indexing this array gives the gradient that corresponds to the time (e.g. array[6] gives the background for 7 AM)
 $backgrounds = [
   'linear-gradient(#012459 0%, #001322 100%)',
   'linear-gradient(#012459 0%, #001323 100%)',
@@ -45,11 +48,11 @@ $days = [
 
 // Main
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get all the event data (maximum of 25 events)
-$sql = "SELECT Event, LocationName, StartTime, EndTime, Deviation, Days, Alerts FROM Events INNER JOIN Locations ON Events.LocationID = Locations.LocationID UNION SELECT Event, LocationID, StartTime, EndTime, Deviation, Days, Alerts FROM Events WHERE LocationID IS NULL ORDER BY StartTime ASC LIMIT 25";
+$query = "SELECT Event, LocationName, StartTime, EndTime, Deviation, Days, Alerts FROM Events INNER JOIN Locations ON Events.LocationID = Locations.LocationID UNION SELECT Event, LocationID, StartTime, EndTime, Deviation, Days, Alerts FROM Events WHERE LocationID IS NULL ORDER BY StartTime ASC LIMIT 25";
 // Saves the result of the SQL code to a variable
-$result = $con->query($sql);
+$result = $con->query($query);
 // Disconnects from the database
 $con->close();
 

@@ -1,4 +1,8 @@
 <?php
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
+// Functions
 // Used to search through a list of possible actions
 function searchActions($term) {
   // Array of all applicable actions
@@ -56,10 +60,11 @@ function searchMenu($term) {
 }
 // Used to search through all the events
 function searchEvents($term) {
+  global $ini;
   // SQL to search the database for users
   $query = "SELECT LOWER(REPLACE(Event, ' ', '_')), Event FROM `Events` WHERE Event LIKE CONCAT('%', ?, '%') LIMIT 0, 5";
   // Connects to the database
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the query into a statement
   $stmt = $con->prepare($query);
   // Inserts the term into the query
@@ -88,10 +93,11 @@ function searchEvents($term) {
 }
 // Used to search for all users
 function searchUsers($term) {
+  global $ini;
   // SQL to search the database for users
   $query = "SELECT Users.Forename, Users.Surname, Users.UserID FROM `Users` WHERE CONCAT(Users.Forename, ' ', Users.Surname) LIKE CONCAT('%', ?, '%') ORDER BY Users.Forename LIMIT 0, 5";
   // Connects to the database
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the query into a statement
   $stmt = $con->prepare($query);
   // Inserts the term into the query

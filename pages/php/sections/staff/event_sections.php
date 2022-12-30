@@ -2,6 +2,9 @@
 // This file contains code used to populate an event table on the staff page
 // All exported contents are json encoded and Ajax is used to regulary update the sections without refreshing the page
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Variables
 // String used to contain the sections HTML code
 $sectionHTML = '';
@@ -36,12 +39,12 @@ $backgrounds = [
 
 // Main
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get all the event data (maximum of 25 events)
 // Note, the event is formatted as follows: part1_part2
-$sql = "SELECT EventID, LOWER(REPLACE(Event, ' ', '_')) AS TableID, StartTime, Event FROM Events";
+$query = "SELECT EventID, LOWER(REPLACE(Event, ' ', '_')) AS TableID, StartTime, Event FROM Events";
 // Saves the result of the SQL code to a variable
-$result = $con->query($sql);
+$result = $con->query($query);
 // Disconnects from the database
 $con->close();
 

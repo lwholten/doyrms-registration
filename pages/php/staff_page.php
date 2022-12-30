@@ -1,4 +1,9 @@
 <?php
+// This file contains the code that is executed when the staff page is loaded
+
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Used to display the page, prevents users from seeing the page without logging in
 function displayPage() {
   include("../html/staff_page.html");
@@ -21,29 +26,11 @@ function onPageLoad() {
   }
 }
 
-// Used to connect to the database
-function databaseConnect() {
-  // Connection details
-  $servername = "localhost";
-  $username = "dreg_user";
-  $password = "epq";
-  $database = 'dregDB';
-
-  // Create connection
-  $con = new mysqli($servername, $username, $password, $database);
-
-  // Check connection
-  if ($con->connect_error) {
-    die("Connection failed: " . $con->connect_error);
-    return 0;
-  }
-  return $con;
-}
-
 // Executed when the page is first loaded
 onPageLoad();
 
 function logStaffSignOut($staffID) {
+  global $ini;
   // This function is used to save a log when a staff user signs out
   // It also sets the active state of this user to false
 
@@ -54,7 +41,7 @@ function logStaffSignOut($staffID) {
   );
 
   // Connects to the database
-  $con = databaseConnect();
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Iterates through the array and executes the queries
   foreach ($queries as $query) {
     // turns the query into a statement

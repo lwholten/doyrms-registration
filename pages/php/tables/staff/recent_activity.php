@@ -2,6 +2,9 @@
 // This file contains code used to populate the 'recent activity' table on the staff page
 // The table contents are json encoded and Ajax is used to regulary update the table without refreshing the page
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Functions
 function setRestrictedClass($tmp) {
   if ($tmp === 1 || $tmp === "1") {
@@ -17,7 +20,7 @@ $tableContents = '';
 
 // Main
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
 /* Notes,
 when record $record[0] = n

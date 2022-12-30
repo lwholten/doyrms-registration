@@ -2,13 +2,16 @@
 // This file contains code used to create the event sections on the staff page
 // All exported contents are json encoded and Ajax is used to regulary update the tables without refreshing the page
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Variables
 $tableContents = '';
 $eventID = $_POST['eventID'];
 
 // Main
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
 // Note, this code MUST be changed in the future not to use a PHP variable in the query statement
 $sql = "(SELECT Users.UserID, Users.Forename, Users.Surname, (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END) AS Timing, (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Users ORDER BY (CASE WHEN UserID IN (SELECT DISTINCT UserID FROM Log WHERE EventID=$eventID) THEN (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND Log.EventID IS NOT NULL AND CAST(Log.LogTime AS DATE)=CURRENT_DATE ORDER BY LogID DESC LIMIT 1) ELSE NULL END), Users.Forename, Users.Surname ASC)";

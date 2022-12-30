@@ -2,13 +2,16 @@
 // This file contains code used to fetch the ID's of all event tables
 // All exported contents are json encoded and Ajax uses these ID's to update the event tables
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Variables
 // An array used to contain the table and event IDs
 $data = [];
 
 // Main
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to select the table event names (maximum of 25 events)
 // Note, the event name is formatted as follows: part1_part2, so it may be used as the tables ID in the HTML code
 $sql = "SELECT LOWER(REPLACE(Event, ' ', '_')) AS TableID, EventID FROM Events";

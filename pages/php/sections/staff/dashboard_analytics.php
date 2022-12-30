@@ -2,15 +2,19 @@
 // This file contains code that displays dashboard analytics on the staff page
 // The exported HTML code is json encoded and Ajax is used to regulary update the dashboard without refreshing the page
 
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Functions
 function analytics_users() {
+  global $ini;
   // Variables
   $usersHTML = '';
 
   // Connects to the database
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Code used to get all users, signed in, signed out, away and restricted
-  $sql = '(SELECT
+  $query = '(SELECT
   COUNT(*) AS Total,
   (COUNT(*) - COUNT(LocationID)) AS SignedIn,
   (SELECT COUNT(UserID) FROM Users WHERE UserID IN (SELECT UserID FROM RestrictedUsers) AND UserID IN (SELECT UserID FROM Users WHERE LocationID IS NULL)) AS RestrictedSignedIn,
@@ -20,7 +24,7 @@ function analytics_users() {
   (SELECT COUNT(UserID) FROM Users WHERE UserID IN (SELECT UserID FROM RestrictedUsers) AND UserID IN (SELECT UserID FROM AwayUsers)) AS RestrictedAway
   FROM Users)';
   // Saves the result of the SQL code to a variable
-  $result = $con->query($sql);
+  $result = $con->query($query);
   // Disconnects from the database
   $con->close();
 
@@ -128,16 +132,17 @@ function analytics_users() {
   return $usersHTML;
 }
 function analytics_activity() {
+  global $ini;
   // Variables
   $activityHTML = '';
 
   // Connects to the database
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Code used to get all users, signed in, signed out, away and restricted
-  $sql = '(SELECT (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NOT NULL AND Auto=0) AS SignOuts, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NULL AND Auto=0) AS SignIns, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NULL AND Auto=1) AS AutoSignIns, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND MinutesLate > 0) AS Earlys, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND MinutesLate < 0) AS Late)';
+  $query = '(SELECT (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NOT NULL AND Auto=0) AS SignOuts, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NULL AND Auto=0) AS SignIns, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND LocationID IS NULL AND Auto=1) AS AutoSignIns, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND MinutesLate > 0) AS Earlys, (SELECT COUNT(*) FROM Log WHERE cast(LogTime AS Date)=CURRENT_DATE AND MinutesLate < 0) AS Late)';
 
   // Saves the result of the SQL code to a variable
-  $result = $con->query($sql);
+  $result = $con->query($query);
   // Disconnects from the database
   $con->close();
 

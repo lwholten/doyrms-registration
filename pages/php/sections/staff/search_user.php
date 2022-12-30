@@ -1,4 +1,10 @@
 <?php
+// This file contains code used to display data for a searched user by a staff user
+// The exported HTML code is json encoded and Ajax displays the data to the page
+
+// Config
+$ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+
 // Variables
 $userID = $_POST['userID'];
 $sectionHTML = '';
@@ -15,11 +21,12 @@ function setRestrictedClass($tmp) {
 }
 // Used to populate the users recent activity table
 function populateUsersActivityTable($userID) {
+  global $ini;
   // Variables
   $tableContents = '';
 
   // Connects to the database
-  $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // SQL code to get the table data
   /* NOTES:
   when record $record[0] = n
@@ -28,10 +35,10 @@ function populateUsersActivityTable($userID) {
   n = 2 -> Sign In (Auto)
   n = 3 -> Sign Out (Auto)
   NULL -> User was automatically signed in (forgot to sign back in)*/
-  $sql = "SELECT (CASE WHEN Log.LocationID IS NULL AND Log.Auto=0 THEN 0 WHEN Log.LocationID IS NOT NULL AND Log.Auto=0 THEN 1 WHEN Log.LocationID IS NULL AND Log.Auto=1 THEN 2 WHEN Log.LocationID IS NOT NULL AND Log.Auto=1 THEN 3 ELSE NULL END) AS LogNature, Forename, Surname, LocationName, Event, CAST(LogTime AS time), CAST(LogTime AS date), (CASE WHEN Log.UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Log LEFT JOIN Locations ON Locations.LocationID = Log.LocationID LEFT JOIN Events ON Log.EventID = Events.EventID LEFT JOIN Users ON Users.UserID = Log.UserID WHERE Users.UserID=$userID ORDER BY LogTime DESC LIMIT 100";
+  $query = "SELECT (CASE WHEN Log.LocationID IS NULL AND Log.Auto=0 THEN 0 WHEN Log.LocationID IS NOT NULL AND Log.Auto=0 THEN 1 WHEN Log.LocationID IS NULL AND Log.Auto=1 THEN 2 WHEN Log.LocationID IS NOT NULL AND Log.Auto=1 THEN 3 ELSE NULL END) AS LogNature, Forename, Surname, LocationName, Event, CAST(LogTime AS time), CAST(LogTime AS date), (CASE WHEN Log.UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Log LEFT JOIN Locations ON Locations.LocationID = Log.LocationID LEFT JOIN Events ON Log.EventID = Events.EventID LEFT JOIN Users ON Users.UserID = Log.UserID WHERE Users.UserID=$userID ORDER BY LogTime DESC LIMIT 100";
 
   //Saves the result of the SQL code to a variable
-  $result = $con->query($sql);
+  $result = $con->query($query);
   //Disconnects from the database
   $con->close();
   // The contents returned to the page to fill the table
@@ -98,13 +105,14 @@ function populateUsersActivityTable($userID) {
 }
 // Used to show the details of a users restricted status
 function fetchRestrictedDetails($userID, $restricted) {
+  global $ini;
   // If the user is restricted
   if ($restricted === 1 || $restricted === '1') {
-    $sql = "SELECT CAST(TimeRestricted AS Date) AS Start, (CASE WHEN TimeUnrestricted IS NULL THEN 'Not Specified' ELSE CAST(TimeUnrestricted AS Date) END) AS End, (CASE WHEN Description IS NULL THEN 'None' ELSE Description END) AS Description FROM RestrictedUsers WHERE UserID=?";
+    $query = "SELECT CAST(TimeRestricted AS Date) AS Start, (CASE WHEN TimeUnrestricted IS NULL THEN 'Not Specified' ELSE CAST(TimeUnrestricted AS Date) END) AS End, (CASE WHEN Description IS NULL THEN 'None' ELSE Description END) AS Description FROM RestrictedUsers WHERE UserID=?";
     // Connects to the database
-    $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+    $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
     // Creates a prepared statement
-    $stmt = $con->prepare($sql);
+    $stmt = $con->prepare($query);
     // Binds the userID to the query
     $stmt->bind_param("i", $userID);
     //Executes the statement code
@@ -129,13 +137,14 @@ function fetchRestrictedDetails($userID, $restricted) {
 }
 // Used to show the details of a users away status
 function fetchAwayDetails($userID, $away) {
+  global $ini;
   // If the user is restricted
   if ($away === 1 || $away === '1') {
-    $sql = "SELECT CAST(AwayUsers.TimeOut AS Date) AS Start, (CASE WHEN AwayUsers.TimeIn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.TimeIn AS Date) END) AS End, Locations.LocationName, (CASE WHEN AwayUsers.Description IS NULL THEN 'None' ELSE AwayUsers.Description END) AS Description FROM AwayUsers LEFT JOIN Locations ON AwayUsers.LocationID = Locations.LocationID WHERE UserID=?";
+    $query = "SELECT CAST(AwayUsers.TimeOut AS Date) AS Start, (CASE WHEN AwayUsers.TimeIn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.TimeIn AS Date) END) AS End, Locations.LocationName, (CASE WHEN AwayUsers.Description IS NULL THEN 'None' ELSE AwayUsers.Description END) AS Description FROM AwayUsers LEFT JOIN Locations ON AwayUsers.LocationID = Locations.LocationID WHERE UserID=?";
     // Connects to the database
-    $con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+    $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
     // Creates a prepared statement
-    $stmt = $con->prepare($sql);
+    $stmt = $con->prepare($query);
     // Binds the userID to the query
     $stmt->bind_param("i", $userID);
     //Executes the statement code
@@ -176,11 +185,11 @@ function calcMaxTableHeight($restricted, $away) {
 
 // Main
 
-$sql = "SELECT Users.Forename, Users.Surname, Users.Email, Users.Gender, Users.RoomNumber, (CASE WHEN Users.UserID IN (SELECT RestrictedUsers.UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted, (CASE WHEN Users.UserID IN (SELECT AwayUsers.UserID FROM AwayUsers) THEN 1 ELSE 0 END) AS Away, (CASE WHEN Users.LocationID IS NULL THEN NULL ELSE LocationName END) AS CurrentLocation FROM Users INNER JOIN Locations ON Users.LocationID = Locations.LocationID OR (Users.LocationID IS NULL) WHERE Users.UserID=? LIMIT 1";
+$query = "SELECT Users.Forename, Users.Surname, Users.Email, Users.Gender, Users.RoomNumber, (CASE WHEN Users.UserID IN (SELECT RestrictedUsers.UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted, (CASE WHEN Users.UserID IN (SELECT AwayUsers.UserID FROM AwayUsers) THEN 1 ELSE 0 END) AS Away, (CASE WHEN Users.LocationID IS NULL THEN NULL ELSE LocationName END) AS CurrentLocation FROM Users INNER JOIN Locations ON Users.LocationID = Locations.LocationID OR (Users.LocationID IS NULL) WHERE Users.UserID=? LIMIT 1";
 // Connects to the database
-$con = new mysqli('localhost', 'dreg_user', 'epq', 'dregDB');
+$con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // Creates a prepared statement
-$stmt = $con->prepare($sql);
+$stmt = $con->prepare($query);
 // Binds the userID to the query
 $stmt->bind_param("i", $userID);
 //Executes the statement code
