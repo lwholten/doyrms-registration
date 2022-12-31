@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- dynamic  background -->
 <script type="text/javascript" src="../../scripts/jquery/dynamic_background.js"></script>
+<!-- dynamic sidebar -->
+<script type="text/javascript" src="../../scripts/jquery/staff/sidebar.js"></script>
 
 <!-- staff page javascript functions -->
 <script src="../../scripts/staff_page_functions.js"></script>
@@ -48,10 +50,10 @@
   </header>
   <div class="wrapper">
     <div class="text" id="sidebar">
-      <container id="sidebar_contents_container">
+      <container>
         <input type="checkbox" id="sidebar_toggle" class="hidden"/>
-        <label for="sidebar_toggle" onclick="toggleSidebar()"><span class="left_arrow"></span></label>
-        <ul id="sidebar_contents">
+        <label for="sidebar_toggle"><span class="left_arrow"></span></label>
+        <ul>
           <li class="sidebar_subtitle"><h2>Menu</h2></li>
           <li class="sidebar_subtitle"><h3>Information</h3></li>
           <li onclick="toggleMainSection(this.id,'home_section')" class="sidebar_button sidebar_button_active" id="home_button"><h4>Home</h4></li>
@@ -69,7 +71,7 @@
         </ul>
       </container>
     </div>
-    <div class="text main">
+    <div class="text" id="main">
       <section class="main_section main_section_active" id="home_section">
         <h2>Welcome, <?=$_SESSION["staffUsername"]?>.</h2>
         <div class="info_wrapper text">
