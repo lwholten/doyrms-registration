@@ -8,7 +8,7 @@ if ($_POST['term'] != "") {
 
   // SQL
   // SQL query used to fetch suggested users
-  $query = "SELECT CONCAT('(',Users.Initials, ') ', Users.Forename, ' ', Users.Surname) AS UserData FROM Users WHERE CONCAT('[', Users.Initials, '] ', Users.Forename, ' ', Users.Surname) LIKE CONCAT('%', ?, '%') LIMIT 0,3";
+  $query = "SELECT CONCAT(Users.Forename, ' ', Users.Surname) AS UserData FROM Users WHERE CONCAT(Users.Initials, ' ', Users.Forename, ' ', Users.Surname) LIKE CONCAT('%', ?, '%') LIMIT 0,3";
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the query into a statement

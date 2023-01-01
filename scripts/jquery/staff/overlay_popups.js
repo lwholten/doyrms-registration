@@ -10,7 +10,9 @@ popupHTMLPaths = {
   signin   : '../../pages/html/popups/sign_user_in.html',
   download : '../../pages/html/popups/download_data.html',
   restrict : '../../pages/html/popups/restrict_user.html',
-  markaway : '../../pages/html/popups/mark_user_away.html'
+  unrestrict : '../../pages/html/popups/unrestrict_user.html',
+  markaway : '../../pages/html/popups/mark_user_away.html',
+  markpresent : '../../pages/html/popups/mark_user_present.html'
 }
 
 // Functions
@@ -45,7 +47,7 @@ function addEventListeners() {
   });
 
   // Event listeners for the submit button
-  $('#staff_overlay #sign_out_user_button').on({
+  $('#staff_overlay form button:last-of-type').on({
     // Prevents the form from being submitted, this allows ajax to handle the form submission and prevents the page from refreshing
     click : function(e) {
       e.preventDefault();
@@ -53,9 +55,31 @@ function addEventListeners() {
     }
   })
 
+  // Event listeners for time inputs
+  $('#staff_overlay form').find('input[type=time]').each(function() {
+    // Sets the placeholder to 'optional' when the input is loaded
+    $(this).attr('data-before', 'Optional')
+
+    // Removes the placeholder if a time is selected
+    $(this).on('input', function() {$(this).attr('data-before', '')});
+  })
+
+  // Event listeners for date inputs
+  $('#staff_overlay form').find('input[type=date]').each(function() {
+    // Sets the placeholder to 'optional' when the input is loaded
+    $(this).attr('data-before', 'Optional')
+
+    // Removes the placeholder if a date is selected
+    $(this).on('input', function() {$(this).attr('data-before', '')});
+  })
+
   // Function used to add the required event listeners to a given field and its children
   // This is used primarily to provide input suggestions below a field and autocompleting the field when a suggestion is clicked
   function addFieldEventListeners(field) {
+    // Fetches the 'nature' of the element as denoted by a data attribute in the HTML
+    field.nature = $(field.fieldID).data('nature');
+
+    // Event listeners for the field
     $(field.fieldID).on({
 
       // If the user presses the enter key, select the top suggestion and move on to the next field
@@ -67,47 +91,53 @@ function addEventListeners() {
           // Clear and hide the suggestions
           $(field.suggestionsListID).empty();
           $(field.suggestionsListID).css('display', 'none');
+          // Focuses on the next input
+          $(this).next().focus();
         }
       },
 
-      // If the user inputs any data into the search bar
-      keyup : function () {
-        // Perform a search and return an array of suggestions
-        $.ajax({
-            type: 'POST',
-            url: field.ajaxPath,
-            data: { term: $(this).val() },
-  					dataType: 'json',
-            beforeSend: function() {
+      // If the user inputs any data into the field
+      keyup : function (e) {
+        // If the keys pressed are not the Enter key
+        if (e.which != 13) {
+          // Perform a search and return an array of suggestions
+          $.ajax({
+              type: 'POST',
+              url: field.ajaxPath,
+              data: { term: $(this).val(), nature: field.nature },
+    					dataType: 'json',
+              beforeSend: function() {
 
-  						// Removes all suggestions if the field is empty
-  						if (!$(field.fieldID).val()) {
-  							$(field.suggestionsListID).empty();
-  						}
+    						// Removes all suggestions if the field is empty
+    						if (!$(field.fieldID).val()) {
+    							$(field.suggestionsListID).empty();
+    						}
 
-            },
-            success: function(suggestions) {
+              },
+              success: function(suggestions) {
 
-  						// Removes all pre-existing suggestions
-  						$(field.suggestionsListID).empty();
+    						// Removes all pre-existing suggestions
+    						$(field.suggestionsListID).empty();
 
-  						// Appends each suggestion to the suggestions list (ul)
-  						for (let i = 0; i < suggestions.length; i++) {$(field.suggestionsListID).append("<li>"+suggestions[i]+"</li>")}
+    						// Appends each suggestion to the suggestions list (ul)
+    						for (let i = 0; i < suggestions.length; i++) {$(field.suggestionsListID).append("<li>"+suggestions[i]+"</li>")}
 
-              // Adds event listeners to all the suggestions
-              $(field.suggestionsListID).find("li").on({
-                // If a suggestion is 'clicked', it will input the suggestion into the text field and hide the suggestions
-                mousedown : function () {
-                  $(field.fieldID).val($(this).text());
-                  $(field.suggestionsListID).css('display', 'none');
-                }
-              });
+                // Adds event listeners to all the suggestions
+                $(field.suggestionsListID).find("li").on({
+                  // If a suggestion is 'clicked', it will input the suggestion into the text field and hide the suggestions
+                  mousedown : function () {
+                    $(field.fieldID).val($(this).text());
+                    $(field.suggestionsListID).css('display', 'none');
+                  }
+                });
 
-  						// Shows the suggestions
-              $(field.suggestionsListID).css('display', 'block');
-            } // End of success
+    						// Shows the suggestions
+                $(field.suggestionsListID).css('display', 'block');
+              } // End of success
 
-          }); // End of Ajax
+            }); // End of Ajax
+
+          } // End of IF statement
 
         }, // End of keyup
 
@@ -122,9 +152,11 @@ function addEventListeners() {
   // Array to contain the various field types as objects
   const fieldTypes = {};
   // Object to contain the data associated with the locations field and its autocompleted suggestions
-  fieldTypes['locations'] = {fieldID:'#user_location_field', suggestionsListID:'#user_location_suggestions', ajaxPath:'autocomplete/fetch_locations.php'},
+  fieldTypes['locations'] = {fieldID:'#user_location_field', suggestionsListID:'#user_location_suggestions', ajaxPath:'autocomplete/fetch_locations.php', nature:null},
   // Object to contain the data associated with the user name field and its autocompleted suggestions
-  fieldTypes['users'] = {fieldID:'#user_name_field', suggestionsListID:'#user_name_suggestions', ajaxPath:'autocomplete/fetch_users.php'}
+  fieldTypes['users'] = {fieldID:'#user_name_field', suggestionsListID:'#user_name_suggestions', ajaxPath:'autocomplete/fetch_users.php', nature:null}
+  // Object to contain the data associated with the user events field and its autocompleted suggestions
+  fieldTypes['events'] = {fieldID:'#user_event_field', suggestionsListID:'#user_event_suggestions', ajaxPath:'autocomplete/fetch_events.php', nature:null}
 
   // For every field type add its required event listeners
   for (var field in fieldTypes) {

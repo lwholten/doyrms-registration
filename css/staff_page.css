@@ -12,6 +12,7 @@
   --blue-pastel: rgb(186,225,255);
 
   --search-bar: var(--light-grey);
+  --placeholder-text-color: #777;
 }
 
 body {
@@ -36,6 +37,19 @@ body {
   display: flex;
   flex-direction: row;
 }
+::placeholder {
+  color: var(--placeholder-text-color);
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  color: var(--placeholder-text-color);
+}
+::-ms-input-placeholder {
+  color: var(--placeholder-text-color);
+}
+input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit {
+  color: var(--placeholder-text-color);
+}
 
 #staff_overlay {
   width: 100%;
@@ -54,12 +68,13 @@ body {
   border-radius: 32px;
   box-shadow: -20px 20px 35px 1px rgb(10 49 86 / 18%);
   padding: 32px;
-  min-width: 400px;
-  width: 380px;
-  min-height: 600px;
-  height: 640px;
+  width: 400px;
+  min-height: 240px;
+  height: auto;
+  max-height: 640px;
   transition: transform 250ms ease-in;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 #staff_overlay .card header {
   height: 30px;
@@ -99,21 +114,20 @@ body {
   background: var(--light-grey);
   margin: 16px auto;
 }
-#staff_overlay .card br {
-  height: 20px;
-}
 #staff_overlay form {
   height: auto;
+  min-height: 180px;
   width: calc(100% - 24px);
   display: flex;
   flex-direction: column;
   margin: 0px auto;
+  flex: 1;
 }
 #staff_overlay form .search_wrapper {
   width: 100%;
   height: auto;
   max-height: 32px;
-  margin: auto 0px;
+  margin: 0px;
   display: flex;
   flex-direction: column;
   overflow-y: visible;
@@ -178,7 +192,7 @@ body {
 #staff_overlay form button {
   width: 100%;
   height: 48px;
-  margin: 16px auto 0px auto;
+  margin: auto auto 16px auto;
   border: none;
   outline: none;
   background: var(--navy);
@@ -194,6 +208,18 @@ body {
 }
 #staff_overlay form button h4 {
   margin: auto;
+}
+#staff_overlay form input[type='time']::before, input[type='date']::before {
+  padding: 4px;
+  content: attr(data-before);
+  color: var(--placeholder-text-color);
+}
+#staff_overlay form input[type='time'], input[type='date'] {
+  border-radius: 4px;
+  height: 40px;
+  width: 100%;
+  background: var(--light-grey);
+  border: none;
 }
 
 #main {

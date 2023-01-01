@@ -12,7 +12,7 @@ $tableContents = '';
 // Connects to the database
 $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
-$sql = "SELECT RestrictedUsers.UserID, Forename, Surname, Cast(TimeRestricted AS Date), TimeUnrestricted, RestrictedUsers.Description FROM RestrictedUsers LEFT JOIN Users ON Users.UserID = RestrictedUsers.UserID LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY RestrictedUsers.TimeUnrestricted, Users.Forename ASC LIMIT 100";
+$sql = "SELECT RestrictedUsers.UserID, Forename, Surname, Cast(DateTimeRestricted AS Date), DateTimeUnrestricted, RestrictedUsers.Reason FROM RestrictedUsers LEFT JOIN Users ON Users.UserID = RestrictedUsers.UserID LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY RestrictedUsers.DateTimeUnrestricted, Users.Forename ASC LIMIT 100";
 // Saves the result of the SQL code to a variable
 $result = $con->query($sql);
 // Disconnects from the database
@@ -26,7 +26,7 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // The table header and start of the table body
-$tableContents .= '<thead><tr><th>Forename</th><th>Surname</th><th>Date Restricted</th><th>Until</th><th>Time Remaining</th><th>Description</th></tr></thead><tbody>';
+$tableContents .= '<thead><tr><th>Forename</th><th>Surname</th><th>Date Restricted</th><th>Until</th><th>Time Remaining</th><th>Reason</th></tr></thead><tbody>';
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
   $tableContents .= "<tr><td class='restricted'>$record[1]</td><td class='restricted'>$record[2]</td><td>$record[3]</td>";

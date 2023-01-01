@@ -12,7 +12,9 @@ function searchActions($term) {
     ["sign user out", "#sign_out_user_button"],
     ["sign user in", "#sign_in_user_button"],
     ["restrict user", "#restrict_user_button"],
-    ["mark user away", "#away_user_button"]
+    ["unrestrict user", "#unrestrict_user_button"],
+    ["mark user away", "#away_user_button"],
+    ["mark user present", "#present_user_button"]
   ];
   // A string is used to contain all 'suggestion' list elements
   $suggestions = "";

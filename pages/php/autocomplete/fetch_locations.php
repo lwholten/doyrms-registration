@@ -21,7 +21,7 @@ if ($_POST['term'] != "") {
   // Disconnects from the database
   $con->close();
 
-  // Outputs the users found in an array to be used client side with Ajax
+  // Outputs the locations found in an array to be used client side with Ajax
   $locations = [];
   while($record = $result -> fetch_array(MYSQLI_NUM)) {
     foreach ($record as $value) {

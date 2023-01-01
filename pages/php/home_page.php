@@ -179,8 +179,8 @@ function checkUserExists($name) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[1];
-  $lname = $tempArray[2];
+  $fname = $tempArray[0];
+  $lname = $tempArray[1];
   unset($tempArray);
 
   // Used to check whether a user exists in the database
@@ -205,8 +205,8 @@ function checkUserSignedIn($name) {
 
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[1];
-  $lname = $tempArray[2];
+  $fname = $tempArray[0];
+  $lname = $tempArray[1];
   unset($tempArray);
   // Used to check whether a the user is already signed in
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=? AND Users.LocationID IS NULL) THEN 1 ELSE 0 END";
@@ -295,8 +295,8 @@ function userSignOut($name, $location) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[1];
-  $lname = $tempArray[2];
+  $fname = $tempArray[0];
+  $lname = $tempArray[1];
   unset($tempArray);
   // Fetches an eventID if a user triggers an event on signing out, if an event did not trigger '[NULL, 0]' is returned
   // Note that the '1' implies that it is a 'sign out event'
@@ -325,8 +325,8 @@ function userSignIn($name, $auto) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[1];
-  $lname = $tempArray[2];
+  $fname = $tempArray[0];
+  $lname = $tempArray[1];
   unset($tempArray);
   // SQL query used to create a user log
   $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, MinutesLate, Auto ) SELECT  Users.UserID, NULL, CURRENT_TIMESTAMP, NULL, NULL, ? FROM Users WHERE Users.Forename=? AND Users.Surname=?";

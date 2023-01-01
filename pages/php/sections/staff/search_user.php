@@ -108,7 +108,7 @@ function fetchRestrictedDetails($userID, $restricted) {
   global $ini;
   // If the user is restricted
   if ($restricted === 1 || $restricted === '1') {
-    $query = "SELECT CAST(TimeRestricted AS Date) AS Start, (CASE WHEN TimeUnrestricted IS NULL THEN 'Not Specified' ELSE CAST(TimeUnrestricted AS Date) END) AS End, (CASE WHEN Description IS NULL THEN 'None' ELSE Description END) AS Description FROM RestrictedUsers WHERE UserID=?";
+    $query = "SELECT CAST(DateTimeRestricted AS Date) AS Start, (CASE WHEN DateTimeUnrestricted IS NULL THEN 'Not Specified' ELSE CAST(DateTimeUnrestricted AS Date) END) AS End, (CASE WHEN Reason IS NULL THEN 'None' ELSE Reason END) AS Reason FROM RestrictedUsers WHERE UserID=?";
     // Connects to the database
     $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
     // Creates a prepared statement
@@ -128,7 +128,7 @@ function fetchRestrictedDetails($userID, $restricted) {
     $restrictedData[2] -> Description ('None' when NULL)
     */
     // Outputs the data as HTML in a user-friendly format
-    return "<h5>Restricted: Yes</h5><divider></divider><h5>From: $restrictedData[0]</h5><h5>Until: $restrictedData[1]</h5><divider></divider><h5>Description</h5><h6>$restrictedData[2]</h6>";
+    return "<h5>Restricted: Yes</h5><divider></divider><h5>From: $restrictedData[0]</h5><h5>Until: $restrictedData[1]</h5><divider></divider><h5>Reason</h5><h6>$restrictedData[2]</h6>";
   }
   // If the user is not restricted
   else {
@@ -140,7 +140,7 @@ function fetchAwayDetails($userID, $away) {
   global $ini;
   // If the user is restricted
   if ($away === 1 || $away === '1') {
-    $query = "SELECT CAST(AwayUsers.TimeOut AS Date) AS Start, (CASE WHEN AwayUsers.TimeIn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.TimeIn AS Date) END) AS End, Locations.LocationName, (CASE WHEN AwayUsers.Description IS NULL THEN 'None' ELSE AwayUsers.Description END) AS Description FROM AwayUsers LEFT JOIN Locations ON AwayUsers.LocationID = Locations.LocationID WHERE UserID=?";
+    $query = "SELECT CAST(AwayUsers.DateTimeOut AS Date) AS Start, (CASE WHEN AwayUsers.DateTimeIn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.DateTimeIn AS Date) END) AS End, (CASE WHEN AwayUsers.Reason IS NULL THEN 'None' ELSE AwayUsers.Reason END) AS Reason FROM AwayUsers WHERE UserID=?";
     // Connects to the database
     $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
     // Creates a prepared statement
@@ -157,11 +157,10 @@ function fetchAwayDetails($userID, $away) {
     /*Notes,
     $awayData[0] -> Start Date,
     $awayData[1] -> End Date ('Not specified' when NULL),
-    $awayData[2] -> Location Name,
-    $awayData[3] -> Description ('None' when NULL)
+    $awayData[2] -> Description ('None' when NULL)
     */
     // Outputs the data as HTML in a user-friendly format
-    return "<h5>Away: Yes</h5><divider></divider><h5>From: $awayData[0]</h5><h5>Until: $awayData[1]</h5><divider></divider><h5>To: $awayData[2]</h5><divider></divider><h5>Description</h5><h6>$awayData[3]</h6>";
+    return "<h5>Away: Yes</h5><divider></divider><h5>From: $awayData[0]</h5><h5>Until: $awayData[1]</h5><divider></divider><h5>Reason</h5><h6>$awayData[2]</h6>";
   }
   // If the user is not restricted
   else {
@@ -177,7 +176,7 @@ function calcMaxTableHeight($restricted, $away) {
   }
   // If the user is away, add 110px
   if ($away === 1 || $away === '1') {
-    $maxTableHeight += 110;
+    $maxTableHeight += 80;
   }
   // Return the max height
   return $maxTableHeight;
@@ -252,9 +251,9 @@ $sectionHTML .= "<li><img src='../../images/svg/genders.svg' alt='Genders SVG'><
 // Room
 $sectionHTML .= "<li><img src='../../images/svg/house.svg' alt='House SVG'><spacer></spacer><h5>Room: $userData[4]</h5></li>";
 // Restricted
-$sectionHTML .= "<li><img src='../../images/svg/padlock.svg' alt='Padlock SVG'><spacer></spacer><div>".fetchRestrictedDetails($userID, $userData[5])."</div></li>";
+$sectionHTML .= "<li><img src='../../images/svg/padlock-closed.svg' alt='Locked padlock SVG'><spacer></spacer><div>".fetchRestrictedDetails($userID, $userData[5])."</div></li>";
 // Away
-$sectionHTML .= "<li><img src='../../images/svg/sign-away.svg' alt='Door SVG'><spacer></spacer><div>".fetchAwayDetails($userID, $userData[6])."</div></li>";
+$sectionHTML .= "<li><img src='../../images/svg/sign-out-door.svg' alt='Sign out door SVG'><spacer></spacer><div>".fetchAwayDetails($userID, $userData[6])."</div></li>";
 // End of user details
 $sectionHTML .= "</ul></div><spacer></spacer>";
 // Start of users activity table
