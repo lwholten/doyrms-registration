@@ -58,10 +58,10 @@
       </header>
       <form id="user_sign_in_form" class="text" action="" method="POST">
         <input type="hidden" name="user_sign_in" value="true"/>
-        <label for="sign_in_initials_field"><h3>Your Initials</h3></label>
+        <label for="sign_in_field"><h3>Your Initials</h3></label>
         <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="sign_in_initials_field" name="sign_in_initials_field" placeholder="" value="" autocomplete="off"/>
-          <ul id="sign_in_initials_suggestions" class="suggested_inputs"></ul>
+          <input type="text" class="input_field capitalize" id="sign_in_field" name="sign_in_field" placeholder="" value="" autocomplete="off"/>
+          <ul id="suggested_sign_in_users" class="suggested_inputs"></ul>
         </div>
         <divider></divider>
         <input class="blue_button" id="student_sign_in_submit" type="submit" value="Submit">
@@ -73,16 +73,16 @@
       </header>
       <form id="user_sign_out_form" class="text" action="" method="POST">
         <input type="hidden" name="user_sign_out" value="true"/>
-        <label for="sign_out_initials_field"><h3>Your Initials</h3></label>
+        <label for="sign_out_field"><h3>Your Initials</h3></label>
         <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="sign_out_initials_field" name="sign_out_initials_field" placeholder="" value="" autocomplete="off"/>
-          <ul id="sign_out_initials_suggestions" class="suggested_inputs"></ul>
+          <input type="text" class="input_field capitalize" id="sign_out_field" name="sign_out_field" placeholder="" value="" autocomplete="off"/>
+          <ul id="suggested_sign_out_users" class="suggested_inputs"></ul>
         </div>
         <divider></divider>
         <label for="location"><h3>Location</h3></label>
         <div class="input_wrapper">
           <input type="text" class="input_field capitalize" id="locations_input_field" name="sign_out_locations_field" autocomplete="off"></input>
-          <ul id="location_suggestions" class="suggested_inputs"></ul>
+          <ul id="suggested_locations" class="suggested_inputs"></ul>
         </div>
         <divider></divider>
         <input class="blue_button" id="student_sign_out_submit" type="submit" value="Submit">

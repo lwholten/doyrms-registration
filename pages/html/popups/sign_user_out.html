@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'sign user out' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="X">
+    </div>
+    <h3>Sign User Out</h3>
+  </header>
+  <divider></divider>
+  <form class="popup_form">
+    <label for="user_name_field"><h4>Name</h4></label>
+    <div class="search_wrapper">
+      <input type="text" class="capitalize" id="user_name_field" name="name_field" placeholder="Required" value="" autocomplete="off"/>
+      <ul id="user_name_suggestions" class="suggested_inputs"></ul>
+    </div>
+    <br>
+    <label for="user_location_field"><h4>Location</h4></label>
+    <div class="search_wrapper">
+      <input type="text" class="capitalize" id="user_location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
+      <ul id="user_location_suggestions" class="suggested_inputs"></ul>
+    </div>
+    <br>
+    <label for="user_location_field"><h4>Message</h4></label>
+    <textarea type="text" id="user_message_field" name="message_field" placeholder="Optional" value="" autocomplete="off"></textarea>
+    <br>
+    <button type="submit" id="sign_out_user_button"><h4>Submit</h4></button>
+  </form>
+</div>

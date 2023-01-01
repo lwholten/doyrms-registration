@@ -242,12 +242,6 @@ body {
   margin: auto 0px auto 8px;
   padding: 0px;
 }
-.input_field {
-  padding: 0px 8px;
-}
-.capitalize {
-  text-transform: capitalize;
-}
 
 #notification_wrapper {
   width: 100%;

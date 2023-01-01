@@ -131,6 +131,12 @@ navbar .divider {
   -webkit-transform: rotate(45deg);
 }
 
+.input_field {
+  padding: 0px 8px;
+}
+.capitalize {
+  text-transform: capitalize;
+}
 .text_grid {
   display: grid;
   grid-template-columns: repeat(2, auto);

@@ -18,6 +18,8 @@
 
 <!-- staff page javascript functions -->
 <script src="../../scripts/staff_page_functions.js"></script>
+<!-- staff page javascript functions -->
+<script src="../../scripts/jquery/staff/overlay_popups.js"></script>
 <!-- searchbar autocompletion -->
 <script src="../../scripts/jquery/staff/searchbar_autocomplete.js"></script>
 <!-- keep data on the page refreshed and up to date -->
@@ -28,6 +30,7 @@
 <title>Home | DOYRMS Registration</title>
 </head>
 
+<section id="staff_overlay" class="text"></section>
 <body>
   <header class="text" id="main_header">
     <img src="../../images/png/logo.png"></img>
@@ -88,11 +91,11 @@
               <h3>Quick Access</h3>
               <divider></divider>
               <ul>
-                <li><img src="../../images/svg/download.svg" alt="Download SVG"><h4>Download data</h4></li>
-                <li><img src="../../images/svg/sign-in-out.svg" class="flip" alt="Out SVG"><h4>Sign user out</h4></li>
-                <li><img src="../../images/svg/sign-in-out.svg" alt="In SVG"><h4>Sign user in</h4></li>
-                <li><img src="../../images/svg/padlock.svg" alt="Padlock SVG"><h4>Restrict user</h4></li>
-                <li><img src="../../images/svg/sign-away.svg" alt="Door SVG"><h4>Mark user as away</h4></li>
+                <li id="download_data_button" class="overlay_trigger" data-trigger-type="download"><img src="../../images/svg/download.svg" alt="Download SVG"><h4>Download data</h4></li>
+                <li id="sign_out_user_button" class="overlay_trigger" data-trigger-type="signout"><img src="../../images/svg/sign-in-out.svg" class="flip" alt="Out SVG"><h4>Sign user out</h4></li>
+                <li id="sign_in_user_button" class="overlay_trigger" data-trigger-type="signin"><img src="../../images/svg/sign-in-out.svg" alt="In SVG"><h4>Sign user in</h4></li>
+                <li id="restrict_user_button" class="overlay_trigger" data-trigger-type="restrict"><img src="../../images/svg/padlock.svg" alt="Padlock SVG"><h4>Restrict user</h4></li>
+                <li id="away_user_button" class="overlay_trigger" data-trigger-type="markaway"><img src="../../images/svg/sign-away.svg" alt="Door SVG"><h4>Mark user as away</h4></li>
               </ul>
             </aside>
             <section class="body_section">

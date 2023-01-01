@@ -1,3 +1,4 @@
+// Functions
 // Show suggestions
 function showSuggestions() {
   $('#staff_searchbar_suggestions').css('display','block');
@@ -6,7 +7,12 @@ function showSuggestions() {
 function hideSuggestions() {
   $('#staff_searchbar_suggestions').css('display','none');
 }
+// When the user clicks on a suggested user name
+function selectInitials(val) {
+	$("#user_name_field").val(val.substr(5));
+}
 
+// Main
 $(document).ready(function() {
   // Variables
   // Determines whether suggestions are hidden
@@ -49,7 +55,7 @@ $(document).ready(function() {
       // Uses Ajax to post the search term to the server and retrieve suggestions
       $.ajax({
           type: 'POST',
-          url: 'autocomplete/autocomplete_staff_searchbar.php',
+          url: 'autocomplete/staff_searchbar.php',
           data: { term: $('#staff_searchbar').val() },
           beforeSend: function() {
             // Removes all suggestions if the staff searchbar is empty

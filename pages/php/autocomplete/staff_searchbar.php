@@ -9,8 +9,8 @@ function searchActions($term) {
   $actionIndex = [
     ["download data", "#download_data_button"],
     ["sign out", "#sign_out_button"],
-    ["sign out user", "#sign_out_user_button"],
-    ["sign in user", "#sign_in_user_button"],
+    ["sign user out", "#sign_out_user_button"],
+    ["sign user in", "#sign_in_user_button"],
     ["restrict user", "#restrict_user_button"],
     ["mark user away", "#away_user_button"]
   ];

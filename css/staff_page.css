@@ -37,6 +37,165 @@ body {
   flex-direction: row;
 }
 
+#staff_overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  backdrop-filter: blur(10px);
+  z-index: 99;
+}
+#staff_overlay .card {
+  background: var(--white);
+  border-radius: 32px;
+  box-shadow: -20px 20px 35px 1px rgb(10 49 86 / 18%);
+  padding: 32px;
+  min-width: 400px;
+  width: 380px;
+  min-height: 600px;
+  height: 640px;
+  transition: transform 250ms ease-in;
+  display: block;
+}
+#staff_overlay .card header {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+#staff_overlay .card header .close {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  z-index: 2;
+  border-radius: 50%;
+  display: inherit;
+  cursor: pointer;
+}
+#staff_overlay .card header .close img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  z-index: 2;
+  margin: auto;
+}
+#staff_overlay .card header h3 {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  height: auto;
+  min-height: 30px;
+}
+#staff_overlay .card divider {
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--light-grey);
+  margin: 16px auto;
+}
+#staff_overlay .card br {
+  height: 20px;
+}
+#staff_overlay form {
+  height: auto;
+  width: calc(100% - 24px);
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+}
+#staff_overlay form .search_wrapper {
+  width: 100%;
+  height: auto;
+  max-height: 32px;
+  margin: auto 0px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: visible;
+}
+#staff_overlay form .search_wrapper ul {
+  background: var(--light-grey);
+  position: relative;
+  z-index: 1;
+  list-style-type: none;
+  padding: 0px;
+  height: auto;
+  width: 100%;
+  margin: 0px;
+  display: block;
+  box-shadow: 0px 10px 15px 1px rgb(10 49 86 / 18%);
+}
+#staff_overlay form .search_wrapper ul li {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: calc(100% - 6px);
+  padding: 4px;
+  height: auto;
+  max-height: 32px;
+  cursor: pointer;
+  background: none;
+}
+#staff_overlay form .search_wrapper ul li:hover {
+  background: rgba(198, 196, 200, 0.9);
+}
+#staff_overlay form * {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  font-family: 'Montserrat';
+  text-transform: capitalize;
+  -webkit-appearance: none;
+}
+#staff_overlay form input[type='text'], textarea {
+  width: calc(100% - 8px);
+  padding: 4px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: var(--light-grey);
+}
+#staff_overlay form input[type='text'] {
+  min-height: 32px;
+  max-height: 32px;
+}
+#staff_overlay form textarea {
+  height: auto;
+  min-height: 64px;
+  max-height: 112px;
+  text-transform: none;
+  resize: none;
+}
+#staff_overlay form h4 {
+  display: block;
+  margin: 0px 0px 8px 0px;
+}
+#staff_overlay form button {
+  width: 100%;
+  height: 48px;
+  margin: 16px auto 0px auto;
+  border: none;
+  outline: none;
+  background: var(--navy);
+  color: var(--white);
+  font-size: 22px;
+  border-radius: 4px;
+  text-align: center;
+  box-shadow: 0 6px 20px -5px rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+}
+#staff_overlay form button h4 {
+  margin: auto;
+}
+
 #main {
   width: auto;
   height: auto;
@@ -371,43 +530,6 @@ table button {
   width: 60px;
 }
 
-.input_wrapper {
-  width: 100%;
-  height: auto;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 35% 65%;
-  margin: 16px 0px;
-}
-.input_wrapper * {
-  width: 100%;
-  height: 100%;
-}
-.input_wrapper label {
-  grid-area: 1 / 1 / 2 / 2;
-  text-align: left;
-}
-.input_wrapper input {
-  padding: 0px;
-  margin: -2px -2px 0px 0px;
-  border: 2px solid #C6C4C8;
-  border-radius: 4px;
-  font-size: 16px;
-}
-.input_wrapper textarea {
-  padding: 0px;
-  margin: -2px -2px 0px 0px;
-  border: 2px solid #C6C4C8;
-  border-radius: 4px;
-  resize: none;
-  font-size: 16px;
-}
-.input_wrapper input[type="time"] {
-  width: 40%;
-}
-.input_wrapper input[type="number"] {
-  width: 15%;
-}
 .boolean_radio {
   max-width: 50%;
 }
