@@ -179,8 +179,8 @@ function checkUserExists($name) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[0];
-  $lname = $tempArray[1];
+  $fname = $tempArray[1];
+  $lname = $tempArray[2];
   unset($tempArray);
 
   // Used to check whether a user exists in the database
@@ -205,8 +205,8 @@ function checkUserSignedIn($name) {
 
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[0];
-  $lname = $tempArray[1];
+  $fname = $tempArray[1];
+  $lname = $tempArray[2];
   unset($tempArray);
   // Used to check whether a the user is already signed in
   $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=? AND Users.LocationID IS NULL) THEN 1 ELSE 0 END";
@@ -295,8 +295,8 @@ function userSignOut($name, $location) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[0];
-  $lname = $tempArray[1];
+  $fname = $tempArray[1];
+  $lname = $tempArray[2];
   unset($tempArray);
   // Fetches an eventID if a user triggers an event on signing out, if an event did not trigger '[NULL, 0]' is returned
   // Note that the '1' implies that it is a 'sign out event'
@@ -325,8 +325,8 @@ function userSignIn($name, $auto) {
   global $ini;
   // Splits the name input into first and last names using a temporary array
   $tempArray = explode(" ", $name);
-  $fname = $tempArray[0];
-  $lname = $tempArray[1];
+  $fname = $tempArray[1];
+  $lname = $tempArray[2];
   unset($tempArray);
   // SQL query used to create a user log
   $logQuery = "INSERT INTO Log ( UserID, LocationID, LogTime, EventID, MinutesLate, Auto ) SELECT  Users.UserID, NULL, CURRENT_TIMESTAMP, NULL, NULL, ? FROM Users WHERE Users.Forename=? AND Users.Surname=?";
@@ -353,22 +353,22 @@ function userSignIn($name, $auto) {
 // Executes if a user sign out is detected
 if (isset($_POST['user_sign_out'])) {
   // If the user and location exist within the database
-  $userExists = checkUserExists($_POST['sign_out_initials_field']);
+  $userExists = checkUserExists($_POST['sign_out_field']);
   $locationExists = checkLocationExists($_POST['sign_out_locations_field']);
   // If they exist
   if ($userExists === 1 && $locationExists === 1) {
     unset($userExists, $locationExists);
-    $signedIn = checkUserSignedIn($_POST['sign_out_initials_field']);
+    $signedIn = checkUserSignedIn($_POST['sign_out_field']);
     // If the user is not signed in, sign them in automatically then sign them out
     if ($signedIn === 0) {
       unset($signedIn);
-      userSignIn($_POST['sign_out_initials_field'],1);
-      $success = userSignOut($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+      userSignIn($_POST['sign_out_field'],1);
+      $success = userSignOut($_POST['sign_out_field'], $_POST['sign_out_locations_field']);
     }
     // If the user is already signed in, don't automatically sign them in
     elseif ($signedIn === 1) {
       unset($signedIn);
-      $success = userSignOut($_POST['sign_out_initials_field'], $_POST['sign_out_locations_field']);
+      $success = userSignOut($_POST['sign_out_field'], $_POST['sign_out_locations_field']);
     }
     // If this was successful, it will relay the message to the user
     if ($success) {
@@ -404,17 +404,17 @@ if (isset($_POST['user_sign_out'])) {
 // Executes if a user sign in is detected
 if (isset($_POST['user_sign_in'])) {
   // If the user exists in the database
-  $userExists = checkUserExists($_POST['sign_in_initials_field']);
+  $userExists = checkUserExists($_POST['sign_in_field']);
   // If they exist
   if ($userExists === 1) {
     unset($userExists);
     // Checks whether the user is already signed in by searching for an uncompleted log
     // If there are no uncompleted logs, it can be assumed that the user is signed in
-    $userSignedIn = checkUserSignedIn($_POST['sign_in_initials_field']);
+    $userSignedIn = checkUserSignedIn($_POST['sign_in_field']);
     // If the user is not already signed in, sign them in
     if ($userSignedIn === 0) {
       unset($userSignedIn);
-      $success = userSignIn($_POST['sign_in_initials_field'],0);
+      $success = userSignIn($_POST['sign_in_field'],0);
       // If this was successful, it will relay the message to the user
       if ($success) {
         echo "<script>notification('You have been signed in successfully!','success',2000)</script>";
