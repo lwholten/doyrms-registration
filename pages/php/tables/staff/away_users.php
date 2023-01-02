@@ -12,7 +12,7 @@ $tableContents = '';
 // Connects to the database
 $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
-$sql = '(SELECT Forename, Surname, cast(DateTimeOut AS Date), cast(DateTimeIn AS Date), cast(DateTimeIn AS Time), Reason, (CASE WHEN AwayUsers.UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM AwayUsers LEFT JOIN Users ON Users.UserID = AwayUsers.UserID ORDER BY AwayUsers.DateTimeIn, Users.Forename ASC LIMIT 100)';
+$sql = '(SELECT Forename, Surname, cast(DateTimeAway AS Date), cast(DateTimeReturn AS Date), cast(DateTimeReturn AS Time), Reason, (CASE WHEN AwayUsers.UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM AwayUsers LEFT JOIN Users ON Users.UserID = AwayUsers.UserID ORDER BY AwayUsers.DateTimeReturn, Users.Forename ASC LIMIT 100)';
 // Saves the result of the SQL code to a variable
 $result = $con->query($sql);
 // Disconnects from the database

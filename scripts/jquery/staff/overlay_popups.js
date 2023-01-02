@@ -14,6 +14,15 @@ popupHTMLPaths = {
   markaway : '../../pages/html/popups/mark_user_away.html',
   markpresent : '../../pages/html/popups/mark_user_present.html'
 }
+// An object used to contain the paths used to store the file path for each popup forms action file
+formActionPaths = {
+  sign_user_in_form : '../../pages/php/forms/sign_user_in.php',
+  sign_user_out_form : '../../pages/php/forms/sign_user_out.php',
+  restrict_user_form : '../../pages/php/forms/restrict_user.php',
+  unrestrict_user_form : '../../pages/php/forms/unrestrict_user.php',
+  mark_user_away_form : '../../pages/php/forms/mark_user_away.php',
+  mark_user_present_form : '../../pages/php/forms/mark_user_present.php',
+}
 
 // Functions
 // Removes the popup
@@ -36,6 +45,80 @@ function removePopup() {
 // Used to add event listeners to the fields contained within a popup
 function addEventListeners() {
 
+  // Event listener for if text is input into the form
+  $('#staff_overlay .card form:first-of-type').keydown(function(e) {
+
+    const submitButton = $('#staff_overlay .card form:first-of-type button:last-of-type');
+    const errorWrapper = $('#staff_overlay .card form .error_wrapper');
+
+    // If the enter key was not pressed and  the form is not loading
+    if (e.which != 13 && !$(submitButton).hasClass('loading')) {
+      // Removes any error messages
+      $(errorWrapper).css('display', 'none');
+      $(errorWrapper).empty();
+
+      // Reset the submit button
+      $(submitButton).css('background', 'var(--navy)');
+      $(submitButton).html('<h4>Submit</h4>');
+    }
+  });
+
+  // Event listener for when the form is submitted
+  $('#staff_overlay .card form:first-of-type').submit(function(e) {
+
+    e.preventDefault(); // Do not execute the actual form submit
+
+    // Indexes the object that stores all the action file paths with the forms ID
+    var actionPath = formActionPaths[$(this).attr('id')];
+    // Submit button
+    const submitButton = $('#staff_overlay .card form:first-of-type button:last-of-type');
+    const errorWrapper = $('#staff_overlay .card form .error_wrapper');
+
+    $.ajax({
+        type: "POST",
+        url: actionPath,
+        timeout: 5000,
+        data: $(this).serialize() + "&staff_action=1", // Serializes the form's elements (and states that this was a staff action)
+        dataType: 'json',
+        beforeSend: function() {
+
+          // Removes any error messages
+          $(errorWrapper).css('display', 'none');
+          $(errorWrapper).empty();
+
+          // Animates the buttons 'loading' state
+          $(submitButton).empty();
+          $(submitButton).addClass('loading');
+
+        }
+    }).done(function(data) {
+
+      // Changes the buttons state to successful
+      $(submitButton).css('background', 'var(--green)');
+      $(submitButton).html('<h4>Done</h4>');
+
+      removePopup();
+
+    }).fail(function(jqXHR, status, error) {
+
+      // Changes the buttons state to failure
+      $(submitButton).css('background', 'var(--red)');
+      $(submitButton).html('<h4>Failure</h4>');
+
+      // Displays an error message
+      $(errorWrapper).css('display', 'block');
+      $(errorWrapper).text(error);
+
+    }).always(function() {
+
+      // Displays the submit button and removes the spinner
+      $(submitButton).css('display', 'block');
+      $(submitButton).removeClass('loading');
+
+    });
+
+  });
+
   // Event listeners for the close button
   $('#staff_overlay .card header .close').on({
     // Applies the background when hovering
@@ -45,15 +128,6 @@ function addEventListeners() {
     // Removes the popup when pressed
     click : function () {removePopup()}
   });
-
-  // Event listeners for the submit button
-  $('#staff_overlay form button:last-of-type').on({
-    // Prevents the form from being submitted, this allows ajax to handle the form submission and prevents the page from refreshing
-    click : function(e) {
-      e.preventDefault();
-      return false;
-    }
-  })
 
   // Event listeners for time inputs
   $('#staff_overlay form').find('input[type=time]').each(function() {
@@ -82,10 +156,10 @@ function addEventListeners() {
     // Event listeners for the field
     $(field.fieldID).on({
 
-      // If the user presses the enter key, select the top suggestion and move on to the next field
-      keypress : function (e) {
-        // 13 -> Enter key
-        if(e.which == 13) {
+      // If the user presses the TAB key, select the top suggestion and move on to the next field
+      keydown : function (e) {
+        // 9 -> TAB key
+        if(e.which == 9) {
           // Simulate a 'click event' on the top suggestion
           $(field.suggestionsListID).find("li:first-of-type").trigger('mousedown');
           // Clear and hide the suggestions
@@ -98,8 +172,8 @@ function addEventListeners() {
 
       // If the user inputs any data into the field
       keyup : function (e) {
-        // If the keys pressed are not the Enter key
-        if (e.which != 13) {
+        // If the keys pressed are not the TAB key
+        if (e.which != 9) {
           // Perform a search and return an array of suggestions
           $.ajax({
               type: 'POST',

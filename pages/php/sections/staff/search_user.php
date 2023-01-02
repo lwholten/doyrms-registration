@@ -140,7 +140,7 @@ function fetchAwayDetails($userID, $away) {
   global $ini;
   // If the user is restricted
   if ($away === 1 || $away === '1') {
-    $query = "SELECT CAST(AwayUsers.DateTimeOut AS Date) AS Start, (CASE WHEN AwayUsers.DateTimeIn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.DateTimeIn AS Date) END) AS End, (CASE WHEN AwayUsers.Reason IS NULL THEN 'None' ELSE AwayUsers.Reason END) AS Reason FROM AwayUsers WHERE UserID=?";
+    $query = "SELECT CAST(AwayUsers.DateTimeAway AS Date) AS Start, (CASE WHEN AwayUsers.DateTimeReturn IS NULL THEN 'Not Specified' ELSE CAST(AwayUsers.DateTimeReturn AS Date) END) AS End, (CASE WHEN AwayUsers.Reason IS NULL THEN 'None' ELSE AwayUsers.Reason END) AS Reason FROM AwayUsers WHERE UserID=?";
     // Connects to the database
     $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
     // Creates a prepared statement

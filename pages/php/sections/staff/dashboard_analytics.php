@@ -47,16 +47,16 @@ function analytics_users() {
         "away"  => ($record[5] - $record[6]),
         // Away & restricted
         "awayr"  => $record[6],
-        // In = (in - in & restricted)
-        "in"  => ($record[1] - $record[2]),
-        // In & restricted
-        "inr"  => $record[2],
-        // Out = (out - out & restricted - away - away & restricted)
-        // This simplifies to: (out - out & restricted + away & restricted - away)
+        // In = (in - in & restricted - away - away & restricted)
+        // This simplifies to: (in - in & restricted + away & restricted - away)
         // I honestly don't know why, but this combination works, so lets role with it anyway ¯\_(ツ)_/¯
-        "out"  => ($record[3] - $record[4] + $record[6] - $record[5]),
-        // Out & restricted = (out & restricted - away & restricted)
-        "outr"  => ($record[4] - $record[6])
+        "in"  => ($record[1] - $record[2] + $record[6] - $record[5]),
+        // In & restricted = (in & restricted - away & restricted)
+        "inr"  => ($record[2] - $record[6]),
+        // Out = (out - out & restricted)
+        "out"  => ($record[3] - $record[4]),
+        // Out & restricted
+        "outr"  => $record[4]
     );
 
     // Calculates the percentage of the user bar that each parameter will occupy

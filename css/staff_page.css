@@ -205,6 +205,10 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   overflow: hidden;
   cursor: pointer;
   text-align: center;
+  overflow: hidden;
+}
+#staff_overlay form button:active {
+  background: var(--light-navy);
 }
 #staff_overlay form button h4 {
   margin: auto;
@@ -212,7 +216,6 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
 #staff_overlay form input[type='time']::before, input[type='date']::before {
   padding: 4px;
   content: attr(data-before);
-  color: var(--placeholder-text-color);
 }
 #staff_overlay form input[type='time'], input[type='date'] {
   border-radius: 4px;
@@ -220,6 +223,27 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   width: 100%;
   background: var(--light-grey);
   border: none;
+  color: var(--placeholder-text-color);
+}
+#staff_overlay form .error_wrapper {
+  padding: 0px;
+  min-height: 24px;
+  height: auto;
+  width: 100%;
+  min-height: 24px;
+  border-radius: 4px;
+  border: 2px solid var(--red);
+  color: var(--red);
+  background: none;
+  text-align: center;
+  font-style: italic;
+  text-transform: lowercase;
+  overflow: hidden;
+  display: none;
+  margin: 0px auto;
+}
+#staff_overlay form .error_wrapper:first-letter {
+  text-transform: uppercase;
 }
 
 #main {
