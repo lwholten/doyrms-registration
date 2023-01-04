@@ -13,6 +13,8 @@ function hideOverlay() {
 function showOverlay() {
   // Executes the back button function, this will return the preset back to the 'in/out' preset and clear all form inputs
   backButton();
+  // Populates the overlays date container with todays details
+  updateOverlayTime();
   // Shows the overlay
   $('#idle_overlay').css({
     'opacity': '1.0',
@@ -20,6 +22,41 @@ function showOverlay() {
   });
   //Makes the login box zoom out of frame
   $('#login_box').css('transform', 'scale(0.0)');
+}
+// used to get the current days details
+function getTodaysDetails() {
+    // Array of weekdays
+    const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    // Array of suffixes
+    const suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "st", "rd", "th", "th", "th", "th", "th", "th", "th", "st",]
+    // Array of months
+    const months = ["Januray", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    // Todays date
+    const d = new Date(); 
+
+    // An array of todays details
+    today = {
+      'time': ((d.getHours()<10?'0':'') + d.getHours()+':'+(d.getMinutes()<10?'0':'') + d.getMinutes()),
+      'dayStr': weekdays[d.getDay()],
+      'dayNum': (d.getDay()+1) + suffixes[d.getDate()],
+      'month': months[d.getMonth()],
+    }
+
+    // Returns the 'today' object
+    return today;
+}
+
+// Sets a 30 second timeout
+function wait30(){ setTimeout('updateOverlayTime()',5000) }
+
+function updateOverlayTime() {
+  // Array of todays time features
+  var today = getTodaysDetails();
+
+  // Put the time into the idle overlays time container
+  $('#idle_overlay container').html('<h1>'+today['time']+'</h1><h3>'+today['dayStr']+', '+today['dayNum']+' '+today['month']+'</h3>');
+  wait30();
 }
 
 // When the document is loaded
