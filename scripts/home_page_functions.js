@@ -1,112 +1,109 @@
 // Used to toggle the back button
 function backButton() {
-  const student_selection_preset = document.getElementById('student_selection_preset');
-  const staff_login_preset = document.getElementById('staff_login_preset');
-  const student_sign_out_preset = document.getElementById('student_sign_out_preset');
-  const student_sign_in_preset = document.getElementById('student_sign_in_preset');
 
-  const staff_button = document.getElementById('staff_button');
-  const back_button = document.getElementById('back_button');
+  // Resets the displayed preset
+  $('#staff_login_preset').css('display', 'none');
+  $('#user_sign_out_preset').css('display', 'none');
+  $('#user_sign_in_preset').css('display', 'none');
+  $('#user_selection_preset').css('display', 'flex');
 
-  student_selection_preset.style.display = 'flex';
-  staff_login_preset.style.display = 'none';
-  student_sign_out_preset.style.display = 'none';
-  student_sign_in_preset.style.display = 'none';
+  // Resets the staff button
+  $('#back_button').css('display', 'none');
+  $('#staff_button').css('display', 'flex');
 
-  staff_button.style.display = 'flex';
-  back_button.style.display = 'none';
-  resetForm('staff_login_form');
-  resetForm('user_sign_in_form');
-  resetForm('user_sign_out_form');
+  // Resets the submit buttons
+  $('.login_preset form button:last-of-type').each(function() {
+    $(this).css({
+      'display': 'block',
+      'background': 'var(--navy)',
+    });
+    $(this).html('<h4>Submit</h4>')
+  })
+
+  // Resets each presets form
+  $('.login_preset form').each(function() { $(this).find('input:text, input:password, input:file, select, textarea').val('') });
 }
 
 // Used to toggle between the staff login form and the sign in/out forms
 function toggleStaffLoginPreset() {
-  const student_selection_preset = document.getElementById('student_selection_preset');
-  const staff_login_preset = document.getElementById('staff_login_preset');
+  
+  // Hides the selection preset and displays the staff login preset
+  $('#user_selection_preset').css('display', 'none');
+  $('#staff_login_preset').css('display', 'flex');
 
-  const staff_button = document.getElementById('staff_button');
-  const back_button = document.getElementById('back_button');
-
-  student_selection_preset.style.display = 'none';
-  staff_login_preset.style.display = 'flex';
-
-  staff_button.style.display = 'none';
-  back_button.style.display = 'flex';
+  // Displays the back button, hides the staff button
+  $('#staff_button').css('display', 'none');
+  $('#back_button').css('display', 'flex');
 }
 
 // Used to toggle between sign in and sign out forms
-function toggleStudentPreset(preset) {
-  const student_selection_preset = document.getElementById('student_selection_preset');
-  const staff_login_preset = document.getElementById('staff_login_preset');
-  const student_sign_out_preset = document.getElementById('student_sign_out_preset');
-  const student_sign_in_preset = document.getElementById('student_sign_in_preset');
-
-  const staff_button = document.getElementById('staff_button');
-  const back_button = document.getElementById('back_button');
+function toggleUserPreset(preset) {
 
   if (preset === 'sign_in') {
-    student_sign_out_preset.style.display = 'none';
-    student_sign_in_preset.style.display = 'flex';
+    // Hides the sign out preset, displays the sign in preset
+    $('#user_sign_out_preset').css('display','none');
+    $('#user_sign_in_preset').css('display','flex');
   }
   else if  (preset === 'sign_out') {
-    student_sign_in_preset.style.display = 'none';
-    student_sign_out_preset.style.display = 'flex';
+    // Hides the sign in preset, displays the sign out preset
+    $('#user_sign_in_preset').css('display','none');
+    $('#user_sign_out_preset').css('display','flex');
   }
   else {
-    student_sign_out_preset.style.display = 'none';
-    student_sign_in_preset.style.display = 'none';
-    student_selection_preset.style.display = 'flex';
+    // Hides the sign in and out presets, displays the selection preset
+    $('#user_sign_out_preset').css('display','none');
+    $('#user_sign_in_preset').css('display','none');
+    $('#user_selection_preset').css('display','flex');
   }
-  staff_button.style.display = 'none';
-  back_button.style.display = 'flex';
 
-  student_selection_preset.style.display = 'none';
-  staff_login_preset.style.display = 'none';
-}
+  // Displays the back button, hides the staff button
+  $('#staff_button').css('display', 'none');
+  $('#back_button').css('display', 'flex');
 
-// Used to reset a form
-function resetForm(formID) {
-  // Resets the form passed through the parameters
-  document.getElementById(formID).reset();
+  // Hides the selection preset and staff login preset
+  $('#user_selection_preset').css('display', 'none');
+  $('#staff_login_preset').css('display', 'none');
 }
 
 // Used to display a notification
-function notification(message, type, duration) {
-  // Gets the notification wrapper from the DOM and strips all children nodes
-  const notification = document.getElementById('notification_wrapper');
-  notification.innerHTML = '';
-  // Styles the notification based on its type
-  types = ['info','success','warning','error','validation'];
-  type = type.toLowerCase();
-  // If the notification type is allowed
-  if (types.includes(type)) {
-    // Iterate through the notification types and strip all type classes from the notification
-    for (var i = 0; i < types.length; i++) {
-      if (notification.classList.contains(types[i])) {
-        // Removes the current class in the list from the element
-        notification.classList.remove(types[i])
-      }
-      else {
-        continue
-      }
-    }
-    notification.classList.add(type);
+function notification(message, style, duration) {
+
+  // Array of notification rypes
+  notificationStyles = {
+    "info"       : ['#00529B', 'rgba(189, 229, 248, 1)'],
+    "success"    : ['#4F8A10', 'rgba(223, 242, 191, 1)'],
+    "warning"    : ['#9F6000', 'rgb(254, 239, 179, 1)'],
+    "error"      : ['#D8000C', 'rgb(255, 186, 186, 1)'],
+    "validation" : ['#D63301', 'rgb(255, 204, 186, 1)'],
   }
-  // If the notification type is not allowed, return an error message
+
+  // Removes all content from the notification wrapper
+  $('#notification_wrapper').empty();
+  // Styles the notification based on its style
+  
+  // Sets the theme for the notification if the style is allowed
+  if ( notificationStyles[style] !== undefined ) { 
+    $('#notification_wrapper').css({
+      'color': notificationStyles[style][0],
+      'background': notificationStyles[style][1],
+    }); 
+  }
+  // Otherwise, it returns an error
   else {
-    console.error('Could not show notification: \''+type+'\' is not a valid notification type ');
+    console.error('Could not show notification: \''+style+'\' is not a valid notification type ');
     return;
   }
-  // Formats the message and adds it to the notification
-  formattedMessage = '<div class="message"><h4>'+message+'</h4></div>';
-  notification.innerHTML = formattedMessage;
+
+  // Adds the message to the notification wrapper
+  $('#notification_wrapper').html('<div class="message"><h4>'+message+'</h4></div>');
+
   // Displays the notification
-  notification.style.cssText = `
-    height: 80px;
-    border-bottom: 1px solid;
-    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.5);
-  `;
+  $('#notification_wrapper').css({
+    'height' : $('#main_header').height(),
+    'border-botton' : '1px solid',
+    'box-shadow' : '0px -6px 10px 5px rgba(0,0,0,0.5)'
+  });
+
   // Corrects the message duration if it is too short or too long
   if (duration > 5000) {
     console.warn('Notification duration was too long, set it to 5000ms by default');
@@ -116,22 +113,17 @@ function notification(message, type, duration) {
     console.warn('Notification duration was too long, set it to 1000ms by default');
     duration = 1000;
   }
+
   // Waits some time before hiding the notification
   setTimeout(function(){
     // Hides the notification
-    notification.style.cssText = `
-      height: 0px;
-      border: 0px solid;
-      box-shadow: none;
-    `;
+    $('#notification_wrapper').css({
+      'height' : '0px',
+      'border-botton' : 'none',
+      'box-shadow' : 'none'
+    });
   }, duration);
 }
 
 // When the window is loaded, start the idle timer
-window.onload = function() {
-  idleTimer()
-}
-
-if ( window.history.replaceState ) {
-  window.history.replaceState( null, null, window.location.href );
-}
+window.onload = function() {idleTimer()};

@@ -23,8 +23,14 @@ function verify($var) {
   }
 }
 // Used to fetch the UserID associated with a user
-function fetchUserID($name) {
+function fetchUserID($name, $errorType='staff') {
   global $ini;
+
+  // Associative array containing the error messages for this function
+  $errorTypes = [
+    "staff" => "The users name provided is invalid and that user cannot be found",
+    "user" => "Please make sure the name you entered is valid"
+  ];
 
   // Splits the name input into first and last names
   $fname = explode(" ", $name)[0];
@@ -44,7 +50,7 @@ function fetchUserID($name) {
   $con->close();
 
   if (is_null($result)) {
-    customError(422, 'The users name provided is invalid and that user cannot be found');
+    customError(422, $errorTypes[$errorType]);
     exit();
   }
   else {
@@ -52,7 +58,7 @@ function fetchUserID($name) {
   }
 }
 // Used to fetch the EventID associated with the event
-function fetchEventID($event, $nature) {
+function fetchEventID($event, $nature, $errorType='staff') {
   global $ini;
 
   // Assigns the most appropriate query depending on the events nature (sign in or sign out)
@@ -93,8 +99,14 @@ function fetchEventID($event, $nature) {
   }
 }
 // Used to fetch the EventID associated with the event
-function fetchLocationID($location) {
+function fetchLocationID($location, $errorType='staff') {
   global $ini;
+
+  // Associative array containing the error messages for this function
+  $errorTypes = [
+    "staff" => "The location provided is invalid and could not be found",
+    "user" => "Please make sure the location you entered is valid"
+  ];
 
   // Used to check whether a the user is already signed in
   $query = "SELECT LocationID FROM Locations WHERE Locations.LocationName=? LIMIT 1";
@@ -111,7 +123,7 @@ function fetchLocationID($location) {
   $con->close();
 
   if (is_null($result)) {
-    customError(422, 'The location provided is invalid and could not be found');
+    customError(422, $errorTypes[$errorType]);
     exit();
   }
   else {
@@ -137,6 +149,92 @@ function fetchCurrentLocationID($userID) {
   $con->close();
 
   return $result;
+}
+function fetchCurrentEventID($locationID, $eventNature) {
+  global $ini;
+  // This function uses a locationID to determine a current event at the time of executing
+  // If there is an event at this time, it will return the EventID and how late/early the current time is realtive to the event
+  // These values are returned as an array in the format: [eventID, minutesLate]
+  
+  // NOTES:
+  // $eventNature -> String: Must determine the nature of the event, whether signing in 'in' or signing out 'out'
+  // $locationID -> Integer: The ID of the location where the event may be taking place
+
+  // SQL
+  // Determines an appropraite query depending on the events nature
+  if ($eventNature = 'in') {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=1 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
+  }
+  elseif ($eventNature = 'out') {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=0 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
+  }
+  else {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
+  }
+
+  // Gets the current day and saves it in string format
+  $day = substr("MTWRFUS", date('w')-1, date('w')-2);
+
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("is", $locationID, $day);
+  $stmt->execute();
+
+  // Fetches the results
+  $result = $stmt->get_result();
+  while ($row = $result->fetch_array(MYSQLI_NUM)) {
+
+    // If the deviation is NULL or empty, set the deviation to 0 minutes
+    if (is_null($row[3]) || empty($row[3])) { $deviation = 0; }
+    else { $deviation = $row[3]; }
+
+    // Gets the current time
+    $currentTime = date('H:i:s', time());
+
+    // Calculates the early and late times by adding and subtracting the deviation time respectively
+    $earlyTime = date('H:i:s', strtotime($row[1]) - (60*$deviation));
+    $lateTime = date('H:i:s', strtotime($row[2]) + (60*$deviation));
+
+    // Sets the start and end times for the event using the data fetched from the table
+    $startTime = $row[1];
+    $endTime = $row[2];
+
+    // If the user is early for the event
+    if ($currentTime >= $earlyTime && $currentTime <= $startTime) {
+      // Calculates how early the user is (early values are stored as negative integers)
+      $minutesLate = -1*intval(date('i', (strtotime($startTime) - strtotime($currentTime))));
+      // Saves the results to an array
+      $data = [$row[3], $minutesLate];
+    }
+    // If the user is on time for the event
+    else if ($currentTime >= $startTime && $currentTime <= $endTime) {
+      // The user is on time, so the minutesLate variable is set to 0
+      $minutesLate = 0;
+      // Saves the results to an array
+      $data = [$row[3], $minutesLate];
+    }
+    // If the user is late for the event
+    else if ($currentTime >= $endTime && $currentTime <= $lateTime) {
+      // Calculates how late the user is (late values are stored as a positive integer)
+      $minutesLate = intval(date('i', (strtotime($LateTime) - strtotime($currentTime))));
+      // Saves the results to an array
+      $data = [$row[3], $minutesLate];
+    }
+    else {
+      // If no event is found to meet the requirements, or the user is too early or too late (out of the specified deviation value), it returns NULL
+      $data = [NULL, NULL];
+    }
+
+    // Breaks out of the while loop since only one set of data is required (this is also specified in the query with 'LIMIT 1')
+    break;
+  }
+  // Disconnects from the database
+  $con->close();
+  // Returns the EventID and MinutesLate as NULL since no event was triggered
+  return $data;
 }
 // Used to check whether a user has already attended an event
 function userAttendedEvent($userID, $eventID) {

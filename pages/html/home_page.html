@@ -12,10 +12,13 @@
 
 <!-- dynamic  background -->
 <script type="text/javascript" src="../../scripts/jquery/dynamic_background.js"></script>
-<!-- autocomplete scripts -->
-<script type="text/javascript" src="../../scripts/jquery/home/searchbar_autocomplete.js"></script>
 <!-- idle overlay -->
 <script type="text/javascript" src="../../scripts/jquery/home/idle_overlay.js"></script>
+
+<!-- form field suggestions -->
+<script type="text/javascript" src="../../scripts/jquery/form_field_suggestions.js"></script>
+<!-- form submission -->
+<script src="../../scripts/jquery/home/form_submission.js"></script>
 <!-- home page javascript functions -->
 <script type="text/javascript" src="../../scripts/home_page_functions.js"></script>
 
@@ -36,57 +39,55 @@
       <button class="navbar_button" id="staff_button" onclick="toggleStaffLoginPreset()"><h5>STAFF LOGIN</h5></button>
     </navbar>
   </header>
-  <section id="notification_wrapper" class="text notification">
-    <h4>TESTING</h4>
-  </section>
+  <section id="notification_wrapper" class="text notification"></section>
   <section id="login_box" class="text">
-    <div class="login_preset" id="student_selection_preset">
+    <div class="login_preset" id="user_selection_preset">
       <header class="text">
         <h2>Welcome</h2>
       </header>
-      <div id="student_selection_grid" class="text">
+      <div id="user_selection_grid" class="text">
         <container>
-          <button class="sign_in_out_button" onclick="toggleStudentPreset('sign_out')"><h2>Sign Out</h2></button>
+          <button class="sign_in_out_button" onclick="toggleUserPreset('sign_out')"><h2>Sign Out</h2></button>
         </container>
         <container>
-          <button class="sign_in_out_button" onclick="toggleStudentPreset('sign_in')"><h2>Sign In</h2></button>
+          <button class="sign_in_out_button" onclick="toggleUserPreset('sign_in')"><h2>Sign In</h2></button>
         </container>
       </div>
     </div>
-    <div class="login_preset" id="student_sign_in_preset">
+    <div class="login_preset" id="user_sign_in_preset">
       <header>
         <h2>Sign In</h2>
       </header>
-      <form id="user_sign_in_form" class="text" action="" method="POST">
+      <form id="user_self_sign_in_form" class="text">
         <input type="hidden" name="user_sign_in" value="true"/>
-        <label for="sign_in_field"><h3>Your Initials</h3></label>
-        <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="sign_in_field" name="sign_in_field" placeholder="" value="" autocomplete="off"/>
-          <ul id="suggested_sign_in_users" class="suggested_inputs"></ul>
+        <label for="sign_in_field"><h3>Your Name</h3></label>
+        <div class="search_wrapper">
+          <input required type="text" class="input_field capitalize" name="name_field" placeholder="Initials work too!" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+          <ul class="suggested_inputs"></ul>
         </div>
         <divider></divider>
-        <input class="blue_button" id="student_sign_in_submit" type="submit" value="Submit">
+        <button type="submit" id="user_self_sign_in_button" class="blue_button"><h4>Submit</h4></button>
       </form>
     </div>
-    <div class="login_preset" id="student_sign_out_preset">
+    <div class="login_preset" id="user_sign_out_preset">
       <header>
         <h2>Sign Out</h2>
       </header>
-      <form id="user_sign_out_form" class="text" action="" method="POST">
+      <form id="user_self_sign_out_form" class="text">
         <input type="hidden" name="user_sign_out" value="true"/>
-        <label for="sign_out_field"><h3>Your Initials</h3></label>
-        <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="sign_out_field" name="sign_out_field" placeholder="" value="" autocomplete="off"/>
-          <ul id="suggested_sign_out_users" class="suggested_inputs"></ul>
-        </div>
+        <label for="sign_out_field"><h3>Your Name</h3></label>
+        <div class="search_wrapper">
+          <input required type="text" class="input_field capitalize" name="name_field" placeholder="Initials work too!" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+          <ul class="suggested_inputs"></ul>
+        </div>    
         <divider></divider>
         <label for="location"><h3>Location</h3></label>
-        <div class="input_wrapper">
-          <input type="text" class="input_field capitalize" id="locations_input_field" name="sign_out_locations_field" autocomplete="off"></input>
-          <ul id="suggested_locations" class="suggested_inputs"></ul>
+        <div class="search_wrapper">
+          <input type="text" class="input_field capitalize" name="location_field" placeholder="" value ="" autocomplete="off" pattern="[a-zA-Z\s]+"></input>
+          <ul class="suggested_inputs"></ul>
         </div>
         <divider></divider>
-        <input class="blue_button" id="student_sign_out_submit" type="submit" value="Submit">
+        <button type="submit" id="user_self_sign_out_button" class="blue_button"><h4>Submit</h4></button>
       </form>
     </div>
     <div class="login_preset" id="staff_login_preset">
@@ -96,16 +97,16 @@
       <form id="staff_login_form" class="text" action="" method="POST">
         <input type="hidden" name="staff_login_form" value="true"/>
         <label for="staff_username"><h3>Username</h3></label>
-        <div class="input_wrapper">
-          <input type="text" class="input_field" id="staff_username" name="staff_username" placeholder="" value="" autocomplete="off">
+        <div class="search_wrapper">
+          <input required type="text" class="input_field capitalize" name="staff_username" placeholder="" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
         </div>
         <divider></divider>
         <label for="staff_password"><h3>Password</h3></label>
-        <div class="input_wrapper">
+        <div class="search_wrapper">
           <input type="password" class="input_field" id="staff_password" name="staff_password" placeholder="" value="">
         </div>
         <divider></divider>
-        <input class="blue_button" id="staff_login_submit" type="submit" value="Submit">
+        <button type="submit" id="staff_sign_in_button" class="blue_button"><h4>Submit</h4></button>
       </form>
     </div>
   </section>

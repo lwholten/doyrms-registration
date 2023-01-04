@@ -2,24 +2,24 @@
 
 // Hides the idle overlay
 function hideOverlay() {
-  overlay = document.getElementById('idle_overlay');
-  overlay.style.opacity = '0';
+  // Hides the overlay
+  $('#idle_overlay').css('opacity','0');
   //Makes the login box zoom in to frame
-  login_box = document.getElementById('login_box');
-  login_box.style.transform = 'scale(1.0)';
+  $('#login_box').css('transform', 'scale(1.0)');
   //Execute containted code after n miliseconds (200ms)
-  setTimeout(function(){
-    overlay.style.display = 'none';
-  }, 200);
+  setTimeout(function(){ $('#idle_overlay').css('display', 'none') }, 200);
 }
 // Shows the idle overlay
 function showOverlay() {
-  overlay = document.getElementById('idle_overlay');
-  overlay.style.display = 'flex';
-  overlay.style.opacity = '1.0';
+  // Executes the back button function, this will return the preset back to the 'in/out' preset and clear all form inputs
+  backButton();
+  // Shows the overlay
+  $('#idle_overlay').css({
+    'opacity': '1.0',
+    'display': 'flex'
+  });
   //Makes the login box zoom out of frame
-  login_box = document.getElementById('login_box');
-  login_box.style.transform = 'scale(0.0)';
+  $('#login_box').css('transform', 'scale(0.0)');
 }
 
 // When the document is loaded

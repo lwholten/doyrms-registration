@@ -81,7 +81,7 @@ body {
   flex-direction: column;
   height: 100%;
 }
-#login_box #student_selection_preset {
+#login_box #user_selection_preset {
   display: flex;
 }
 #back_button {
@@ -122,22 +122,19 @@ body {
   border-radius: 8px;
   box-sizing:border-box;
 }
-.login_preset input, option {
+.login_preset input, option, #locations_search_box, .suggested_inputs li {
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
 }
-.login_preset #locations_search_box {
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 29px;
+.login_preset .suggested_inputs li {
+  padding: 0px 8px;
+  width: calc(100% - 8px);
 }
 
-.login_preset #student_sign_out_submit, #staff_login_submit, #student_sign_in_submit {
+.login_preset form button:last-of-type {
   margin: auto;
   grid-column: 2;
   width: 100%;
@@ -150,31 +147,31 @@ body {
   line-height: 29px;
   box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
   margin-left: 20%;
-
+  position: relative;
   border-radius: 8px;
   height: 50px;
   margin: 0;
 }
-.login_preset #student_sign_in_submit {
+.login_preset #user_self_sign_in_form button:last-of-type {
   grid-row: 2 / -1;
 }
 .login_preset input[type="password"] {
   font:small-caption;font-size:32px
 }
 
-#student_selection_grid {
+#user_selection_grid {
   display: flex;
   height: 100%;
   width: 100%;
 }
-#student_selection_grid container {
+#user_selection_grid container {
   width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-#student_selection_grid .sign_in_out_button {
+#user_selection_grid .sign_in_out_button {
   width: 90%;
   height: 80%;
   border-radius: 30px;
@@ -188,7 +185,7 @@ body {
   transition: background 1000ms;
 }
 
-.input_wrapper {
+.search_wrapper {
   height: 50px;
   width: 100%;
   display: block;
@@ -196,10 +193,10 @@ body {
   z-index: 2;
   transition: opacity 100ms linear;
 }
-.input_wrapper:first-of-type {
+.search_wrapper:first-of-type {
   z-index: 3;
 }
-.input_wrapper ul {
+.search_wrapper ul {
   width: 100%;
   height: auto;
   max-height: 153px;
@@ -211,7 +208,7 @@ body {
   border: none;
   border-radius: 8px;
 }
-.input_wrapper li {
+.search_wrapper li {
   width: 100%;
   height: 50px;
   text-align: left;
@@ -222,16 +219,16 @@ body {
   align-items: center;
   border-top: 1px solid black;
 }
-.input_wrapper input:focus ~ .suggested_inputs {
+.search_wrapper input:focus ~ .suggested_inputs {
   opacity: 1.0;
 }
-.input_wrapper input:not(:focus) ~ .suggested_inputs {
+.search_wrapper input:not(:focus) ~ .suggested_inputs {
   opacity: 0.0;
 }
-.input_wrapper li:hover {
+.search_wrapper li:hover {
   background: #D9D9D9;
 }
-.input_wrapper li h3 {
+.search_wrapper li h3 {
   height: auto;
   font-family: "Montserrat";
   font-style: normal;
@@ -246,7 +243,7 @@ body {
 #notification_wrapper {
   width: 100%;
   height: 0px;
-  max-height: 80px;
+  max-height: 120px;
   z-index: 1;
   border: none;
   margin: 0px;
@@ -259,32 +256,12 @@ body {
   transition: height 500ms;
 }
 #notification_wrapper .message {
-  height: 100%;
+  height: calc(100% - 16px);
   width: 100%;
   padding: 8px 16px 8px 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.info {
-  color: #00529B;
-  background-color: rgba(189, 229, 248, 0.8);
-}
-.success {
-  color: #4F8A10;
-  background-color: rgba(223, 242, 191, 0.8);
-}
-.warning {
-	color: #9F6000;
-	background-color: rgb(254, 239, 179, 0.8);
-}
-.error {
-  color: #D8000C;
-  background-color: rgb(255, 186, 186, 0.8);
-}
-.validation {
-  color: #D63301;
-  background-color: rgb(255, 204, 186, 0.8);
 }
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
