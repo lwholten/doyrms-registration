@@ -18,16 +18,22 @@
     <div style="margin: 10px 0 10px 0;"></div>
     <label for="user_location_field"><h4>Location</h4></label>
     <div class="search_wrapper">
-      <input required type="text" class="capitalize" id="user_location_field" name="location_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+      <input type="text" class="capitalize" id="user_location_field" name="location_field" placeholder="Conditional" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
       <ul id="user_location_suggestions" class="suggested_inputs"></ul>
     </div>
     <div style="margin: 10px 0 10px 0;"></div>
     <label for="user_event_field"><h4>Event</h4></label>
     <div class="search_wrapper">
-      <input type="text" class="capitalize" id="user_event_field" data-nature="signout" name="event_field" placeholder="Optional" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+      <input type="text" class="capitalize" id="user_event_field" data-nature="signout" name="event_field" placeholder="Conditional" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
       <ul id="user_event_suggestions" class="suggested_inputs"></ul>
     </div>
-    <div style="margin: 10px 0 10px 0;"></div>
+    <div style="margin: 10px 0px 10px 0;"></div>
+    <div class="event_timing_wrapper">
+      <label for="event_timing"><h4>Timing</h4></label>
+      <input is="user_event_timing" name="event_timing" type="range" step="1" min="-45" max="45"></input>
+      <output>On Time</output>
+      <div style="margin: 10px 0 10px 0;"></div>
+    </div>
     <label for="user_location_field"><h4>Message</h4></label>
     <textarea type="text" id="user_message_field" name="message_field" placeholder="Optional" value="" autocomplete="off" pattern="[a-zA-Z0-9\s]+"></textarea>
     <div style="margin: 10px 0 10px 0;"></div>

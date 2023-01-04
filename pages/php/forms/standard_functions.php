@@ -118,6 +118,26 @@ function fetchLocationID($location) {
     return $result;
   }
 }
+// Used to fetch a users current location ID
+function fetchCurrentLocationID($userID) {
+  global $ini;
+
+  // Used to check whether a the user is already signed in
+  $query = "SELECT LocationID FROM Users WHERE Users.UserID=? LIMIT 1";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $userID);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  return $result;
+}
 // Used to check whether a user has already attended an event
 function userAttendedEvent($userID, $eventID) {
   global $ini;
@@ -239,6 +259,37 @@ function userAway($userID) {
   }
   else {
     customError(500, 'A server error has occured while checking whether the user is restricted');
+    exit();
+  }
+}
+// Used to check whether an event matches a location
+function eventMatchesLocation($eventID, $locationID) {
+  global $ini;
+
+  // Query
+  $query = "SELECT (CASE WHEN ? IN (SELECT LocationID FROM Events WHERE EventID=?) THEN 1 ELSE 0 END);";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ii", $locationID, $eventID);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Returns false if they do not match
+  if ($result === 0 || $result === "0") {
+    return false;
+  }
+  // Returns true if they do match
+  elseif ($result === 1 || $result === "1") {
+    return true;
+  }
+  else {
+    customError(500, 'A server error has occured while checking whether the location and event match');
     exit();
   }
 }

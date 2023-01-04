@@ -26,10 +26,10 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // The table header and start of the table body
-$tableContents .= '<thead><tr><th>Forename</th><th>Surname</th><th>Date Restricted</th><th>Until</th><th>Time Remaining</th><th>Reason</th></tr></thead><tbody>';
+$tableContents .= '<thead><tr><th>User</th><th>Date Restricted</th><th>Until</th><th>Time Remaining</th><th>Reason</th></tr></thead><tbody>';
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
-  $tableContents .= "<tr><td class='restricted'>$record[1]</td><td class='restricted'>$record[2]</td><td>$record[3]</td>";
+  $tableContents .= "<tr><td class='restricted'>".$record[1]." ".$record[2]."</td><td>$record[3]</td>";
   // Appends the date expected back or N/A if it has not been set
   if ($record[4] != NULL) {
     // The date unrestricted

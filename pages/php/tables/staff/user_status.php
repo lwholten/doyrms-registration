@@ -4,6 +4,7 @@
 
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
+require 'table_functions.php';
 
 // Variables
 $tableContents = '';
@@ -26,60 +27,32 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // The table header
-$tableContents .= '<thead><tr><th>Status</th><th>Forename</th><th>Surname</th><th>Current Location</th><th>Time last active</th><th>Date last active</th></tr></thead>';
+$tableContents .= '<thead><tr><th>Status</th><th>User</th><th>Current Location</th><th>Time last active</th><th>Date last active</th></tr></thead>';
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
-  // Iterates through each item of the record
-  for ($i = 0; $i <= (count($record)-1); $i++) {
-    if ($i === 0) {
-      // 0 -> Away, 1 -> Out, 2 ->
-      $tableContents .= "<tr><td>";
-      if ($record[$i] === 2 || $record[$i] === "0") {
-        $tableContents .= "<span class='inline-dot blue'></span> Away";
-      }
-      else if ($record[$i] === 0 || $record[$i] === "1") {
-        $tableContents .= "<span class='inline-dot red'></span> Out";
-      }
-      else if ($record[$i] === 1 || $record[$i] === "2") {
-        $tableContents .= "<span class='inline-dot green'></span> In";
-      }
-      else {
-        $tableContents .= "<span class='inline-dot orange'></span> N/A";
-      }
-      $tableContents .= "</td>";
-    }
-    else if ($i === 1 || $i === 2) {
-      // If the user is restricted, change the font color to red
-      if ($record[6] === 1 || $record[6] === "1") {
-        $tableContents .= "<td class='restricted'> $record[$i] </td>";
-      }
-      else {
-        $tableContents .= "<td> $record[$i] </td>";
-      }
-    }
-    // 3 is the index of the 'location' column, if it is set to NULL, the user is signed in
-    else if ($i === 3) {
-      if ($record[$i] === "0" || $record[$i] === 0 || $record[$i] === NULL) {
-        $tableContents .= "<td>The Boarding House</td>";
-      }
-      else {
-        $tableContents .= "<td>$record[$i]</td>";
-      }
-    }
-    else if ($i === 4) {
-      // We only need the time in format: HH:MM
-      $time = substr($record[$i], 0, 5);
-      $tableContents .= "<td>$time</td>";
-    }
-    // Skips the final column
-    else if ($i === 6) {
-      continue;
-    }
-    // If it is any other column
-    else {
-      $tableContents .= "<td> $record[$i] </td>";
-    }
-  };
+  // Array of indicator colours
+  $indicators = [
+    "<td><span class='inline-dot blue'></span> Away</td>",
+    "<td><span class='inline-dot red'></span> Out</td>",
+    "<td><span class='inline-dot green'></span> In</td>",
+  ];
+
+  $columns = [
+    // Indicator
+    // Indexes the array of indicator colours with the value given by the CASE clause in the SQL query
+    $indicators[$record[0]],
+    // User
+    "<td".formatRestricted($record[6]).">".$record[1]." ".$record[2]."</td>",
+    // Current Location
+    "<td>".formatLocation($record[3])."</td>",
+    // Time last active
+    "<td>".$record[4]."</td>",
+    // Date last active
+    "<td>".$record[5]."</td>"
+  ];
+
+  // Appends this row to the table
+  $tableContents .= formatRow($columns);
 }
 
 echo json_encode($tableContents);

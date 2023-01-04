@@ -147,6 +147,49 @@ function addEventListeners() {
     $(this).on('input', function() {$(this).attr('data-before', '')});
   })
 
+  // Event listeners for event text input (used to show the lateness slider if an event is selected)
+  $('#staff_overlay form').find('input[type=text][name=event_field]').each(function() {
+    $(this).on({
+      // If a value is input into the event field
+      input : function() {
+        if ($(this).val()) {
+          // Display the event timing elements
+          $(this).parent().next().next('.event_timing_wrapper').css('display', 'block');
+        }
+        else {
+          // Hides the event timing elements
+          $(this).parent().next().next('.event_timing_wrapper').css('display', 'none');
+        }
+      }
+    });
+  });
+
+  // Event listeners for event range inputs
+  $('#staff_overlay form').find('input[type=range][name=event_timing]').each(function() {
+    // Detects whether a value is selected
+    $(this).on({
+      input : function() {
+        sliderVal = $(this).val();
+        // If the value is 0 display 'on time'
+        if (sliderVal == 0) {
+          $(this).next('output').val('On Time');
+        }
+        // If the vlaue is greater than zero, assume late
+        else if (sliderVal > 0) {
+          $(this).next('output').val(sliderVal+' Minutes Late');
+        }
+        // If the vlaue is less than zero, assume early
+        else if (sliderVal < 0) {
+          $(this).next('output').val(Math.abs(sliderVal)+' Minutes Early');
+        }
+        // Otherwise just return the value like normal
+        else {
+          $(this).next('output').val(sliderVal);
+        }
+      }
+    });
+  });
+
   // Function used to add the required event listeners to a given field and its children
   // This is used primarily to provide input suggestions below a field and autocompleting the field when a suggestion is clicked
   function addFieldEventListeners(field) {

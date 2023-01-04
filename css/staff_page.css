@@ -245,6 +245,20 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
 #staff_overlay form .error_wrapper:first-letter {
   text-transform: uppercase;
 }
+#staff_overlay form .event_timing_wrapper {
+  display: none;
+}
+#staff_overlay form .event_timing_wrapper output {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+}
+#staff_overlay form input[type='range'] {
+  height: 8px;
+  width: 100%;
+  background: var(--light-grey);
+  border-radius: 4px;
+}
 
 #main {
   width: auto;
@@ -682,14 +696,14 @@ table button {
 .orange {
   background-color: var(--orange);
 }
-.yellow {
-  background-color: var(--yellow);
-}
 .green {
   background-color: var(--green);
 }
 .blue {
   background-color: var(--blue);
+}
+.purple {
+  background-color: var(--purple);
 }
 .orange-red-stripes {
   background: repeating-linear-gradient(
@@ -698,7 +712,7 @@ table button {
   var(--orange) 10px,
   var(--red) 10px,
   var(--red) 20px
-);
+  );
 }
 .orange-yellow-stripes {
   background: repeating-linear-gradient(
@@ -707,7 +721,7 @@ table button {
   var(--orange) 10px,
   var(--yellow) 10px,
   var(--yellow) 20px
-);
+  );
 }
 .orange-green-stripes {
   background: repeating-linear-gradient(
@@ -716,7 +730,7 @@ table button {
   var(--orange) 10px,
   var(--green) 10px,
   var(--green) 20px
-);
+  );
 }
 .orange-blue-stripes {
   background: repeating-linear-gradient(
@@ -725,7 +739,7 @@ table button {
   var(--orange) 10px,
   var(--blue) 10px,
   var(--blue) 20px
-);
+  );
 }
 .grey {
   background-color: var(--grey);
@@ -802,7 +816,7 @@ spacer {
   text-transform: capitalize;
 }
 .event_card article {
-  height: 100%%;
+  height: 100%;
   padding: 8px 0px 0px 8px;
   background: var(--white);
   border-radius: 0px 0px 16px 16px;
