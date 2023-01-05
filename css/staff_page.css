@@ -169,7 +169,7 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   text-transform: capitalize;
   -webkit-appearance: none;
 }
-#staff_overlay form input[type='text'], textarea {
+#staff_overlay form input[type='text'], input[type='password'], textarea {
   width: calc(100% - 8px);
   padding: 4px;
   height: 24px;
@@ -177,9 +177,13 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   border-radius: 4px;
   background: var(--light-grey);
 }
-#staff_overlay form input[type='text'] {
+#staff_overlay form input[type='text'], input[type='password'] {
   min-height: 32px;
   max-height: 32px;
+}
+#staff_overlay form input[type='password'] {
+  font: small-caption;
+  font-size: 24px;
 }
 #staff_overlay form textarea {
   height: auto;
@@ -276,6 +280,10 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   background: var(--light-grey);
   border-radius: 4px;
 }
+#staff_overlay form input[type='password'] {
+  text-transform: none;
+}
+
 
 #main {
   width: auto;
@@ -388,7 +396,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   top: 120px;
   width: auto;
   min-width: 50px;
-  max-width: 300px;
+  max-width: 240px;
   height: calc(100vh - 100px);
   background: var(--dynamic_background);
   background-size: cover;
@@ -767,9 +775,16 @@ table button {
   font-weight: bold;
 }
 
-.info_wrapper {
+.tooltip_wrapper {
   width: 100%;
   height: auto;
+}
+.tooltip_wrapper ul {
+  padding-top: 4px;
+}
+.tooltip_wrapper ul li {
+  text-align: left;
+  padding: 2px 0px;
 }
 spacer {
   height: 16px;

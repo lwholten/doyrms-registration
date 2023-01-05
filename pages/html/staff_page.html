@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php session_start(); ?>
 <head>
 <!-- CSS stylesheets -->
 <link rel="stylesheet" type="text/css" href="../../css/mainstyles.css">
@@ -30,7 +31,7 @@
 
 <meta charset="UTF-8" lang="en">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title><?=$_SESSION["staffUsername"]?> | DOYRMS Registration</title>
+<title><?=$_COOKIE["dreg_staffUsername"]?> | DOYRMS Registration</title>
 </head>
 
 <section id="staff_overlay" class="text"></section>
@@ -72,14 +73,13 @@
           <?php @include('../php/sidebar/staff/event_buttons.php')?>
 
           <li class="sidebar_subtitle"><h3>Account</h3></li>
-          <li onclick="toggleMainSection(this.id,'edit_details_section')" class="sidebar_button" id="edit_details_button"><h4>Edit Details</h4></li>
-          <li onclick="toggleMainSection(this.id,'customise_section')" class="sidebar_button" id="customise_button"><h4>Customise</h4></li>
+          <li onclick="triggerPopup('staffpassword')" class="sidebar_button" id="customise_button"><h4>Password</h4></li>
         </ul>
       </container>
     </div>
     <div class="text" id="main">
       <section class="main_section main_section_active" id="home_section">
-        <h2>Welcome, <?=$_SESSION["staffUsername"]?>.</h2>
+        <h2>Welcome, <?=$_COOKIE["dreg_staffUsername"]?>.</h2>
         <div class="info_wrapper text">
           <p>Welcome to DOYRMS registration, a web application programmed by Luke Holten.</p>
           <p>This is the home area. Using the control panel located here, you can carry out many operations such as searching for a specific user or signing a user in/out.</p>
@@ -184,19 +184,6 @@
         <spacer></spacer>
       </section>
       <container id="event_sections"></container>
-
-      <section class="main_section" id="edit_details_section">
-        <h2>Account - Edit Details</h2>
-        <div class="info_wrapper text">
-          <p>In this section you can edit your account details. New email address? no problem, you can change it here.</p>
-        </div>
-      </section>
-      <section class="main_section" id="customise_section">
-        <h2>Account - Customise</h2>
-        <div class="info_wrapper text">
-          <p>In this section you can customise your site experience. Fancy trying dark mode? You can enable it here.</p>
-        </div>
-      </section>
     </div>
   </div>
   <a class="github_wrapper">

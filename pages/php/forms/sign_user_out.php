@@ -194,7 +194,7 @@ function executeUserSignOut($setFields) {
   if (!userAway($userID)) {
     // Finally, sign the user out using the previously declared variables
     if (signOutUser($userID, $locationID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive)) {
-      echo json_encode('The user has been signed out successfully');
+      echo json_encode('You have been signed out successfully!');
       exit();
     }
   }

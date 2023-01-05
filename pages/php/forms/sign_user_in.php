@@ -127,7 +127,7 @@ function executeUserSignIn($setFields) {
 
   // Finally, sign the user in using the previously declared variables
   if (signInUser($userID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive)) {
-    echo json_encode('The user has been signed out successfully');
+    echo json_encode('You have been signed in successfully!');
     exit();
   }
 

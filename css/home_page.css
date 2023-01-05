@@ -185,6 +185,14 @@ body {
   font:small-caption;font-size:32px
 }
 
+#staff_login_form input[type='text'], input[type='password'] {
+  text-transform: none;
+}
+#staff_login_form input[type='password'] {
+  font: small-caption;
+  font-size: 24px;
+}
+
 #user_selection_grid {
   display: flex;
   height: 100%;

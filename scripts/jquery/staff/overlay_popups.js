@@ -12,7 +12,8 @@ popupHTMLPaths = {
   restrict : '../../pages/html/popups/restrict_user.html',
   unrestrict : '../../pages/html/popups/unrestrict_user.html',
   markaway : '../../pages/html/popups/mark_user_away.html',
-  markpresent : '../../pages/html/popups/mark_user_present.html'
+  markpresent : '../../pages/html/popups/mark_user_present.html',
+  staffpassword : '../../pages/html/popups/change_staff_password.html'
 }
 // An object used to contain the form IDs and their file path for each popup forms action file
 formActionPaths = {
@@ -22,6 +23,7 @@ formActionPaths = {
   unrestrict_user_form : '../../pages/php/forms/unrestrict_user.php',
   mark_user_away_form : '../../pages/php/forms/mark_user_away.php',
   mark_user_present_form : '../../pages/php/forms/mark_user_present.php',
+  change_staff_password_form : '../../pages/php/forms/change_staff_password.php'
 }
 
 // Functions
