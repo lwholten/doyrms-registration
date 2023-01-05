@@ -87,7 +87,7 @@ if (checkStaffExists($_POST['staff_username']) && verify($_POST['staff_username'
     $username = $_POST['staff_username'];
 }
 else {
-    customError(409, 'The username or password you entered is incorrect. Please try again.');
+    customError(422, 'The username or password you entered is incorrect. Please try again.');
     return 0;
     exit();
 }
@@ -111,7 +111,7 @@ if (checkStaffPassword($username, $_POST['staff_password'])) {
     exit();
 }
 else {
-    customError(409, 'The username or password you entered is incorrect. Please try again.');
+    customError(422, 'The username or password you entered is incorrect. Please try again.');
     return 0;
     exit();
 }

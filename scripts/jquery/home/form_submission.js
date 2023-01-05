@@ -9,26 +9,26 @@ formActionPaths = {
 
 // Main
 $(document).ready(function() {
-
-    // Event listener for when text is input into any of the forms fields
-    $('#user_self_sign_out_form').keydown(function(e) {
-
-        // Stores the submit button as a variable
-        const submitButton = $('#user_self_sign_out_form button:last-of-type');
-
-        // If the enter key was not pressed and  the form is not loading
-        if (e.which != 13 && !$(submitButton).hasClass('loading')) {
-
-            // Reset the submit button
-            $(submitButton).css('background', 'var(--navy)');
-            $(submitButton).html('<h4>Submit</h4>');
-            
-        }
-    });
-
     
     // Adds the event listeners required for each form to function
     for (const formID in formActionPaths) {
+
+        // Event listener for when text is input into the sign in/out form fields
+        $(formID).keydown(function(e) {
+
+            // Stores the submit button as a variable
+            const submitButton = $(this).find('button:last-of-type');
+
+            // If the enter key was not pressed and  the form is not loading
+            if (e.which != 13 && !$(submitButton).hasClass('loading')) {
+
+                // Reset the submit button
+                $(submitButton).css('background', 'var(--navy)');
+                $(submitButton).html('<h4>Submit</h4>');
+                
+            }
+        });
+
         // for each form in the formActionPaths object
         $(formID).submit(function(e) {
 
@@ -86,6 +86,22 @@ $(document).ready(function() {
 
     } // End of for loop
 
+    // Event listener for when text is input into the staff login forms fields
+    $('#staff_login_form').keydown(function(e) {
+
+        // Stores the submit button as a variable
+        const submitButton = $(this).find('button:last-of-type');
+
+        // If the enter key was not pressed and the form is not loading
+        if (e.which != 13 && !$(submitButton).hasClass('loading')) {
+
+            // Reset the submit button
+            $(submitButton).css('background', 'var(--navy)');
+            $(submitButton).html('<h4>Submit</h4>');
+            
+        }
+    });
+    
     // When the staff login form is submitted
     $('#staff_login_form').submit(function(e) {
 
