@@ -208,6 +208,7 @@ navbar .divider {
   margin: 8px 0px;
   max-width: 840px;
   font-size: 18px;
+  line-height: 18px;
   font-family: 'Montserrat';
 }
 
@@ -236,6 +237,37 @@ navbar .divider {
 }
 .loading-complete:after {
   content: '<i class="fa fa-check"></i>';
+}
+
+a.github_wrapper {
+  height: 32px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  color: var(--grey);
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+}
+a.github_wrapper .spacer {
+  margin: auto 6px auto 14px;
+  height: 20px;
+  background: var(--grey);
+  display: block;
+  width: 2px;
+  border-radius: 2px;
+}
+a.github_wrapper img {
+  height: 28px;
+  width: 28px;
+  margin: auto 0px;
+}
+a.github_wrapper p {
+  height: auto;
+  line-height: 18px;
+  font-size: 18px;
+  font-family: 'Montserrat';
+  margin: auto 0px auto 6px;
 }
 
 .hidden {

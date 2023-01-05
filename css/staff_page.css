@@ -1298,6 +1298,10 @@ spacer {
   max-width: 600px;
 }
 
+a.github_wrapper {
+  bottom: 16px;
+  left: 64px;
+}
 
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
@@ -1312,7 +1316,7 @@ spacer {
     font-size: 16px;
   }
   #main_header h1 {
-    font-size: 20px;;
+    font-size: 24px;;
   }
   navbar {
     padding: 0px 20px 0px 0px;
