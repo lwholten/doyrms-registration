@@ -4,9 +4,12 @@
 <div class="card text" style="transform: translateY(-100px)">
   <header>
     <div class="close">
-      <img src="../../images/svg/cross.svg" alt="X">
+      <img src="../../images/svg/cross.svg" alt="close-x">
     </div>
     <h3>Mark User Away</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
   </header>
   <divider></divider>
   <form id="mark_user_away_form">
@@ -27,5 +30,9 @@
     <div style="margin: 10px 0 10px 0;"></div>
     <button type="submit" id="sign_user_out_button"><h4>Submit</h4></button>
     <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>Users that are away cannot use the system until they are marked present</p>
+      <p>This is useful for users who may be sick</p>
+    </div>
   </form>
 </div>

@@ -4,9 +4,12 @@
 <div class="card text" style="transform: translateY(-100px)">
   <header>
     <div class="close">
-      <img src="../../images/svg/cross.svg" alt="X">
+      <img src="../../images/svg/cross.svg" alt="close-x">
     </div>
     <h3>Sign User Out</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
   </header>
   <divider></divider>
   <form id="sign_user_out_form">
@@ -39,5 +42,8 @@
     <div style="margin: 10px 0 10px 0;"></div>
     <button type="submit" id="sign_user_out_button"><h4>Submit</h4></button>
     <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>If the location is left empty, the user will be signed out for the event but will remain at their current location</p>
+    </div>
   </form>
 </div>

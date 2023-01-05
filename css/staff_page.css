@@ -78,21 +78,29 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   flex-direction: row-reverse;
   align-items: center;
 }
-#staff_overlay .card header .close {
-  position: fixed;
-  width: 32px;
-  height: 32px;
+#staff_overlay .card header .close, .info {
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
   z-index: 2;
   border-radius: 50%;
   display: inherit;
   cursor: pointer;
 }
-#staff_overlay .card header .close img {
+#staff_overlay .card header .info {
+  align-self: flex-end;
+}
+#staff_overlay .card header .close img, .info img {
   display: block;
   width: 16px;
   height: 16px;
   z-index: 2;
   margin: auto;
+}
+#staff_overlay .card header .info img {
+  width: 24px;
+  height: 24px;
 }
 #staff_overlay .card header h3 {
   width: 100%;
@@ -220,8 +228,8 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   border: none;
   color: var(--placeholder-text-color);
 }
-#staff_overlay form .error_wrapper {
-  padding: 0px;
+#staff_overlay form .error_wrapper, .tooltip_wrapper {
+  padding: 4px 2px;
   min-height: 24px;
   height: auto;
   width: 100%;
@@ -237,7 +245,21 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   display: none;
   margin: 0px auto;
 }
-#staff_overlay form .error_wrapper:first-letter {
+#staff_overlay form .tooltip_wrapper {
+  border: 2px solid var(--blue);
+  color: var(--blue);
+}
+#staff_overlay form .tooltip_wrapper p::first-letter {
+  text-transform: uppercase;
+}
+#staff_overlay form .tooltip_wrapper p {
+  text-transform: lowercase;
+  margin: 0px;
+}
+#staff_overlay form .tooltip_wrapper p:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+#staff_overlay form .error_wrapper:first-letter, .tooltip_wrapper:first-letter {
   text-transform: uppercase;
 }
 #staff_overlay form .event_timing_wrapper {

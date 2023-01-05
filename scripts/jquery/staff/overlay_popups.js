@@ -50,9 +50,11 @@ function addEventListeners() {
 
     const submitButton = $('#staff_overlay .card form:first-of-type button:last-of-type');
     const errorWrapper = $('#staff_overlay .card form .error_wrapper');
+    const infoWrapper = $('#staff_overlay .card form .tooltip_wrapper');
 
-    // If the enter key was not pressed and  the form is not loading
+    // If the enter key was not pressed and the form is not loading
     if (e.which != 13 && !$(submitButton).hasClass('loading')) {
+
       // Removes any error messages
       $(errorWrapper).css('display', 'none');
       $(errorWrapper).empty();
@@ -73,6 +75,7 @@ function addEventListeners() {
     // Submit button
     const submitButton = $('#staff_overlay .card form:first-of-type button:last-of-type');
     const errorWrapper = $('#staff_overlay .card form .error_wrapper');
+    const infoWrapper = $('#staff_overlay .card form .tooltip_wrapper');
 
     $.ajax({
         type: "POST",
@@ -81,6 +84,8 @@ function addEventListeners() {
         data: $(this).serialize() + "&staff_action=1", // Serializes the form's elements (and states that this was a staff action)
         dataType: 'json',
         beforeSend: function() {
+          // Hides any info messages
+          $(infoWrapper).css('display', 'none');
 
           // Removes any error messages
           $(errorWrapper).css('display', 'none');
@@ -100,6 +105,9 @@ function addEventListeners() {
       removePopup();
 
     }).fail(function(jqXHR, status, error) {
+
+      // Hides any info messages
+      $(infoWrapper).css('display', 'none');
 
       // Changes the buttons state to failure
       $(submitButton).css('background', 'var(--red)');
@@ -127,6 +135,22 @@ function addEventListeners() {
     mouseout : function() {$(this).css('background', 'none')},
     // Removes the popup when pressed
     click : function () {removePopup()}
+  });
+
+  // Event listeners for the info button
+  $('#staff_overlay .card header .info').on({
+    // Applies the background when hovering
+    mouseover : function() {$(this).css('background', 'var(--light-grey)')},
+    // Removes the background when not hovering
+    mouseout : function() {$(this).css('background', 'none')},
+    // Displays the tooltip section and hides the error section when clicked
+    click : function () {
+      $('#staff_overlay .card form .error_wrapper').css('display', 'none');
+      $('#staff_overlay .card form .tooltip_wrapper').css('display', 'block');
+      // Resets the submit button
+      $('#staff_overlay .card form:first-of-type button:last-of-type').css('background', 'var(--navy)');
+      $('#staff_overlay .card form:first-of-type button:last-of-type').html('<h4>Submit</h4>');
+    }
   });
 
   // Event listeners for time inputs
