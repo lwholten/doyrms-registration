@@ -14,7 +14,8 @@ function searchActions($term) {
     ["restrict user", "#restrict_user_button"],
     ["unrestrict user", "#unrestrict_user_button"],
     ["mark user away", "#away_user_button"],
-    ["mark user present", "#present_user_button"]
+    ["mark user present", "#present_user_button"],
+    ["change password", "#change_password_button"]
   ];
   // A string is used to contain all 'suggestion' list elements
   $suggestions = "";

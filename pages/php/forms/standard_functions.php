@@ -150,6 +150,7 @@ function fetchCurrentLocationID($userID) {
 
   return $result;
 }
+// Used to fetch the current times event ID
 function fetchCurrentEventID($locationID, $eventNature) {
   global $ini;
   // This function uses a locationID to determine a current event at the time of executing
@@ -235,6 +236,10 @@ function fetchCurrentEventID($locationID, $eventNature) {
   $con->close();
   // Returns the EventID and MinutesLate as NULL since no event was triggered
   return $data;
+}
+function generateRandomSalt() {
+  global $ini;
+  return bin2hex(random_bytes($ini['password_salt_length']));
 }
 // Used to check whether a user has already attended an event
 function userAttendedEvent($userID, $eventID) {
@@ -390,5 +395,55 @@ function eventMatchesLocation($eventID, $locationID) {
     customError(500, 'A server error has occured while checking whether the location and event match');
     exit();
   }
+}
+// Checks whether the staff users password is correct using a staff members username or ID (ID is preferable)
+function checkStaffPassword($username=NULL, $staffID=NULL, $password) {
+  global $ini;
+  // Selects the staff users salt and hash from the database
+  $query = "SELECT Salt, Hash FROM Staff WHERE Username=? OR staffID=? LIMIT 1";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("si", $username, $staffID);
+  $stmt->execute();
+  // Binds the result to their respective variables
+  $stmt->bind_result($result['salt'], $result['hash']);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Concatinates the accounts salt to the start of the password
+  $saltedPassword = $result['salt'].$password;
+
+  // Verifies the password and returns the result
+  if (password_verify($saltedPassword, $result['hash'])) {
+      unset($result);
+      return true;
+  } else {
+      unset($result);
+      return false;
+  }
+}
+// Updates a staff users password
+function updateStaffPassword($staffID, $newPassword) {
+  global $ini;
+
+  // Generates a new salt
+  $salt = generateRandomSalt();
+  // Concatinates the salt to the START of the password
+  $saltedPassword = $salt.$newPassword;
+  // Hashes the salted password
+  $hash = password_hash($saltedPassword, PASSWORD_BCRYPT);
+
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares the UPDATE query
+  $stmt = $con->prepare("UPDATE Staff SET Salt=?, Hash=?, LastChangedPassword=CURRENT_TIMESTAMP WHERE StaffID=?");
+  $stmt->bind_param("ssi", $salt, $hash, $staffID);
+  // Executes the stement
+  $stmt->execute();
+  // Disconnects from the database
+  $con->close();
 }
 ?>

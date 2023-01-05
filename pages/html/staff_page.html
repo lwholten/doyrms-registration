@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
+<? if (session_status() === PHP_SESSION_NONE) {session_start();} ?>
 <head>
 <!-- CSS stylesheets -->
 <link rel="stylesheet" type="text/css" href="../../css/mainstyles.css">
@@ -73,7 +73,7 @@
           <?php @include('../php/sidebar/staff/event_buttons.php')?>
 
           <li class="sidebar_subtitle"><h3>Account</h3></li>
-          <li onclick="triggerPopup('staffpassword')" class="sidebar_button" id="customise_button"><h4>Password</h4></li>
+          <li id="change_password_button" onclick="triggerPopup('staffpassword')" class="sidebar_button" id="customise_button"><h4>Password</h4></li>
         </ul>
       </container>
     </div>
@@ -177,10 +177,10 @@
         <div class="info_wrapper text">
           <p>Welcome to the events summary area. In this area, you can see all active events. This includes when the event starts and ends, as well as how early or late users may be when signing out.</p>
           <spacer></spacer>
-          <ul class="event_card_container">
-            <?php @include('../php/sections/staff/event_cards.php')?>
-          </ul>
         </div>
+        <ul class="event_card_container">
+          <?php @include('../php/sections/staff/event_cards.php')?>
+        </ul>
         <spacer></spacer>
       </section>
       <container id="event_sections"></container>

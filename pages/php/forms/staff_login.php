@@ -31,35 +31,6 @@ function checkStaffExists($username) {
         return false;
     }
 }
-// Checks whether the staff users password is correct
- function checkStaffPassword($username, $password) {
-    global $ini;
-    // Selects the staff users salt and hash from the database
-    $query = "SELECT Salt, Hash FROM Staff WHERE Username=?";
-    // Connects to the database
-    $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
-    // Prepares and executes the statement
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    // Binds the result to their respective variables
-    $stmt->bind_result($result['salt'], $result['hash']);
-    $stmt->fetch();
-    // Disconnects from the database
-    $con->close();
-  
-    // Concatinates the accounts salt to the start of the password
-    $saltedPassword = $result['salt'].$password;
-
-    // Verifies the password and returns the result
-    if (password_verify($saltedPassword, $result['hash'])) {
-        unset($result);
-        return true;
-    } else {
-        unset($result);
-        return false;
-    }
-}
 // Fetches the staff users ID and Access Level
 function fetchStaffDetails($username) {
     global $ini;
@@ -93,7 +64,7 @@ else {
 }
 
 // Checks whether the staff users password is correct
-if (checkStaffPassword($username, $_POST['staff_password'])) {
+if (checkStaffPassword($username, NULL, $_POST['staff_password'])) {
     // Fetches the staff users details
     $staffDetails = fetchStaffDetails($username);
 

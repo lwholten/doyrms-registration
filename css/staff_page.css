@@ -236,7 +236,7 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
   padding: 4px 2px;
   min-height: 24px;
   height: auto;
-  width: 100%;
+  width: calc(100% - 8px);
   min-height: 24px;
   border-radius: 4px;
   border: 2px solid var(--red);
@@ -283,7 +283,6 @@ input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit
 #staff_overlay form input[type='password'] {
   text-transform: none;
 }
-
 
 #main {
   width: auto;
@@ -776,7 +775,7 @@ table button {
 }
 
 .tooltip_wrapper {
-  width: 100%;
+  width: calc(100% - 8px);
   height: auto;
 }
 .tooltip_wrapper ul {
