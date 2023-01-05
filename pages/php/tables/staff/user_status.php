@@ -46,7 +46,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
     // Current Location
     "<td>".formatLocation($record[3])."</td>",
     // Time last active
-    "<td>".$record[4]."</td>",
+    "<td>".substr($record[4], 0, 5)."</td>",
     // Date last active
     "<td>".$record[5]."</td>"
   ];

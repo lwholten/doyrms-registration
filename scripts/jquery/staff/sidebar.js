@@ -1,5 +1,9 @@
 $(document).ready(function() {
   // Variables
+  // The width of main must be set to (100% - the max width of the sidebar), so that the sidebars width can be set to auto
+  // The width of main is then corrected after the sidebars width is calculated
+  // This is because we cant perform 'width = calc(100% - auto);'
+  $('#main').width('calc(100% - 300px)')
   // Stores the width of the sidebar when it is expanded and collapsed (px)
   const maxWidth = Math.round($('#sidebar').width());
   const minWidth = 50;

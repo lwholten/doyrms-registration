@@ -45,7 +45,7 @@ $eventID = $_POST['eventID'];
 $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
 // Note, this code MUST be changed in the future not to use a PHP variable in the query statement
-$sql = "SELECT Users.UserID, Users.Forename, Users.Surname, (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND CAST(Log.LogTime AS DATE)=CURRENT_DATE AND Log.EventID=$eventID) AS Timing, (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Users ORDER BY Users.Forename, Users.Surname";
+$sql = "SELECT Users.UserID, Users.Forename, Users.Surname, (SELECT Log.MinutesLate FROM Log WHERE Log.UserID=Users.UserID AND CAST(Log.LogTime AS DATE)=CURRENT_DATE AND Log.EventID=$eventID) AS Timing, (SELECT Log.StaffMessage FROM Log WHERE Log.UserID=Users.UserID AND CAST(Log.LogTime AS DATE)=CURRENT_DATE AND Log.EventID=$eventID) AS Message, (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Users ORDER BY Users.Forename, Users.Surname";
 // Saves the result of the SQL code to a variable
 $result = $con->query($sql);
 // Disconnects from the database
@@ -59,7 +59,7 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // Appends the table header
-$tableContents .= '<thead><tr><th>Nature</th><th>User</th><th>Timing</th></tr></thead>';
+$tableContents .= '<thead><tr><th>Nature</th><th>User</th><th>Timing</th><th>Message</th></tr></thead>';
 // Iterates through each record in the table, formats and appends the data to the variable 'tableContents'
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
 
@@ -75,9 +75,11 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
     // Nature (indicators)
     $indicators[fetchIndicatorIndex($record[3])],
     // User
-    "<td".formatRestricted($record[4]).">".$record[1]." ".$record[2]."</td>",
+    "<td".formatRestricted($record[5]).">".$record[1]." ".$record[2]."</td>",
     // Timing
-    "<td>".formatTiming($record[3])."</td>"
+    "<td>".formatTiming($record[3])."</td>",
+    // Message
+    "<td>".formatColumn($record[4], 'None')."</td>"
   ];
 
   $tableContents .= formatRow($columns);

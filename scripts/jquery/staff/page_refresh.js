@@ -1,5 +1,14 @@
 // This file is used to keep all page data up to date by refreshing tables and sections at regular intervals
 $(document).ready(function () {
+
+  // Changes the background of the table headers depending on the time
+  // (Some gradient backgrounds are too bright for the white text, so a darker background is necessary)
+  let d = new Date();
+  if (d.getHours() == 10 || d.getHours() == 11) {
+    $('.main_section .table_wrapper header').css('background','rgba(0,0,0,0.1)');
+    $('#dashboard header').css('background','rgba(0,0,0,0.1)');
+  }
+
   // Recent activity table
   function populateRecentActivityTable() {
       $.ajax({

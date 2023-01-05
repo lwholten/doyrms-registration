@@ -27,15 +27,13 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // The tables header
-$tableContents .= '<thead><tr><th>User</th><th>Reason</th><th>Date marked away</th><th>At</th><th>Date expected back</th><th>At</th></tr></thead>';
+$tableContents .= '<thead><tr><th>User</th><th>Date marked away</th><th>At</th><th>Date expected back</th><th>At</th><th>Reason</th></tr></thead>';
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
 
   $columns = [
     // User
     "<td".formatRestricted($record[7]).">".$record[0]." ".$record[1]."</td>",
-    // Reason
-    "<td>".formatColumn($record[6], 'None')."</td>",
     // Date marked away
     "<td>$record[2]</td>",
     // Time marked away
@@ -44,6 +42,8 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
     "<td>".formatColumn($record[4], 'Not Specified')."</td>",
     // Time expected back
     "<td>".formatColumn(substr($record[5], 0, 5), '-')."</td>",
+    // Reason
+    "<td>".formatColumn($record[6], 'None')."</td>",
   ];
 
   // Appends this row to the table
