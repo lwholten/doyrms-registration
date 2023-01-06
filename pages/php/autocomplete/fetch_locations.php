@@ -8,7 +8,7 @@ if ($_POST['term'] != "") {
 
   // SQL
   // SQL query used to fetch suggested locations
-  $query = "SELECT `LocationName` FROM `Locations` WHERE LocationName LIKE CONCAT('%', ?, '%') OR LocationAlias LIKE CONCAT('%', ?, '%') LIMIT 0,3";
+  $query = "SELECT `LocationName` FROM `Locations` WHERE LocationName LIKE CONCAT('%', ?, '%') OR KeyWords LIKE CONCAT('%', ?, '%') LIMIT 0,3";
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // turns the query into a statement

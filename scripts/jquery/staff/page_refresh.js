@@ -112,6 +112,41 @@ $(document).ready(function () {
         }
     });
   }
+  
+  // Used to populate an admin table
+  function populateAdminTable(tableID, path) {
+    $.ajax({
+      url: path,
+      type: 'POST',
+      dataType: 'json',
+      success: function(response) {
+        $(''.concat('#',tableID)).html(response);
+      }
+    });
+  }
+
+  // Used to popualte all admin tables
+  function populateAllAdminTables() {
+    // Object containing every table and its PHP path
+    tableData = {
+      'staff_users_table': '../../pages/php/tables/admin/staff_users.php',
+      'users_table': '../../pages/php/tables/admin/users.php',
+      'locations_table': '../../pages/php/tables/admin/locations.php',
+      'events_table': '../../pages/php/tables/admin/events.php',
+    }
+    
+    // Iterates through the object and displays each table
+    for (var key in tableData) {
+      populateAdminTable(key, tableData[key]);
+      console.log(key, tableData[key]);
+    }
+  }
+
+  // Used to load the admin edit sections to the page
+  function loadAdminEditSections() { 
+    $('#admin_edit_sections').load("../php/sections/admin/admin_edit_sections.php");
+    populateAllAdminTables();
+  }
 
   // Dashboard Analytics
   function updateDashboardAnalytics() {
@@ -132,6 +167,7 @@ $(document).ready(function () {
     updateDashboardAnalytics();
     populateAllTables();
     populateAllEventTables();
+    populateAllAdminTables();
   },60000);
 
   // Loads all the event sections when the page is first loaded
@@ -140,5 +176,7 @@ $(document).ready(function () {
   populateAllTables();
   // Loads all the event sections when the page is first loaded
   loadEventSections();
+  // loads all the admin edit sections
+  loadAdminEditSections();
 
 });

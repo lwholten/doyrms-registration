@@ -139,7 +139,7 @@ $(document).ready(function() {
             $(submitButton).html('<h4>Submit</h4>');
 
             // Redirects the user to the staff page (after storing login cookies with the PHP)
-            window.location.href = "../../pages/php/staff_page.php";
+            if (success) {window.location.href = "../../pages/php/staff_page.php";}
 
         }).fail(function(jqXHR, status, error) {
     

@@ -803,7 +803,7 @@ spacer {
   padding: 0px;
 }
 .event_card_container li {
-  max-width: 840px;
+  max-width: 600px;
   max-height: 350px;
   min-height: 350px;
   height: 350px;
@@ -955,11 +955,7 @@ spacer {
   text-align: left;
   color: var(--black);
 }
-#dashboard section {
-  grid-area: 1 / 2 / 2 / 3;
-}
 #dashboard aside {
-  grid-area: 1 / 1 / 2 / 2;
   display: flex;
   flex-direction: column;
   margin: 8px;
@@ -987,7 +983,6 @@ spacer {
   width: 24px;
   margin: auto 16px auto 0px;
 }
-
 .home_panel container:not(#dashboard_analytics) {
   width: 100%;
   margin: 8px auto 0px auto;

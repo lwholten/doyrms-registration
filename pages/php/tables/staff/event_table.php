@@ -4,7 +4,7 @@
 
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
-require 'table_functions.php';
+require '../table_functions.php';
 
 // Functions
 // Determines what indicator best suits a users timing

@@ -78,7 +78,7 @@ if (checkStaffPassword($username, NULL, $_POST['staff_password'])) {
     $_SESSION['staffAccessLevel'] = $staffDetails['staffAccessLevel'];
 
     // Returns successful
-    return 1;
+    echo true;
     exit();
 }
 else {

@@ -62,6 +62,7 @@
         <label for="sidebar_toggle"><span class="left_arrow"></span></label>
         <ul>
           <li class="sidebar_subtitle"><h2>Menu</h2></li>
+          <?php @include('../php/sidebar/admin/admin_edit_buttons.php')?>
           <li class="sidebar_subtitle"><h3>Information</h3></li>
           <li onclick="toggleMainSection(this.id,'home_section')" class="sidebar_button sidebar_button_active" id="home_button"><h4>Home</h4></li>
           <li onclick="toggleMainSection(this.id,'activity_section')" class="sidebar_button" id="activity_button"><h4>Activity</h4></li>
@@ -81,6 +82,7 @@
       </container>
     </div>
     <div class="text" id="main">
+      <container id="admin_edit_sections"></container>
       <section class="main_section main_section_active" id="home_section">
         <h2>Welcome, <?=$_COOKIE["dreg_staffUsername"]?>.</h2>
         <div class="info_wrapper text">
