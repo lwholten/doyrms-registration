@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'remove user' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="close-x">
+    </div>
+    <h3>Remove User</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
+  </header>
+  <divider></divider>
+  <form id="remove_staff_form">
+    <label for="user_name_field"><h4>Name</h4></label>
+    <div class="search_wrapper">
+      <input required type="text" class="uppercase" id="user_name_field" name="name_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+      <ul id="user_name_suggestions" class="suggested_inputs"></ul>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <button type="submit" id="remove_user_button"><h4>Submit</h4></button>
+    <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>Note that this action cannot be undone</p>
+    </div>
+  </form>
+</div>

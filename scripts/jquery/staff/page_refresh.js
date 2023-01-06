@@ -138,7 +138,6 @@ $(document).ready(function () {
     // Iterates through the object and displays each table
     for (var key in tableData) {
       populateAdminTable(key, tableData[key]);
-      console.log(key, tableData[key]);
     }
   }
 
@@ -178,5 +177,12 @@ $(document).ready(function () {
   loadEventSections();
   // loads all the admin edit sections
   loadAdminEditSections();
+
+  // If an admin sidebar button is pressed, reload the admin tables
+  $('.admin_sidebar_button').on({
+    click : function() {
+        populateAllAdminTables();
+    }
+  })
 
 });

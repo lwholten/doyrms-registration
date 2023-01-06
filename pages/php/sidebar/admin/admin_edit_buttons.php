@@ -10,10 +10,10 @@ if ($_SESSION['staffAccessLevel'] >= 3) {
     $sidebarHTML .= "<li class='sidebar_subtitle'><h3>Admin</h3></li>";
     // Buttons
     $sidebarHTML .= <<<BUTTONS
-    <li onclick="toggleMainSection(this.id,'edit_staff_section')" class="sidebar_button" id="edit_staff_button"><h4>Edit Staff</h4></li>
-    <li onclick="toggleMainSection(this.id,'edit_users_section')" class="sidebar_button" id="edit_users_button"><h4>Edit Users</h4></li>
-    <li onclick="toggleMainSection(this.id,'edit_locations_section')" class="sidebar_button" id="edit_locations_button"><h4>Edit Locations</h4></li>
-    <li onclick="toggleMainSection(this.id,'edit_events_section')" class="sidebar_button" id="edit_events_button"><h4>Edit Events</h4></li> 
+    <li onclick="toggleMainSection(this.id,'edit_staff_section')" class="sidebar_button admin_sidebar_button" id="edit_staff_button"><h4>Edit Staff</h4></li>
+    <li onclick="toggleMainSection(this.id,'edit_users_section')" class="sidebar_button admin_sidebar_button" id="edit_users_button"><h4>Edit Users</h4></li>
+    <li onclick="toggleMainSection(this.id,'edit_locations_section')" class="sidebar_button admin_sidebar_button" id="edit_locations_button"><h4>Edit Locations</h4></li>
+    <li onclick="toggleMainSection(this.id,'edit_events_section')" class="sidebar_button admin_sidebar_button" id="edit_events_button"><h4>Edit Events</h4></li> 
     BUTTONS;
 
     // Outputs HTML

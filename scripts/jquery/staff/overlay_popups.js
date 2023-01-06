@@ -6,24 +6,46 @@ popupActive = false;
 
 // An object used to contain the paths used for the popup HTML files
 popupHTMLPaths = {
-  signout  : '../../pages/html/popups/sign_user_out.html',
-  signin   : '../../pages/html/popups/sign_user_in.html',
-  download : '../../pages/html/popups/download_data.html',
-  restrict : '../../pages/html/popups/restrict_user.html',
-  unrestrict : '../../pages/html/popups/unrestrict_user.html',
-  markaway : '../../pages/html/popups/mark_user_away.html',
-  markpresent : '../../pages/html/popups/mark_user_present.html',
-  staffpassword : '../../pages/html/popups/change_staff_password.html'
+  // Staff
+  signout  : '../../pages/html/popups/staff/sign_user_out.html',
+  signin   : '../../pages/html/popups/staff/sign_user_in.html',
+  download : '../../pages/html/popups/staff/download_data.html',
+  restrict : '../../pages/html/popups/staff/restrict_user.html',
+  unrestrict : '../../pages/html/popups/staff/unrestrict_user.html',
+  markaway : '../../pages/html/popups/staff/mark_user_away.html',
+  markpresent : '../../pages/html/popups/staff/mark_user_present.html',
+  staffpassword : '../../pages/html/popups/staff/change_staff_password.html',
+
+  // Admin
+  addstaff : '../../pages/html/popups/admin/add_staff.html',
+  removestaff : '../../pages/html/popups/admin/remove_staff.html',
+  adduser : '../../pages/html/popups/admin/add_user.html',
+  removeuser : '../../pages/html/popups/admin/remove_user.html',
+  addlocation : '../../pages/html/popups/admin/add_location.html',
+  removelocation : '../../pages/html/popups/admin/remove_location.html',
+  addevent : '../../pages/html/popups/admin/add_event.html',
+  removeevent : '../../pages/html/popups/admin/remove_event.html',
 }
 // An object used to contain the form IDs and their file path for each popup forms action file
 formActionPaths = {
+  // Staff
   sign_user_in_form : '../../pages/php/forms/sign_user_in.php',
   sign_user_out_form : '../../pages/php/forms/sign_user_out.php',
   restrict_user_form : '../../pages/php/forms/restrict_user.php',
   unrestrict_user_form : '../../pages/php/forms/unrestrict_user.php',
   mark_user_away_form : '../../pages/php/forms/mark_user_away.php',
   mark_user_present_form : '../../pages/php/forms/mark_user_present.php',
-  change_staff_password_form : '../../pages/php/forms/change_staff_password.php'
+  change_staff_password_form : '../../pages/php/forms/change_staff_password.php',
+
+  // Admin
+  add_staff_form : '../../pages/php/forms/add_staff.php',
+  remove_staff_form : '../../pages/php/forms/remove_staff.php',
+  add_user_form : '../../pages/php/forms/add_user.php',
+  remove_user_form : '../../pages/php/forms/remove_user.php',
+  add_location_form : '../../pages/php/forms/add_location.php',
+  remove_location_form : '../../pages/php/forms/remove_location.php',
+  add_event_form : '../../pages/php/forms/add_event.php',
+  remove_event_form : '../../pages/php/forms/remove_event.php',
 }
 
 // Functions
@@ -158,7 +180,12 @@ function addEventListeners() {
   // Event listeners for time inputs
   $('#staff_overlay form').find('input[type=time]').each(function() {
     // Sets the placeholder to 'optional' when the input is loaded
-    $(this).attr('data-before', 'Optional')
+    if ($(this).attr('data-placeholder') == 'required') {
+      $(this).attr('data-before', 'Required');
+    }
+    else {
+      $(this).attr('data-before', 'Optional');
+    }
 
     // Removes the placeholder if a time is selected
     $(this).on('input', function() {$(this).attr('data-before', '')});
@@ -167,7 +194,12 @@ function addEventListeners() {
   // Event listeners for date inputs
   $('#staff_overlay form').find('input[type=date]').each(function() {
     // Sets the placeholder to 'optional' when the input is loaded
-    $(this).attr('data-before', 'Optional')
+    if ($(this).attr('data-placeholder') == 'required') {
+      $(this).attr('data-before', 'Required');
+    }
+    else {
+      $(this).attr('data-before', 'Optional');
+    }
 
     // Removes the placeholder if a date is selected
     $(this).on('input', function() {$(this).attr('data-before', '')});
@@ -295,11 +327,13 @@ function addEventListeners() {
   // Array to contain the various field types as objects
   const fieldTypes = {};
   // Object to contain the data associated with the locations field and its autocompleted suggestions
-  fieldTypes['locations'] = {fieldID:'#user_location_field', ajaxPath:'autocomplete/fetch_locations.php', nature:null},
+  fieldTypes['locations'] = {fieldID:'#location_field', ajaxPath:'autocomplete/fetch_locations.php', nature:null},
   // Object to contain the data associated with the user name field and its autocompleted suggestions
   fieldTypes['users'] = {fieldID:'#user_name_field', ajaxPath:'autocomplete/fetch_users.php', nature:null}
   // Object to contain the data associated with the user events field and its autocompleted suggestions
   fieldTypes['events'] = {fieldID:'#user_event_field', ajaxPath:'autocomplete/fetch_events.php', nature:null}
+  // Object to contain the data associated with the staff username field and its autocompleted suggestions
+  fieldTypes['staff'] = {fieldID:'#staff_username_field', ajaxPath:'autocomplete/fetch_staff.php', nature:null}
 
   // For every field type add its required event listeners
   for (var field in fieldTypes) { addFieldEventListeners(fieldTypes[field]); }

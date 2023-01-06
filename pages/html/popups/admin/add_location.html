@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'add location' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="close-x">
+    </div>
+    <h3>Add Location</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
+  </header>
+  <divider></divider>
+  <form id="add_location_form">
+    <label for="location_name_field"><h4>Location Name</h4></label>
+    <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="location_keywords_field"><h4>Key Words</h4></label>
+    <textarea type="text" class="capitalize" id="location_keywords_field" name="keywords_field" placeholder="Optional, List, Of, Key, Words" value="" autocomplete="off" pattern="[a-zA-Z0-9\s]+"></textarea>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="location_description_field"><h4>Description</h4></label>
+    <textarea type="text" class="capitalize" id="location_description_field" name="keywords_field" placeholder="Optional" value="" autocomplete="off" pattern="[a-zA-Z0-9\s]+"></textarea>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <button type="submit" id="add_location_button"><h4>Submit</h4></button>
+    <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>Users sign out to these locations</p>
+      <p>Key words are terms that also suggest the location when searched</p>
+    </div>
+  </form>
+</div>

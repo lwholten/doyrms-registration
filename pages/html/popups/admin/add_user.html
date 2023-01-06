@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'add user' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="close-x">
+    </div>
+    <h3>Add Location</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
+  </header>
+  <divider></divider>
+  <form id="add_user_form">
+    <div class="double_input_wrapper">
+      <label for="user_fname_field"><h4>First Name</h4></label>
+      <input required type="text" class="capitalize" id="user_fname_field" name="fname_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+      <label for="user_lname_field"><h4>Last Name</h4></label>
+      <input required type="text" class="capitalize" id="user_lname_field" name="lname_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="user_email_field"><h4>Email</h4></label>
+    <input type="text" class="no_text_transform" id="user_email_field" name="email_field" placeholder="Optional" value="" autocomplete="off"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <h4>Gender</h4>
+    <div class="radio_wrapper">
+      <container>
+        <input required type="radio" name="user_gender_field" value="user"></input>
+        <label>Male</label>
+      </container>
+      <container>
+        <input type="radio" name="user_gender_field" value="moderator"></input>
+        <label>Female</label>
+      </container>
+      <container>
+        <input type="radio" name="user_gender_field" value="admin" checked="checked"></input>
+        <label>Other</label>
+      </container>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <div class="number_wrapper">
+        <label for="user_room_number"><h4 style="text-transform: none;">Room Number (1 to 999):</h4></label>
+        <input type="number" id="user_room_number" name="room_number_field" min="1" max="999">
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <button type="submit" id="add_user_button"><h4>Submit</h4></button>
+    <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>This is the account used for a user to sign in or out</p>
+    </div>
+  </form>
+</div>

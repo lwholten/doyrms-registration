@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'add staff' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="close-x">
+    </div>
+    <h3>Add Staff User</h3>
+    <div class="info">
+      <img src="../../images/svg/info.svg" alt="info-i">
+    </div>
+  </header>
+  <divider></divider>
+  <form id="add_staff_form">
+    <label for="staff_username_field"><h4>Username</h4></label>
+    <input required type="text" class="no_text_transform" id="staff_username_field" name="username_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <div class="double_input_wrapper">
+      <label for="staff_fname_field"><h4>First Name</h4></label>
+      <input required type="text" class="capitalize" id="staff_fname_field" name="fname_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+      <label for="staff_lname_field"><h4>Last Name</h4></label>
+      <input required type="text" class="capitalize" id="staff_lname_field" name="lname_field" placeholder="Required" value="" autocomplete="off" pattern="[a-zA-Z\s]+"/>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label><h4>Access Level</h4></label>
+    <div class="radio_wrapper">
+      <container>
+        <input required type="radio" name="staff_access_level" value="staff" checked="checked"></input>
+        <label>Staff</label>
+      </container>
+      <container>
+        <input type="radio" name="staff_access_level" value="moderator"></input>
+        <label>Moderator</label>
+      </container>
+      <container>
+        <input type="radio" name="staff_access_level" value="admin"></input>
+        <label>Admin</label>
+      </container>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="staff_email_field"><h4>Email</h4></label>
+    <input type="text" class="no_text_transform" id="staff_email_field" name="email_field" placeholder="Optional" value="" autocomplete="off"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="staff_password_field"><h4>Password</h4></label>
+    <input type="password" class="no_text_transform" id="staff_password_field" name="password_field" placeholder="" value="" autocomplete="off"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <button type="submit" id="add_staff_button"><h4>Submit</h4></button>
+    <div class="error_wrapper"></div>
+    <div class="tooltip_wrapper">
+      <p>If the password is left empty, the default password 'staffuser' will be used</p>
+    </div>
+  </form>
+</div>

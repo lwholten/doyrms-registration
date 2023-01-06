@@ -52,7 +52,7 @@ if (!(mysqli_num_rows($result) > 0)) {
 }
 
 // The tables header
-$tableContents .= '<thead><tr><th>Event</th><th>Where</th><th>Action</th><th>Days</th><th>Timing</th><th>Start</th><th>End</th><th>Alerts</th></tr></thead>';
+$tableContents .= '<thead><tr><th>Event</th><th>Where</th><th>Trigger</th><th>Days</th><th>Timing</th><th>Start</th><th>End</th><th>Alerts</th></tr></thead>';
 // Iterates through the table records and displays them on the web page's table
 while($record = $result -> fetch_array(MYSQLI_NUM)) {
 

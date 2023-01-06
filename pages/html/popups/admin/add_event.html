@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!-- This file contains the HTML code used to structure the 'add event' popup -->
+<!-- It is intended to be loaded via JavaScript not loaded directly -->
+<div class="card text" style="transform: translateY(-100px)">
+  <header>
+    <div class="close">
+      <img src="../../images/svg/cross.svg" alt="close-x">
+    </div>
+    <h3>Add Event</h3>
+  </header>
+  <divider></divider>
+  <form id="add_event_form">
+    <label for="event_name_field"><h4>Event Name</h4></label>
+    <input type="text" class="capitalize" id="event_name_field" name="event_name_field" placeholder="Required" value="" autocomplete="off"/>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="event_name_field"><h4>Location</h4></label>
+    <div class="search_wrapper">
+        <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
+        <ul class="suggested_inputs capitalize"></ul>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label><h4>Event Trigger</h4></label>
+    <div class="radio_wrapper">
+        <container>
+          <input type="radio" name="event_nature" value="in" checked="checked"></input>
+          <label>Sign In</label>
+        </container>
+      <container>
+        <input required type="radio" name="event_nature" value="out"></input>
+        <label>Sign Out</label>
+      </container>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <label for="event_days_wrapper">Days</label>
+    <div class="checkbox_wrapper" id="event_days_wrapper">
+        <input type="checkbox" name="mon" value="M">
+        <label for="mon"><h5>Monday</h5></label>
+        <input type="checkbox" name="tue" value="T">
+        <label for="tue"><h5>Tuesday</h5></label>
+        <input type="checkbox" name="wed" value="W">
+        <label for="wed"><h5>Wednesday</h5></label>
+        <input type="checkbox" name="thu" value="R">
+        <label for="thu"><h5>Thursday</h5></label>
+        <input type="checkbox" name="fri" value="F">
+        <label for="fri"><h5>Friday</h5></label>
+        <input type="checkbox" name="sat" value="U">
+        <label for="sat"><h5>Saturday</h5></label>
+        <input type="checkbox" name="sun" value="S">
+        <label for="sun"><h5>Sunday</h5></label>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <div class="double_input_wrapper">
+        <label for="event_start_time_field"><h4>Start Time</h4></label>
+        <input type="time" id="event_start_time_field" name="start_time_field" value="" data-placeholder="required" autocomplete="off"/>
+        <label for="event_end_time_field"><h4>End Time</h4></label>
+        <input type="time" id="event_end_time_field" name="end_time_field" value="" data-placeholder="required" autocomplete="off"/>
+    </div>
+    <div style="margin: 10px 0 10px 0;"></div>
+    <div class="event_timing_wrapper" style="display: block;">
+        <label for="event_timing"><h4>User Timing</h4></label>
+        <input id="event_timing" name="event_timing" type="range" step="1" min="0" max="45" value="0"></input>
+        <output>On Time</output>
+        <div style="margin: 10px 0 10px 0;"></div>
+    </div>
+    <button type="submit" id="add_location_button"><h4>Submit</h4></button>
+    <div class="error_wrapper"></div>
+  </form>
+</div>
