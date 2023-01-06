@@ -71,9 +71,12 @@
           <li class="sidebar_subtitle"><h3>Events</h3></li>
           <li onclick="toggleMainSection(this.id,'events_summary_section')" class="sidebar_button" id="events_summary_button"><h4>Summary</h4></li>
           <?php @include('../php/sidebar/staff/event_buttons.php')?>
-
           <li class="sidebar_subtitle"><h3>Account</h3></li>
           <li id="change_password_button" onclick="triggerPopup('staffpassword')" class="sidebar_button" id="customise_button"><h4>Password</h4></li>
+          <a class="github_wrapper" href="https://github.com/lwholten" target="_blank">
+            <img src="../../images/svg/github.svg" alt="Github SVG">
+            <p>lwholten</p>
+          </a>
         </ul>
       </container>
     </div>
@@ -186,8 +189,4 @@
       <container id="event_sections"></container>
     </div>
   </div>
-  <a class="github_wrapper">
-    <img src="../../images/svg/github.svg" alt="Github SVG">
-    <p>lwholten</p>
-  </a>
 </body>

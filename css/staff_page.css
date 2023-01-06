@@ -1314,7 +1314,8 @@ spacer {
 
 a.github_wrapper {
   bottom: 16px;
-  left: 64px;
+  left: 20px;
+
 }
 
 @media screen and (max-width: 1400px), (max-height: 800px) {
