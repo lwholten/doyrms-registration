@@ -15,6 +15,7 @@ popupHTMLPaths = {
   markaway : '../../pages/html/popups/staff/mark_user_away.html',
   markpresent : '../../pages/html/popups/staff/mark_user_present.html',
   staffpassword : '../../pages/html/popups/staff/change_staff_password.html',
+  changepasswordprompt: '../../pages/html/popups/staff/change_password_prompt.html',
 
   // Admin
   addstaff : '../../pages/html/popups/admin/add_staff.html',
@@ -36,6 +37,8 @@ formActionPaths = {
   mark_user_away_form : '../../pages/php/forms/staff/mark_user_away.php',
   mark_user_present_form : '../../pages/php/forms/staff/mark_user_present.php',
   change_staff_password_form : '../../pages/php/forms/staff/change_staff_password.php',
+  // The only difference between the change password prompt and the regular change password is the HTML form
+  change_password_prompt_form: '../../pages/php/forms/staff/change_staff_password.php',
 
   // Admin
   add_staff_form : '../../pages/php/forms/admin/add_staff.php',
@@ -375,9 +378,9 @@ function triggerPopup(type) {
 
 // Main
 $(document).ready(function () {
-  // Hide the overlay popup if the escape key is pressed
+  // Hide the overlay popup if the escape key is pressed (only executes if the change password prompt is set to false)
   $(document).on('keydown', function(e) {
-    if(e.key == "Escape" && popupActive) {
+    if(e.key == "Escape" && popupActive && !(getCookie('dreg_changePasswordPrompt') == 1)) {
       // Hide the current overlay
       removePopup();
     }
@@ -390,4 +393,9 @@ $(document).ready(function () {
       triggerPopup($(this).data('trigger-type'));
     }
   });
+});
+
+$(window).on('load', function () {
+  // If the cookie used to determine whether a password change is required is set to true, trigger the 'change password' prompt
+  if (getCookie('dreg_changePasswordPrompt') == 1) {triggerPopup('changepasswordprompt');} 
 });

@@ -33,9 +33,21 @@ if (verify($newPassword)) {
         customError(403, $passwordDetails[1]);
     }
     else {
+
+        // Updates the password 
         updateStaffPassword($staffID, $newPassword);
         echo json_encode('Password updated successfully');
+
+        // If the cookie used to determine whether the password prompt should appear is set to true (1)
+        if ($_COOKIE['dreg_changePasswordPrompt'] == 1) {
+            // Resets the cookie
+            setcookie('dreg_changePasswordPrompt', 0, time() + (86400 * 30), "/");
+            // Refreshes the page
+            header("Refresh:0");
+        }
+
         exit();
+
     }
 
 }

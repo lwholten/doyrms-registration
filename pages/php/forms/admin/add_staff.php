@@ -111,8 +111,7 @@ if (verify($_POST['password_field'])) {
 
 }
 else {
-    customError(403, 'The password entered is invalid');
-    exit();
+    $password = $ini['password_default'];
 }
 
 // Finally, adds the staff user to the system

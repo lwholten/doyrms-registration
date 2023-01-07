@@ -72,6 +72,14 @@ if (checkStaffPassword($username, NULL, $_POST['staff_password'])) {
     setcookie('dreg_staffUsername', $username, time() + (86400 * 30), "/"); // 86400 = 1 day
     setcookie('dreg_staffID', $staffDetails['staffID'], time() + (86400 * 30), "/"); // 86400 = 1 day
 
+    // If the staffs password requires changing  (because it matches the password default)
+    if ($_POST['staff_password'] == $ini['password_default']) {
+        setcookie('dreg_changePasswordPrompt', 1, time() + (86400 * 30), "/");
+    }
+    else {
+        setcookie('dreg_changePasswordPrompt', 0, time() + (86400 * 30), "/");
+    }
+
     // Starts a session and stores that the staff user has logged in as well as their access level (users should NOT see this data)
     session_start();
     $_SESSION['loggedIn'] = 1;

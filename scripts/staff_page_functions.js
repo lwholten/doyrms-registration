@@ -70,3 +70,13 @@ function triggerButton(button_id) {
     console.warn('Could not trigger button as the button ID provided is invalid');
   }
 }
+
+// Used to get a document cookie
+function getCookie(cookieName) {
+  var cookie = {};
+  document.cookie.split(';').forEach(function(el) {
+      var [key,value] = el.split('=');
+      cookie[key.trim()] = value;
+  })
+  return cookie[cookieName];
+}
