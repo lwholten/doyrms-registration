@@ -54,7 +54,7 @@ $(document).ready(function(){
   // Contained code is executed after every time interval
   function timeout() {
     updateBackground();
-    setTimeout(timeout, 5000);
+    setTimeout(timeout, 60000);
   }
 
   // Executes once the document is loaded, then repeats at regular intervals

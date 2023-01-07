@@ -17,6 +17,27 @@ function searchActions($term) {
     ["mark user present", "#present_user_button"],
     ["change password", "#change_password_button"]
   ];
+  // Array of all applicable admin actions
+  $adminActionIndex = [
+    ["add staff", "#add_staff_button"],
+    ["remove staff", "#remove_staff_button"],
+    ["add user", "#add_user_button"],
+    ["remove user", "#remove_user_button"],
+    ["add location", "#add_location_button"],
+    ["remove location", "#remove_location_button"],
+    ["add event", "#add_event_button"],
+    ["remove event", "#remove_event_button"]
+  ];
+
+  // If the user is an administrator, append the administrator action indexes
+  // This provides administrators with additional search results
+  session_start();
+  if ($_SESSION["staffAccessLevel"] >= 3) {
+    foreach ($adminActionIndex as $index) {
+      $actionIndex[] = $index;
+    }
+  }
+
   // A string is used to contain all 'suggestion' list elements
   $suggestions = "";
   // For each menu item, check whether the search term is similar

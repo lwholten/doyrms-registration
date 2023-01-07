@@ -60,7 +60,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
     // Event
     "<td>".ucwords($record[0])."</td>",
     // Location
-    "<td>".ucwords($record[1])."</td>",
+    "<td>".formatColumn(ucwords($record[1]), ucwords($ini['pref_in_location']))."</td>",
     // Nature
     "<td>".$record[2]."</td>",
     // Days

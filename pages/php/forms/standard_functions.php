@@ -91,7 +91,7 @@ function fetchEventID($event, $nature, $errorType='staff') {
   $con->close();
 
   if (is_null($result)) {
-    customError(422, 'The event provided is invalid and could not be found');
+    customError(422, 'The event provided could not be found');
     exit();
   }
   else {
@@ -104,7 +104,7 @@ function fetchLocationID($location, $errorType='staff') {
 
   // Associative array containing the error messages for this function
   $errorTypes = [
-    "staff" => "The location provided is invalid and could not be found",
+    "staff" => "The location provided could not be found",
     "user" => "Please make sure the location you entered is valid"
   ];
 
@@ -122,7 +122,7 @@ function fetchLocationID($location, $errorType='staff') {
   // Disconnects from the database
   $con->close();
 
-  if (is_null($result)) {
+  if (is_null($result) && $errorType != 'none') {
     customError(422, $errorTypes[$errorType]);
     exit();
   }
@@ -427,6 +427,68 @@ function staffUserExists($username) {
     exit();
   }
 }
+// Used to check whether a location exists
+function locationExists($location) {
+  global $ini;
+
+  // Used to check whether a the user is away (1) or not (0)
+  $query = "SELECT (CASE WHEN EXISTS (SELECT * FROM Locations WHERE Locations.LocationName=?) THEN 1 ELSE 0 END) AS locationExists";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $location);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Returns false if the location exists
+  if ($result === 0 || $result === "0") {
+    return false;
+  }
+  // Returns true if the location does not exist
+  elseif ($result === 1 || $result === "1") {
+    return true;
+  }
+  else {
+    customError(500, 'A server error has occured while checking whether the location already exists');
+    exit();
+  }
+}
+// Used to check whether an event exists
+function eventExists($event) {
+  global $ini;
+
+  // Used to check whether a the user is away (1) or not (0)
+  $query = "SELECT (CASE WHEN EXISTS (SELECT * FROM Events WHERE Events.Event=?) THEN 1 ELSE 0 END) AS eventExists";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $event);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Returns false if the event exists
+  if ($result === 0 || $result === "0") {
+    return false;
+  }
+  // Returns true if the event does not exist
+  elseif ($result === 1 || $result === "1") {
+    return true;
+  }
+  else {
+    customError(500, 'A server error has occured while checking whether the event already exists');
+    exit();
+  }
+}
 // Used to check whether an event matches a location
 function eventMatchesLocation($eventID, $locationID) {
   global $ini;
@@ -610,5 +672,14 @@ function meetsNameComplexityRequirements($name) {
   
   // If all checks have been passed successfully
   else { return [true, NULL]; }
+}
+function containsSymbols($string) {
+  if (preg_match_all('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $string) != 0) { return true; }
+  else { return false; }
+}
+function containsNumbers($string) {
+  if (preg_match_all('/[0-9]/', $string) != 0) { return true; }
+  else { return false; }
+
 }
 ?>

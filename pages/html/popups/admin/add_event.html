@@ -11,24 +11,26 @@
   <divider></divider>
   <form id="add_event_form">
     <label for="event_name_field"><h4>Event Name</h4></label>
-    <input type="text" class="capitalize" id="event_name_field" name="event_name_field" placeholder="Required" value="" autocomplete="off"/>
-    <div style="margin: 10px 0 10px 0;"></div>
-    <label for="location_field"><h4>Location</h4></label>
-    <div class="search_wrapper">
-        <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
-        <ul class="suggested_inputs capitalize"></ul>
-    </div>
+    <input type="text" class="capitalize" id="event_name_field" name="event_field" placeholder="Required" value="" autocomplete="off"/>
     <div style="margin: 10px 0 10px 0;"></div>
     <label><h4>Event Trigger</h4></label>
     <div class="radio_wrapper">
-        <container>
-          <input type="radio" name="event_nature" value="in" checked="checked"></input>
-          <label>Sign In</label>
-        </container>
       <container>
-        <input required type="radio" name="event_nature" value="out"></input>
+        <input required type="radio" name="event_trigger" id="event_out_trigger" value="out" checked="checked"></input>
         <label>Sign Out</label>
       </container>
+      <container>
+        <input type="radio" name="event_trigger" id="event_in_trigger" value="in"></input>
+        <label>Sign In</label>
+      </container>
+    </div>
+    <div class="event_location_wrapper">
+      <div style="margin: 10px 0 10px 0;"></div>
+      <label for="location_field"><h4>Location</h4></label>
+      <div class="search_wrapper">
+          <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
+          <ul class="suggested_inputs capitalize"></ul>
+      </div>
     </div>
     <div style="margin: 10px 0 10px 0;"></div>
     <label for="event_days_wrapper">Days</label>
@@ -57,8 +59,8 @@
     </div>
     <div style="margin: 10px 0 10px 0;"></div>
     <div class="event_timing_wrapper" style="display: block;">
-        <label for="event_timing"><h4>User Timing</h4></label>
-        <input id="event_timing" name="event_timing" type="range" step="1" min="0" max="45" value="0"></input>
+        <label for="new_event_timing"><h4>User Timing</h4></label>
+        <input id="new_event_timing" name="new_event_timing" type="range" step="1" min="0" max="45" value="0"></input>
         <output>On Time</output>
         <div style="margin: 10px 0 10px 0;"></div>
     </div>
