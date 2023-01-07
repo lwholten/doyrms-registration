@@ -49,7 +49,7 @@ function fetchUserID($name, $errorType='staff') {
   // Disconnects from the database
   $con->close();
 
-  if (is_null($result)) {
+  if (is_null($result) && $errorType != 'none') {
     customError(422, $errorTypes[$errorType]);
     exit();
   }
@@ -365,6 +365,68 @@ function userAway($userID) {
     exit();
   }
 }
+// Used to chech whether a user exists
+function userExists($fname, $lname) {
+  global $ini;
+
+  // Used to check whether a the user is away (1) or not (0)
+  $query = "SELECT (CASE WHEN EXISTS (SELECT * FROM Users WHERE Users.Forename=? AND Users.Surname=?) THEN 1 ELSE 0 END) AS userExists";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("ss", $fname, $lname);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Returns false if the staff user exists
+  if ($result === 0 || $result === "0") {
+    return false;
+  }
+  // Returns true if the staff user does not exist
+  elseif ($result === 1 || $result === "1") {
+    return true;
+  }
+  else {
+    customError(500, 'A server error has occured while checking whether the user already exists');
+    exit();
+  }
+} 
+// Used to check whether a staff user exists
+function staffUserExists($username) {
+  global $ini;
+
+  // Used to check whether a the user is away (1) or not (0)
+  $query = "SELECT (CASE WHEN EXISTS (SELECT * FROM Staff WHERE Staff.Username=?) THEN 1 ELSE 0 END) AS staffUserExists";
+  // Connects to the database
+  $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+  // Prepares and executes the statement
+  $stmt = $con->prepare($query);
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  // Binds the result to a variable
+  $stmt->bind_result($result);
+  $stmt->fetch();
+  // Disconnects from the database
+  $con->close();
+
+  // Returns false if the staff user exists
+  if ($result === 0 || $result === "0") {
+    return false;
+  }
+  // Returns true if the staff user does not exist
+  elseif ($result === 1 || $result === "1") {
+    return true;
+  }
+  else {
+    customError(500, 'A server error has occured while checking whether the staff user already exists');
+    exit();
+  }
+}
 // Used to check whether an event matches a location
 function eventMatchesLocation($eventID, $locationID) {
   global $ini;
@@ -445,5 +507,108 @@ function updateStaffPassword($staffID, $newPassword) {
   $stmt->execute();
   // Disconnects from the database
   $con->close();
+}
+// Checks whether the password meets the password complexity requirements set in 'app.ini'
+function meetsPasswordComplexityRequirements($password) {
+  global $ini;
+
+  // If the minimum password length is set
+  // Compare the password length to the minimum password length and return an error if its too short
+  if (!($ini['password_min_length'] === 'none') && (strlen($password) < $ini['password_min_length'])) {
+       return [false, 'Passwords must be at least '.$ini['password_min_length'].' character'.(($ini['password_min_length'] > 1) ? 's' : '').' long']; } // The inline IF statement appends an S for plurals
+
+  // If the maximum password length is set
+  // Compare the password length to the maxmimum password length and return an error if its too long
+  elseif (!($ini['password_max_length'] === 'none') && (strlen($password) > $ini['password_max_length'])) { 
+      return [false, 'Passwords can be a maximum of '.$ini['password_max_length'].' character'.(($ini['password_max_length'] > 1) ? 's' : '').' long']; }
+
+  // If the minimum capital letter count is set
+  // Compare the number of capital letters in the new password to the minimum allowed and return an error if there is not enough
+  elseif (!($ini['password_min_capitals'] === 'none') && ($ini['password_min_capitals'] > preg_match_all('/[A-Z]/', $password))) {
+       return [false, 'Passwords must have at least '.$ini['password_min_capitals'].' capital letter'.(($ini['password_min_capitals'] > 1) ? 's' : '')]; }
+  
+  // If the maximum capital letter count is set
+  // Compare the number of capital letters in the new password to the maximum allowed and return an error if there are too many
+  elseif (!($ini['password_max_capitals'] === 'none') && ($ini['password_max_capitals'] < preg_match_all('/[A-Z]/', $password))) {
+       return [false, 'Passwords may have no more than '.$ini['password_max_capitals'].' capital letter'.(($ini['password_max_capitals'] > 1) ? 's' : '')]; }
+
+  // If the minimum number count is set
+  // Compare the number of numbers in the new password to the minimum allowed and return an error if there is not enough
+  elseif (!($ini['password_min_numbers'] === 'none') && ($ini['password_min_numbers'] > preg_match_all('/[0-9]/', $password))) { 
+      return [false, 'Passwords must have at least '.$ini['password_min_numbers'].' number'.(($ini['password_min_numbers'] > 1) ? 's' : '')]; }
+  
+  // If the maximum number count is set
+  // Compare the number of numbers in the new password to the maximum allowed and return an error if there are too many
+  elseif (!($ini['password_max_numbers'] === 'none') && ($ini['password_max_numbers'] < preg_match_all('/[0-9]/', $password))) { 
+      return [false, 'Passwords may have no more than '.$ini['password_max_numbers'].' number'.(($ini['password_max_numbers'] > 1) ? 's' : '')]; }
+
+
+  // If the minimum special character count is set
+  // Compare the number of special characters in the new password to the minimum allowed and return an error if there is not enough
+  elseif (!($ini['password_min_symbols'] === 'none') && ($ini['password_min_symbols'] > preg_match_all('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $password))) { 
+      return [false, 'Passwords must have at least '.$ini['password_min_symbols'].' special character'.(($ini['password_min_symbols'] > 1) ? 's' : '')]; }
+  
+  // If the maximum special character count is set
+  // Compare the number of special characters in the new password to the maximum allowed and return an error if there are too many
+  elseif (!($ini['password_max_symbols'] === 'none') && ($ini['password_max_symbols'] < preg_match_all('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $password))) { 
+      return [false, 'Passwords may have no more than '.$ini['password_max_symbols'].' special character'.(($ini['password_max_symbols'] > 1) ? 's' : '')]; }
+
+  // If all checks have been passed successfully
+  else { return [true, NULL]; }
+
+}
+// Checks whether a username meets the username requirements
+function meetsUsernameComplexityRequirements($username) {
+  global $ini;
+
+  // If the minimum username length is set
+  // Compare the username length to the minimum username length and return an error if its too short
+  if (!($ini['username_min_length'] === 'none') && (strlen($username) < $ini['username_min_length'])) {
+       return [false, 'Usernames must be at least '.$ini['username_min_length'].' character'.(($ini['username_min_length'] > 1) ? 's' : '').' long']; } // The inline IF statement appends an S for plurals
+
+  // If the maximum username length is set
+  // Compare the username length to the maxmimum username length and return an error if its too long
+  elseif (!($ini['username_max_length'] === 'none') && (strlen($username) > $ini['username_max_length'])) { 
+      return [false, 'Usernames can be a maximum of '.$ini['username_max_length'].' character'.(($ini['username_max_length'] > 1) ? 's' : '').' long']; }
+
+  // If the username may not contain capital letters
+  // If it contains capital letters, return an error
+  elseif (!($ini['username_accepts_capitals'] === 'yes') && (preg_match_all('/[A-Z]/', $username) != 0)) {
+       return [false, 'Usernames may not contain capital letters']; }
+
+  // If the username may not contain numbers
+  // If it contains numbers, return an error
+  elseif (!($ini['username_accepts_numbers'] === 'yes') && (preg_match_all('/[0-9]/', $username) != 0)) {
+    return [false, 'Usernames may not contain numbers']; }
+
+  // If the username may not contain symbols
+  // If it contains symbols, return an error
+  elseif (!($ini['username_accepts_symbols'] === 'yes') && (preg_match_all('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $username) != 0)) {
+    return [false, 'Usernames may not contain symbols']; }
+  
+  // If all checks have been passed successfully
+  else { return [true, NULL]; }
+}
+// Checks whether a name meets the name requirements
+function meetsNameComplexityRequirements($name) {
+  global $ini;
+
+  // If the minimum name length is set
+  // Compare the name length to the minimum name length and return an error if its too short
+  if (!($ini['name_min_length'] === 'none') && (strlen($name) < $ini['name_min_length'])) {
+       return [false, 'Names must be at least '.$ini['name_min_length'].' character'.(($ini['name_min_length'] > 1) ? 's' : '').' long']; } // The inline IF statement appends an S for plurals
+
+  // If the maximum name length is set
+  // Compare the name length to the maxmimum name length and return an error if its too long
+  elseif (!($ini['name_max_length'] === 'none') && (strlen($name) > $ini['name_max_length'])) { 
+      return [false, 'Names can be a maximum of '.$ini['name_max_length'].' character'.(($ini['name_max_length'] > 1) ? 's' : '').' long']; }
+
+  // If the name may not contain numbers
+  // If it contains numbers, return an error
+  elseif (!($ini['name_accepts_numbers'] === 'yes') && (preg_match_all('/[0-9]/', $name) != 0)) {
+    return [false, 'Names may not contain numbers']; }
+  
+  // If all checks have been passed successfully
+  else { return [true, NULL]; }
 }
 ?>

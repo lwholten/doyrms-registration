@@ -2,7 +2,7 @@
 // This file contains the code that is executed when a request is sent to the server to mark a user as away
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
-require 'standard_functions.php';
+require '../standard_functions.php';
 
 // Functions
 // Used to restrict a user

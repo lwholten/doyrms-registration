@@ -2,7 +2,7 @@
 // This file contains the code that is executed when a user sign out request is submitted to the server
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
-require 'standard_functions.php';
+require '../standard_functions.php';
 
 // Functions
 // Used if the sign out was executed by a member of staff, not a user (self signout)

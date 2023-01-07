@@ -1,16 +1,16 @@
 <?php
-// This file contains the code that is executed when a request is sent to the server to mark a user as present
+// This file contains the code that is executed when a request is sent to the server to unrestrict a user
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
-require 'standard_functions.php';
+require '../standard_functions.php';
 
 // Functions
 // Used to unrestrict a user
-function markUserPresent($userID) {
+function unrestrictUser($userID) {
   global $ini;
 
-  // Query used to mark the user as present (remove them from the 'away' table)
-  $query = "DELETE FROM AwayUsers WHERE UserID=?";
+  // Query used to unrestrict the user
+  $query = "DELETE FROM RestrictedUsers WHERE UserID=?";
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the insert statement
@@ -29,15 +29,15 @@ function markUserPresent($userID) {
 $userID = fetchUserID($_POST['name_field']);
 
 // Main
-// If the user is marked down as away, mark them down as present
-if (userAway($userID)) {
-  if (markUserPresent($userID)) {
-    echo json_encode('The user has been marked down as present successfully');
+// If the user is restricted, unrestrict them
+if (userRestricted($userID)) {
+  if (unrestrictUser($userID)) {
+    echo json_encode('The user has been unrestricted successfully');
     exit();
   }
 }
 else {
-  customError(409, 'This user is not marked down as being away, they are present');
+  customError(409, 'This user is not restricted');
   exit();
 }
 ?>

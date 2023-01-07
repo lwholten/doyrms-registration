@@ -29,23 +29,23 @@ popupHTMLPaths = {
 // An object used to contain the form IDs and their file path for each popup forms action file
 formActionPaths = {
   // Staff
-  sign_user_in_form : '../../pages/php/forms/sign_user_in.php',
-  sign_user_out_form : '../../pages/php/forms/sign_user_out.php',
-  restrict_user_form : '../../pages/php/forms/restrict_user.php',
-  unrestrict_user_form : '../../pages/php/forms/unrestrict_user.php',
-  mark_user_away_form : '../../pages/php/forms/mark_user_away.php',
-  mark_user_present_form : '../../pages/php/forms/mark_user_present.php',
-  change_staff_password_form : '../../pages/php/forms/change_staff_password.php',
+  sign_user_in_form : '../../pages/php/forms/staff/sign_user_in.php',
+  sign_user_out_form : '../../pages/php/forms/staff/sign_user_out.php',
+  restrict_user_form : '../../pages/php/forms/staff/restrict_user.php',
+  unrestrict_user_form : '../../pages/php/forms/staff/unrestrict_user.php',
+  mark_user_away_form : '../../pages/php/forms/staff/mark_user_away.php',
+  mark_user_present_form : '../../pages/php/forms/staff/mark_user_present.php',
+  change_staff_password_form : '../../pages/php/forms/staff/change_staff_password.php',
 
   // Admin
-  add_staff_form : '../../pages/php/forms/add_staff.php',
-  remove_staff_form : '../../pages/php/forms/remove_staff.php',
-  add_user_form : '../../pages/php/forms/add_user.php',
-  remove_user_form : '../../pages/php/forms/remove_user.php',
-  add_location_form : '../../pages/php/forms/add_location.php',
-  remove_location_form : '../../pages/php/forms/remove_location.php',
-  add_event_form : '../../pages/php/forms/add_event.php',
-  remove_event_form : '../../pages/php/forms/remove_event.php',
+  add_staff_form : '../../pages/php/forms/admin/add_staff.php',
+  remove_staff_form : '../../pages/php/forms/admin/remove_staff.php',
+  add_user_form : '../../pages/php/forms/admin/add_user.php',
+  remove_user_form : '../../pages/php/forms/admin/remove_user.php',
+  add_location_form : '../../pages/php/forms/admin/add_location.php',
+  remove_location_form : '../../pages/php/forms/admin/remove_location.php',
+  add_event_form : '../../pages/php/forms/admin/add_event.php',
+  remove_event_form : '../../pages/php/forms/admin/remove_event.php',
 }
 
 // Functions
@@ -329,9 +329,9 @@ function addEventListeners() {
   // Object to contain the data associated with the locations field and its autocompleted suggestions
   fieldTypes['locations'] = {fieldID:'#location_field', ajaxPath:'autocomplete/fetch_locations.php', nature:null},
   // Object to contain the data associated with the user name field and its autocompleted suggestions
-  fieldTypes['users'] = {fieldID:'#user_name_field', ajaxPath:'autocomplete/fetch_users.php', nature:null}
+  fieldTypes['users'] = {fieldID:'#name_field', ajaxPath:'autocomplete/fetch_users.php', nature:null}
   // Object to contain the data associated with the user events field and its autocompleted suggestions
-  fieldTypes['events'] = {fieldID:'#user_event_field', ajaxPath:'autocomplete/fetch_events.php', nature:null}
+  fieldTypes['events'] = {fieldID:'#event_field', ajaxPath:'autocomplete/fetch_events.php', nature:null}
   // Object to contain the data associated with the staff username field and its autocompleted suggestions
   fieldTypes['staff'] = {fieldID:'#staff_username_field', ajaxPath:'autocomplete/fetch_staff.php', nature:null}
 

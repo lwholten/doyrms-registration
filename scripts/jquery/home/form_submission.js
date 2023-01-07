@@ -3,8 +3,8 @@
 // Variables
 // An object used to contain the IDs of forms and their action paths
 formActionPaths = {
-    '#user_self_sign_out_form' : '../../pages/php/forms/sign_user_out.php',
-    '#user_self_sign_in_form' : '../../pages/php/forms/sign_user_in.php'
+    '#user_self_sign_out_form' : '../../pages/php/forms/staff/sign_user_out.php',
+    '#user_self_sign_in_form' : '../../pages/php/forms/staff/sign_user_in.php'
 }
 
 // Main

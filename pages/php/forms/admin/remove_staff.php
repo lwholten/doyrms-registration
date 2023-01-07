@@ -1,21 +1,21 @@
 <?php
-// This file contains the code that is executed when a request is sent to the server to unrestrict a user
+// This file contains the code that is executed when a request is sent to the server to remove a staff user
 // Config
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
-require 'standard_functions.php';
+require '../standard_functions.php';
 
 // Functions
 // Used to unrestrict a user
-function unrestrictUser($userID) {
+function deleteStaffUser($username) {
   global $ini;
 
   // Query used to unrestrict the user
-  $query = "DELETE FROM RestrictedUsers WHERE UserID=?";
+  $query = "DELETE FROM Staff WHERE Username=?";
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
   // Prepares and executes the insert statement
   $stmt = $con->prepare($query);
-  $stmt->bind_param("i", $userID);
+  $stmt->bind_param("s", $username);
   $stmt->execute();
   // Disconnects from the database
   $con->close();
@@ -25,19 +25,19 @@ function unrestrictUser($userID) {
 }
 
 // Variables
-// The userID
-$userID = fetchUserID($_POST['name_field']);
+// The staff username
+$username = $_POST['username_field'];
 
 // Main
-// If the user is restricted, unrestrict them
-if (userRestricted($userID)) {
-  if (unrestrictUser($userID)) {
-    echo json_encode('The user has been unrestricted successfully');
+// If the staff user exists, delete their account
+if (staffUserExists($username)) {
+  if (deleteStaffUser($username)) {
+    echo json_encode('The staff user has been deleted successfully');
     exit();
   }
 }
 else {
-  customError(409, 'This user is not restricted');
+  customError(409, 'This staff user does not exist');
   exit();
 }
 ?>

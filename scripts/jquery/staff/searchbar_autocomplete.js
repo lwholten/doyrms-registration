@@ -9,7 +9,7 @@ function hideSuggestions() {
 }
 // When the user clicks on a suggested user name
 function selectInitials(val) {
-	$("#user_name_field").val(val.substr(5));
+	$("#name_field").val(val.substr(5));
 }
 
 // Main
