@@ -176,10 +176,7 @@ function executeUserSignOut($setFields) {
 
   // EventID and MinutesLate declaration
   // Uses the locationID and current time to determine whether the user is signing out for an event
-  $eventDetails = fetchCurrentEventID($locationID, 'out');
-  // If they are not signing out for an event, these values are NULL
-  $eventID = $eventDetails[0];
-  $minutesLate = $eventDetails[1];
+  $events = fetchCurrentEvents($locationID, 'out');
 
   // There is no staff message
   $staffMessage = NULL;
@@ -193,10 +190,10 @@ function executeUserSignOut($setFields) {
   // If the user is not away, sign them out
   if (!userAway($userID)) {
     // Finally, sign the user out using the previously declared variables
-    if (signOutUser($userID, $locationID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive)) {
-      echo json_encode('You have been signed out successfully!');
-      exit();
-    }
+    // For every event the user is attending, sign the user out to that event
+    foreach ($events as $event) { signOutUser($userID, $locationID, $event[0], $event[1], $staffAction, $staffMessage, $updateLastActive); }
+    echo json_encode('You have been signed out successfully!');
+    exit();
   }
   // If the user is marked down as away, return an error
   else {

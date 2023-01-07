@@ -151,7 +151,7 @@ function fetchCurrentLocationID($userID) {
   return $result;
 }
 // Used to fetch the current times event ID
-function fetchCurrentEventID($locationID, $eventNature) {
+function fetchCurrentEvents($locationID, $eventNature) {
   global $ini;
   // This function uses a locationID to determine a current event at the time of executing
   // If there is an event at this time, it will return the EventID and how late/early the current time is realtive to the event
@@ -163,21 +163,25 @@ function fetchCurrentEventID($locationID, $eventNature) {
 
   // SQL
   // Determines an appropraite query depending on the events nature
-  if ($eventNature = 'in') {
-    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=1 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
+  if ($eventNature == 'in') {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=1 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC";
   }
-  elseif ($eventNature = 'out') {
-    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=0 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
+  elseif ($eventNature == 'out') {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=0 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC";
   }
   else {
     $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
   }
 
   // Gets the current day and saves it in string format
-  $day = substr("MTWRFUS", date('w')-1, date('w')-2);
+  $day = "SMTWRFU"[date("N", strtotime(date('l')))];
 
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
+
+  // An array to store each event the user may be attending (since there may be more than one)
+  // It stores these in a two-dimensional array, with [eventID, minutesLate] being pushed into this one
+  $events = [];
 
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
@@ -186,6 +190,7 @@ function fetchCurrentEventID($locationID, $eventNature) {
 
   // Fetches the results
   $result = $stmt->get_result();
+  // Iterates through every result, then appends each event the user has attended to a two-dimensional array
   while ($row = $result->fetch_array(MYSQLI_NUM)) {
 
     // If the deviation is NULL or empty, set the deviation to 0 minutes
@@ -207,35 +212,34 @@ function fetchCurrentEventID($locationID, $eventNature) {
     if ($currentTime >= $earlyTime && $currentTime <= $startTime) {
       // Calculates how early the user is (early values are stored as negative integers)
       $minutesLate = -1*intval(date('i', (strtotime($startTime) - strtotime($currentTime))));
-      // Saves the results to an array
-      $data = [$row[3], $minutesLate];
+      // Saves the users data for this event to an array and pushes it to the list of attended events
+      array_push($events, [$row[0], $minutesLate]);
+      continue;
     }
-    // If the user is on time for the event
+    // If the user is on time for the event and breaks out of the while loop
     else if ($currentTime >= $startTime && $currentTime <= $endTime) {
       // The user is on time, so the minutesLate variable is set to 0
       $minutesLate = 0;
-      // Saves the results to an array
-      $data = [$row[3], $minutesLate];
+      // Saves the users data for this event to an array and pushes it to the list of attended events
+      array_push($events, [$row[0], $minutesLate]);
+      continue;
     }
     // If the user is late for the event
     else if ($currentTime >= $endTime && $currentTime <= $lateTime) {
       // Calculates how late the user is (late values are stored as a positive integer)
-      $minutesLate = intval(date('i', (strtotime($LateTime) - strtotime($currentTime))));
-      // Saves the results to an array
-      $data = [$row[3], $minutesLate];
-    }
-    else {
-      // If no event is found to meet the requirements, or the user is too early or too late (out of the specified deviation value), it returns NULL
-      $data = [NULL, NULL];
+      $minutesLate = intval(date('i', (strtotime($currentTime) - strtotime($endTime))));
+      // Saves the users data for this event to an array and pushes it to the list of attended events
+      array_push($events, [$row[0], $minutesLate]);
+      continue;
     }
 
-    // Breaks out of the while loop since only one set of data is required (this is also specified in the query with 'LIMIT 1')
-    break;
   }
   // Disconnects from the database
   $con->close();
-  // Returns the EventID and MinutesLate as NULL since no event was triggered
-  return $data;
+
+  // Returns an array containing all events the user has attended with this signout,
+  // The array is two-dimensionsl containing each 'event' in the format [eventID, minutesLate]
+  return $events;
 }
 function generateRandomSalt() {
   global $ini;

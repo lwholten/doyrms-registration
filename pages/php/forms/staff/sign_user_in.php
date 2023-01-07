@@ -110,7 +110,7 @@ function executeUserSignIn($setFields) {
 
   // EventID and MinutesLate declaration
   // Uses the current time and LocationID=NULL (because the user is signing in) to determine whether the user is signing in for an event
-  $eventDetails = fetchCurrentEventID(NULL, 'in');
+  $eventDetails = fetchCurrentEvents(NULL, 'in');
   // If they are not signing in for an event, these values are NULL
   $eventID = $eventDetails[0];
   $minutesLate = $eventDetails[1];
@@ -126,10 +126,11 @@ function executeUserSignIn($setFields) {
   $staffMessage = NULL;
 
   // Finally, sign the user in using the previously declared variables
-  if (signInUser($userID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive)) {
-    echo json_encode('You have been signed in successfully!');
-    exit();
-  }
+  // For every event the user is attending, sign the user in for that event
+  foreach ($events as $event) {signInUser($userID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive); }
+  echo json_encode('You have been signed in successfully!');
+  exit();
+  
 
 };
 // Used to sign the user in
