@@ -8,7 +8,18 @@ require '../standard_functions.php';
 // Used if the sign out was executed by a member of staff, not a user (self signout)
 // This is so the sign out parameters are formatted using the information set by the staff user
 // The error messages are also designed with staff users in mind
-function executeStaffSignOut($setFields) {
+function executeStaffSignOut() {
+
+  // Associative array that stores which fields have been set (false by default)
+  $setFields = [
+    'name_field' => false,
+    'location_field' => false,
+    'event_field' => false,
+    'event_timing' => false,
+    'message_field' => false
+  ];
+  // For each field, determine if it has been set and set its corresponding value in the array to True
+  foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; } } 
 
   // Sign out nature declaration
   $staffAction = 1;
@@ -124,7 +135,7 @@ function executeStaffSignOut($setFields) {
   // If the user is not away, sign them out
   if (!userAway($userID)) {
     // Finally, sign the user out using the previously declared variables
-    if (signOutUser($userID, $locationID, $eventID, $minutesLate, $staffAction, $staffMessage, $lastActive)) {
+    if (signOutUser($userID, $locationID, $eventID, $minutesLate, $staffAction, $staffMessage, false)) {
       echo json_encode('The user has been signed out successfully');
       exit();
     }
@@ -139,7 +150,15 @@ function executeStaffSignOut($setFields) {
 // Used if the sign out was intiated by a user, not a member of staff
 // This is so the sign out parameters are formatted using the information set by the staff user
 // The error messages are also designed with staff users in mind
-function executeUserSignOut($setFields) {
+function executeUserSignOut() {
+
+  // Associative array that stores which fields have been set (false by default)
+  $setFields = [
+    'name_field' => false,
+    'location_field' => false,
+  ];
+  // For each field, determine if it has been set and set its corresponding value in the array to True
+  foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; } } 
 
   // Sign out nature declaration
   $staffAction = 0;
@@ -234,22 +253,10 @@ function signOutUser($userID, $locationID, $eventID, $minutesLate, $staffAction,
   return true;
 }
 
-// Main
-// Associative array that stores which fields have been set (false by default)
-$setFields = [
-  'name_field' => false,
-  'location_field' => false,
-  'event_field' => false,
-  'event_timing' => false,
-  'message_field' => false
-];
-// For each field, determine if it has been set and set its corresponding value in the array to True
-foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; } } 
-
 // Determines the nature of the sign out and runs the appropriate sign out function
 // If a staff user is signing out the user
-if ($_POST['staff_action'] == 1) { executeStaffSignOut($setFields); }
+if ($_POST['staff_action'] == 1) { executeStaffSignOut(); }
 // If the user is signing themselves out
-else { executeUserSignOut($setFields); }
+else { executeUserSignOut(); }
 
 ?>

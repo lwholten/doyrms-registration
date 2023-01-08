@@ -163,18 +163,18 @@ function fetchCurrentEvents($locationID, $eventNature) {
 
   // SQL
   // Determines an appropraite query depending on the events nature
-  if ($eventNature == 'in') {
-    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=1 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC";
-  }
-  elseif ($eventNature == 'out') {
+  if ($eventNature == 'out') {
     $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=0 AND LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC";
+  }
+  elseif ($eventNature == 'in') {
+    $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE SignInEvent=1 AND LocationID IS NULL AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC";
   }
   else {
     $query = "SELECT EventID, StartTime, EndTime, Deviation FROM Events WHERE LocationID=? AND Days LIKE CONCAT('%', ?, '%') ORDER BY StartTime ASC LIMIT 1";
   }
 
   // Gets the current day and saves it in string format
-  $day = "SMTWRFU"[date("N", strtotime(date('l')))];
+  $day = "MTWRFUS"[date("N", strtotime(date('l'))) -1];
 
   // Connects to the database
   $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
@@ -185,7 +185,12 @@ function fetchCurrentEvents($locationID, $eventNature) {
 
   // Prepares and executes the statement
   $stmt = $con->prepare($query);
-  $stmt->bind_param("is", $locationID, $day);
+  if ($eventNature == 'in') {
+    $stmt->bind_param("s", $day);
+  }
+  else {
+    $stmt->bind_param("is", $locationID, $day);    
+  }
   $stmt->execute();
 
   // Fetches the results
@@ -227,12 +232,17 @@ function fetchCurrentEvents($locationID, $eventNature) {
     // If the user is late for the event
     else if ($currentTime >= $endTime && $currentTime <= $lateTime) {
       // Calculates how late the user is (late values are stored as a positive integer)
-      $minutesLate = intval(date('i', (strtotime($currentTime) - strtotime($endTime))));
+      $minutesLate = intval(date('i', (strtotime($lateTime) - strtotime($currentTime))));
       // Saves the users data for this event to an array and pushes it to the list of attended events
       array_push($events, [$row[0], $minutesLate]);
       continue;
     }
 
+  }
+
+  // If there were no results (no events), return no events
+  if (!(mysqli_num_rows($result) > 0)) {
+    $events = [[NULL, NULL]];
   }
   // Disconnects from the database
   $con->close();

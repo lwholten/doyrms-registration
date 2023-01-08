@@ -8,7 +8,18 @@ require '../standard_functions.php';
 // Used if the sign in was executed by a member of staff, not a user (self signin)
 // This is so the sign in parameters are formatted using the information set by the staff user
 // The error messages are also designed with staff users in mind
-function executeStaffSignIn($setFields) {
+function executeStaffSignIn() {
+
+  // Main
+  // Associative array that stores which fields have been set (false by default)
+  $setFields = [
+    'name_field' => false,
+    'event_field' => false,
+    'event_timing' => false,
+    'message_field' => false
+  ];
+  // For each field, determine if it has been set and set the arrays corresponding value to true
+  foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; }} 
 
   // Sign in nature declaration
   $staffAction = 1;
@@ -90,7 +101,13 @@ function executeStaffSignIn($setFields) {
 // Used if the sign in was intiated by a user, not a member of staff
 // This is so the sign in parameters are formatted using the information set by the staff user
 // The error messages are also designed with staff users in mind
-function executeUserSignIn($setFields) {
+function executeUserSignIn() {
+
+  // Main
+  // Associative array that stores which fields have been set (false by default)
+  $setFields = [ 'name_field' => false, ];
+  // For each field, determine if it has been set and set the arrays corresponding value to true
+  foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; }} 
 
   // Sign in nature declaration
   $staffAction = 0;
@@ -110,10 +127,8 @@ function executeUserSignIn($setFields) {
 
   // EventID and MinutesLate declaration
   // Uses the current time and LocationID=NULL (because the user is signing in) to determine whether the user is signing in for an event
-  $eventDetails = fetchCurrentEvents(NULL, 'in');
-  // If they are not signing in for an event, these values are NULL
-  $eventID = $eventDetails[0];
-  $minutesLate = $eventDetails[1];
+  // Uses the locationID and current time to determine whether the user is signing in for an event
+  $events = fetchCurrentEvents(null, 'in');
 
   // Checks whether the user is already signed in
   // If there are no events, the user is not allowed to sign in
@@ -127,7 +142,7 @@ function executeUserSignIn($setFields) {
 
   // Finally, sign the user in using the previously declared variables
   // For every event the user is attending, sign the user in for that event
-  foreach ($events as $event) {signInUser($userID, $eventID, $minutesLate, $staffAction, $staffMessage, $updateLastActive); }
+  foreach ($events as $event) {signInUser($userID, $event[0], $event[1], $staffAction, $staffMessage, $updateLastActive); }
   echo json_encode('You have been signed in successfully!');
   exit();
   
@@ -165,21 +180,10 @@ function signInUser($userID, $eventID, $minutesLate, $staffAction, $staffMessage
   return true;
 }
 
-// Main
-// Associative array that stores which fields have been set (false by default)
-$setFields = [
-  'name_field' => false,
-  'event_field' => false,
-  'event_timing' => false,
-  'message_field' => false
-];
-// For each field, determine if it has been set and set the arrays corresponding value to true
-foreach($setFields as $key => $field) { if (verify($_POST[$key])) { $setFields[$key] = true; }} 
-
 // Determines the nature of the sign in and runs the appropriate sign in function
 // If a staff user is signing in the user
-if ($_POST['staff_action'] == 1) { executeStaffSignIn($setFields); }
+if ($_POST['staff_action'] == 1) { executeStaffSignIn(); }
 // If the user is signing themselves in
-else { executeUserSignIn($setFields); }
+else { executeUserSignIn(); }
 
 ?>
