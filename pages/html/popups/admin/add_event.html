@@ -11,7 +11,7 @@
   <divider></divider>
   <form id="add_event_form">
     <label for="event_name_field"><h4>Event Name</h4></label>
-    <input type="text" class="capitalize" id="event_name_field" name="event_field" placeholder="Required" value="" autocomplete="off"/>
+    <input type="text" class="capitalize" id="event_name_field" name="event_field" placeholder="Required" value="" autocomplete="off" aria-autocomplete="list"/>
     <div style="margin: 10px 0 10px 0;"></div>
     <label><h4>Event Trigger</h4></label>
     <div class="radio_wrapper">
@@ -28,7 +28,7 @@
       <div style="margin: 10px 0 10px 0;"></div>
       <label for="location_field"><h4>Location</h4></label>
       <div class="search_wrapper">
-          <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off"/>
+          <input type="text" class="capitalize" id="location_field" name="location_field" placeholder="Required" value="" autocomplete="off" aria-autocomplete="list"/>
           <ul class="suggested_inputs capitalize"></ul>
       </div>
     </div>
@@ -53,9 +53,9 @@
     <div style="margin: 10px 0 10px 0;"></div>
     <div class="double_input_wrapper">
         <label for="event_start_time_field"><h4>Start Time</h4></label>
-        <input type="time" id="event_start_time_field" name="start_time_field" value="" data-placeholder="required" autocomplete="off"/>
+        <input type="time" id="event_start_time_field" name="start_time_field" value="" data-placeholder="required" autocomplete="off" aria-autocomplete="list"/>
         <label for="event_end_time_field"><h4>End Time</h4></label>
-        <input type="time" id="event_end_time_field" name="end_time_field" value="" data-placeholder="required" autocomplete="off"/>
+        <input type="time" id="event_end_time_field" name="end_time_field" value="" data-placeholder="required" autocomplete="off" aria-autocomplete="list"/>
     </div>
     <div style="margin: 10px 0 10px 0;"></div>
     <div class="event_timing_wrapper" style="display: block;">

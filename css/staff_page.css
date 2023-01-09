@@ -1299,12 +1299,6 @@ spacer {
   max-width: 600px;
 }
 
-a.github_wrapper {
-  bottom: 16px;
-  left: 20px;
-
-}
-
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
     min-height: 80px;
