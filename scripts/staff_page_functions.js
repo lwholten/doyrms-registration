@@ -59,6 +59,16 @@ function displayUserDetails(user_id) {
       $("#search_user")[0].scrollIntoView({ behavior: "smooth", block: "start" });
     }
   });
+
+  $.ajax({
+      url: '../php/tables/staff/recent_activity.php',
+      type: 'POST',
+      dataType: 'json',
+      data: ({ajax: true, userid: user_id}),
+      success: function(response) {
+          $('#user_details_activity_table').html(response);
+      }
+  });
 }
 
 function triggerButton(button_id) {

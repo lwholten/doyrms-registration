@@ -1258,16 +1258,16 @@ spacer {
   text-align: right;
 }
 
-#recent_activity_table td:nth-of-type(1) {
+#recent_activity_table td:nth-of-type(1), #user_details_activity_table td:nth-of-type(1) {
   width: 74px;
 }
-#recent_activity_table td:nth-of-type(2) {
+#recent_activity_table td:nth-of-type(2), #user_details_activity_table td:nth-of-type(2) {
   width: 54px;
 }
-#recent_activity_table td:nth-of-type(3) {
+#recent_activity_table td:nth-of-type(3), #user_details_activity_table td:nth-of-type(3) {
   width:134px;
 }
-#recent_activity_table td:nth-of-type(7) {
+#recent_activity_table td:nth-of-type(7), #user_details_activity_table td:nth-of-type(7) {
   width: 100px;
 }
 

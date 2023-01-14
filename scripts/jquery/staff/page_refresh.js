@@ -15,6 +15,7 @@ $(document).ready(function () {
           url: '../php/tables/staff/recent_activity.php',
           type: 'POST',
           dataType: 'json',
+          data: ({ajax: true}),
           success: function(response) {
               $('#recent_activity_table').html(response);
           }
