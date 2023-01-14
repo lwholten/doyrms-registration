@@ -27,8 +27,10 @@ function backButton() {
 // Used to toggle between the staff login form and the sign in/out forms
 function toggleStaffLoginPreset() {
   
-  // Hides the selection preset and displays the staff login preset
-  $('#user_selection_preset').css('display', 'none');
+  // Hides all other presets and displays staff preset
+  $('.login_preset').each(function() {
+    $(this).css('display', 'none');
+  });
   $('#staff_login_preset').css('display', 'flex');
 
   // Displays the back button, hides the staff button

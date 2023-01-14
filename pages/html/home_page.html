@@ -61,13 +61,17 @@
       </header>
       <form id="user_self_sign_in_form" class="text">
         <input type="hidden" name="user_sign_in" value="true"/>
-        <label for="sign_in_field"><h3>Your Name</h3></label>
-        <div class="search_wrapper">
-          <input required type="text" class="input_field capitalize" name="name_field" placeholder="Initials work too" value="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"/>
-          <ul class="suggested_inputs"></ul>
-        </div>
-        <divider></divider>
-        <button type="submit" id="user_self_sign_in_button" class="blue_button"><h4>Submit</h4></button>
+        <container>
+          <label for="sign_in_field"><h3>Your Name</h3></label>
+          <div class="search_wrapper">
+            <input required type="text" class="input_field capitalize" name="name_field" placeholder="" value="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"/>
+            <ul class="suggested_inputs"></ul>
+          </div>
+        </container>
+        <container>
+          <button type="submit" id="user_self_sign_in_button" class="blue_button"><h4>Submit</h4></button>
+        </container>
+        <a><h5 onclick="toggleStaffLoginPreset()">Click here to login as staff user</h5></a>
       </form>
     </div>
     <div class="login_preset" id="user_sign_out_preset">
@@ -76,19 +80,23 @@
       </header>
       <form id="user_self_sign_out_form" class="text">
         <input type="hidden" name="user_sign_out" value="true"/>
-        <label for="sign_out_field"><h3>Your Name</h3></label>
-        <div class="search_wrapper">
-          <input required type="text" class="input_field capitalize" name="name_field" placeholder="Initials work too" value="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"/>
-          <ul class="suggested_inputs"></ul>
-        </div>    
-        <divider></divider>
-        <label for="location"><h3>Location</h3></label>
-        <div class="search_wrapper">
-          <input type="text" class="input_field capitalize" name="location_field" placeholder="Where you are going" value ="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"></input>
-          <ul class="suggested_inputs"></ul>
-        </div>
-        <divider></divider>
-        <button type="submit" id="user_self_sign_out_button" class="blue_button"><h4>Submit</h4></button>
+        <container>
+          <label for="sign_out_field"><h3>Your Name</h3></label>
+          <div class="search_wrapper">
+            <input required type="text" class="input_field capitalize" name="name_field" placeholder="" value="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"/>
+            <ul class="suggested_inputs"></ul>
+          </div>    
+        </container>
+        <container>
+          <label for="location"><h3>Location</h3></label>
+          <div class="search_wrapper">
+            <input type="text" class="input_field capitalize" name="location_field" placeholder="" value ="" autocomplete="off" aria-autocomplete="list" aria-autocomplete="list" pattern="[a-zA-Z\s]+"></input>
+            <ul class="suggested_inputs"></ul>
+          </div>
+        </container>
+        <container>
+          <button type="submit" id="user_self_sign_out_button" class="blue_button"><h4>Submit</h4></button>
+        </container>
       </form>
     </div>
     <div class="login_preset" id="staff_login_preset">
@@ -96,18 +104,22 @@
         <h2>Staff Login</h2>
       </header>
       <form id="staff_login_form" class="text">
-        <input type="hidden" name="staff_login_form" value="true"/>
-        <label for="staff_username"><h3>Username</h3></label>
-        <div class="search_wrapper">
-          <input required type="text" class="input_field" name="staff_username" placeholder="" value="" autocomplete="off" aria-autocomplete="list"/>
-        </div>
-        <divider></divider>
-        <label for="staff_password"><h3>Password</h3></label>
-        <div class="search_wrapper">
-          <input type="password" class="input_field" id="staff_password" name="staff_password" placeholder="" value="" autocomplete="off" aria-autocomplete="list">
-        </div>
-        <divider></divider>
-        <button type="submit" id="staff_sign_in_button" class="blue_button"><h4>Submit</h4></button>
+        <container>
+          <input type="hidden" name="staff_login_form" value="true"/>
+          <label for="staff_username"><h3>Username</h3></label>
+          <div class="search_wrapper">
+            <input required type="text" class="input_field" name="staff_username" placeholder="" value="" autocomplete="off" aria-autocomplete="list"/>
+          </div>
+        </container>
+        <container>
+          <label for="staff_password"><h3>Password</h3></label>
+          <div class="search_wrapper">
+            <input type="password" class="input_field" id="staff_password" name="staff_password" placeholder="" value="" autocomplete="off" aria-autocomplete="list">
+          </div>
+        </container>
+        <container>
+          <button type="submit" id="staff_sign_in_button" class="blue_button"><h4>Submit</h4></button>
+        </container>
       </form>
     </div>
   </section>
