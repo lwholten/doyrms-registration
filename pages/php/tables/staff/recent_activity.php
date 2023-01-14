@@ -38,7 +38,8 @@ Forename, Surname, LocationName, Event,
 CAST(LogTime AS time),
 CAST(LogTime AS date),
 (CASE WHEN Log.UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted,
-StaffMessage
+StaffMessage,
+Log.UserID
 FROM Log
 LEFT JOIN Locations ON Locations.LocationID = Log.LocationID
 LEFT JOIN Events ON Log.EventID = Events.EventID
@@ -69,7 +70,8 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
   n = 5 -> Log Time
   n = 6 -> Log Date
   n = 7 -> Restricted
-  n = 8 -> Staff Message*/
+  n = 8 -> Staff Message
+  n = 9 -> UserID*/
 
   // User signed in
   if ($record[0] == 0) {
@@ -90,7 +92,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User signed out
   else if ($record[0] == 1) {
@@ -111,7 +113,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed in automatically
   else if ($record[0] == 2) {
@@ -132,7 +134,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed out automatically
   else if ($record[0] == 3) {
@@ -153,7 +155,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed in by a staff user (not for an event)
   else if ($record[0] == 4) {
@@ -183,7 +185,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed out by a staff user (not for an event)
   else if ($record[0] == 5) {
@@ -213,7 +215,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed in by a staff user (for an event)
   else if ($record[0] == 6) {
@@ -258,7 +260,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // User was signed out by a staff user (for an event)
   else if ($record[0] == 7) {
@@ -303,7 +305,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
   // If the user manually signed out
   // Out (Auto) (Staff Action)
@@ -325,7 +327,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
       "<td>".$record[6]."</td>"
     ];
 
-    $tableContents .= formatRow($columns);
+    $tableContents .= formatRow($columns, $record[9]);
   }
 }
 

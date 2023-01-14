@@ -13,7 +13,7 @@ $tableContents = '';
 // Connects to the database
 $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
 // SQL code to get the table data
-$sql = "(SELECT (CASE WHEN UserID IN (SELECT UserID FROM AwayUsers) THEN 0 WHEN Users.LocationID IS NULL THEN 2 ELSE 1 END) AS Type, Forename, Surname, LocationName, cast(LastActive AS time), cast(LastActive AS date), (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted FROM Users LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY Type, Users.Forename ASC LIMIT 100)";
+$sql = "(SELECT (CASE WHEN UserID IN (SELECT UserID FROM AwayUsers) THEN 0 WHEN Users.LocationID IS NULL THEN 2 ELSE 1 END) AS Type, Forename, Surname, LocationName, cast(LastActive AS time), cast(LastActive AS date), (CASE WHEN UserID IN (SELECT UserID FROM RestrictedUsers) THEN 1 ELSE 0 END) AS Restricted, Users.UserID FROM Users LEFT JOIN Locations ON Locations.LocationID = Users.LocationID ORDER BY Type, Users.Forename ASC LIMIT 100)";
 // Saves the result of the SQL code to a variable
 $result = $con->query($sql);
 // Disconnects from the database
@@ -52,7 +52,7 @@ while($record = $result -> fetch_array(MYSQLI_NUM)) {
   ];
 
   // Appends this row to the table
-  $tableContents .= formatRow($columns);
+  $tableContents .= formatRow($columns, $record[7]);
 }
 
 echo json_encode($tableContents);

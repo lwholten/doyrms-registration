@@ -4,9 +4,16 @@
 $ini = parse_ini_file('/var/www/html/doyrms-registration/app.ini');
 
 // Formats a row to be displayed in a table
-function formatRow($columns=[]) {
+function formatRow($columns=[], $clickID=NULL) {
   // Start of row
-  $row = '<tr>';
+  if (is_null($clickID)) {
+    // If clickID is null, normal row
+    $row = '<tr>';
+  }
+  else {
+    // If the row displays user when clicked
+    $row = '<tr onclick="displayUserDetails('.$clickID.')">';
+  }
   // Appends each column to the row
   foreach($columns as $column) {
     $row .= $column;

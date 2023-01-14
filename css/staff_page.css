@@ -1299,6 +1299,10 @@ spacer {
   max-width: 600px;
 }
 
+#recent_activity_table, #user_status_table, #restricted_users_table, #away_users_table tr {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1400px), (max-height: 800px) {
   #main_header {
     min-height: 80px;
