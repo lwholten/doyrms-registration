@@ -26,6 +26,7 @@ popupHTMLPaths = {
   removelocation : '../../pages/html/popups/admin/remove_location.html',
   addevent : '../../pages/html/popups/admin/add_event.html',
   removeevent : '../../pages/html/popups/admin/remove_event.html',
+  setup : '../../pages/html/popups/admin/setup.html',
 }
 // An object used to contain the form IDs and their file path for each popup forms action file
 formActionPaths = {
@@ -49,6 +50,7 @@ formActionPaths = {
   remove_location_form : '../../pages/php/forms/admin/remove_location.php',
   add_event_form : '../../pages/php/forms/admin/add_event.php',
   remove_event_form : '../../pages/php/forms/admin/remove_event.php',
+  setup_form : '../../pages/php/forms/admin/add_staff.php',
 }
 
 // Functions
@@ -130,6 +132,14 @@ function addEventListeners() {
       $(submitButton).html('<h4>Done</h4>');
 
       removePopup();
+
+      // If the form was for the 'setup' process, sign the user out
+      if (getCookie('dreg_triggerSetupMode') == 1) {
+        // Simulate pressing the sign out button
+        $('#sign_out_button').click();
+        // Alerts the user to sign back in
+        window.alert('Setup complete, please sign in as an administrator to continue');
+      }
 
     }).fail(function(jqXHR, status, error) {
 
@@ -380,7 +390,7 @@ function triggerPopup(type) {
 $(document).ready(function () {
   // Hide the overlay popup if the escape key is pressed (only executes if the change password prompt is set to false)
   $(document).on('keydown', function(e) {
-    if(e.key == "Escape" && popupActive && !(getCookie('dreg_changePasswordPrompt') == 1)) {
+    if(e.key == "Escape" && popupActive && !(getCookie('dreg_changePasswordPrompt') == 1) && !(getCookie('dreg_triggerSetupMode') == 1)) {
       // Hide the current overlay
       removePopup();
     }
@@ -397,5 +407,6 @@ $(document).ready(function () {
 
 $(window).on('load', function () {
   // If the cookie used to determine whether a password change is required is set to true, trigger the 'change password' prompt
-  if (getCookie('dreg_changePasswordPrompt') == 1) {triggerPopup('changepasswordprompt');} 
+  if (getCookie('dreg_changePasswordPrompt') == 1) {triggerPopup('changepasswordprompt');}
+  else if (getCookie('dreg_triggerSetupMode') == 1) {triggerPopup('setup')}
 });

@@ -117,6 +117,5 @@ else {
 // Finally, adds the staff user to the system
 if (addStaffUser($username, $fname, $lname, $email, $accessLevel, $password)) {
     echo json_encode("the staff user has been added successfully");
-    exit();
 }
 ?>
