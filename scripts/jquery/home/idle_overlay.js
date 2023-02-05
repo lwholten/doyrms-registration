@@ -39,7 +39,7 @@ function getTodaysDetails() {
     today = {
       'time': ((d.getHours()<10?'0':'') + d.getHours()+':'+(d.getMinutes()<10?'0':'') + d.getMinutes()),
       'dayStr': weekdays[d.getDay()],
-      'dayNum': (d.getDay()+1) + suffixes[d.getDate()],
+      'dayNum': (d.getDate()) + suffixes[d.getDate()],
       'month': months[d.getMonth()],
     }
 
