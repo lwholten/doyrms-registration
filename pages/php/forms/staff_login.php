@@ -52,15 +52,14 @@ function fetchStaffDetails($username) {
     return $result;
 }
 
-// Function used to authorise a login to begin setup
-function setupLogin() {
+// Function used to authorise the system administrator login
+function sysAdminLogin() {
+    global $ini;
 
     // Assigns the username and staff ID to a cookie (it does not matter if the user sees this data)
-    setcookie('dreg_staffUsername', $ini['setup_username'], time() + (86400 * 30), "/"); // 86400 = 1 day
+    // Note that the staffID is set to 0, since this is the 'ID' of the system administrator
+    setcookie('dreg_staffUsername', $ini['sys_username'], time() + (86400 * 30), "/"); // 86400 = 1 day
     setcookie('dreg_staffID', 0, time() + (86400 * 30), "/"); // 86400 = 1 day
-
-    // Enables setup mode once logged in
-    setcookie('dreg_triggerSetupMode', 1, time() + (86400 * 30), "/");
 
     // Starts a session and stores that the staff user has logged in as well as their access level (users should NOT see this data)
     session_start();
@@ -73,40 +72,31 @@ function setupLogin() {
 }
 
 // Main
-// Checks whether setup mode is necessary
-function checkForAdminAccount() {
-    global $ini;
-    // Query to check whether an administrator account is on the system
-    $query = "SELECT CASE WHEN EXISTS (SELECT * FROM Staff WHERE AccessLevel=3 LIMIT 1) THEN 1 ELSE 0 END";
-    // Connects to the database
-    $con = new mysqli($ini['db_hostname'], $ini['db_user'], $ini['db_password'], $ini['db_name']);
-    // Executes the statement
-    $stmt = $con->prepare($query);
-    $stmt->execute();
-    // Binds the result to a variable
-    $stmt->bind_result($result);
-    $stmt->fetch();
-    // Disconnects from the database
-    $con->close();
+// If user attempts to sign in as the system administrator
+if (($_POST['staff_username'] == $ini['sys_username'])) {
 
-    // Returns whether the staff user exists
-    if ($result == 1) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+    
+    // If sys admin is enabled
+    if ($ini['sys_enabled']) { 
 
-if (!checkForAdminAccount()) {
-    if (($_POST['staff_username'] == $ini['setup_username']) && ($_POST['staff_password'] == $ini['setup_password'])) {
-        setupLogin();
+        // Sign the user in if the password is correct
+        if ($_POST['staff_password'] == $ini['sys_password']) {sysAdminLogin(); }
+        // Return an error if the password is incorrect
+        else {
+            customError(422, 'The username or password you entered is incorrect. Please try again.');
+            return 0;
+            exit();
+        }
+
     }
+    // If sys admin is disabled
     else {
-        customError(422, 'There are no administrator accounts on the system. To continue, follow the setup guide.');
+        customError(422, 'The system administrator login has been disabled.');
         return 0;
         exit();
+    
     }
+    // Note that if the password was incorrect, but the login was enabled, the user will recieve the 'incorrect user/password' message
 }
 
 // Checks whether the staff user exists
@@ -127,8 +117,6 @@ if (checkStaffPassword($username, NULL, $_POST['staff_password'])) {
     // Assigns the username and staff ID to a cookie (it does not matter if the user sees this data)
     setcookie('dreg_staffUsername', $username, time() + (86400 * 30), "/"); // 86400 = 1 day
     setcookie('dreg_staffID', $staffDetails['staffID'], time() + (86400 * 30), "/"); // 86400 = 1 day
-    // Sets the setup cookie to false
-    setcookie('dreg_triggerSetupMode', 0, time() + (86400 * 30), "/");
 
     // If the staffs password requires changing  (because it matches the password default)
     if ($_POST['staff_password'] == $ini['password_default']) {
