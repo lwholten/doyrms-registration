@@ -158,7 +158,7 @@ sudo mysql
 
 A database, user and password are required for the application to work. The code below may be used to do this, ensuring that the database name, username and password are changed from their default (see bold).
 
-`CREATE DATABASE `**db_name**`;`
+`CREATE DATABASEIF NOT EXISTS `**db_name**`;`
 
 `ALTER DATABASE `**db_name**` DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;`
 
@@ -182,7 +182,7 @@ Once complete, delete the SQL dump from the direcory. As this is no longer neede
 rm dregDB.sql
 ```
 
-### Settings configuration
+#### Settings configuration
 
 It is important to configure the settings. These can be found in [app.ini](https://github.com/lwholten/doyrms-registration/blob/main/app.ini). Using a text edit editor, open the file and change the settings listed in this section. First, the database details must be specified so that the application may use it.
 
@@ -194,14 +194,14 @@ It is important to configure the settings. These can be found in [app.ini](https
 | `db_user`     | **db_user**     |
 | `db_password` | **db_password** |
 
-Next, the system administrators details must be specified. The following settings must be changed to do this. Note that it is NOT recommended to make these details the same as the database username and password.
+Next, the system administrators details must be specified. The following settings must be changed to do this. Note that it is NOT recommended to make these details the same as the database username and password. If you wish to disable the system administrator, the variable `sys_enabled` should be set to `0`. Note that this should be done after the application has been configured, since doing so disables the system administrators account from being used in the web interface.
 
 | Settings       | Value              |
 | :--------------| :------------------|
 | `sys_username` | desired username   |
 | `sys_password` | desired password   |
 
-Other important settings, such as password complexity, may also be changed during this stage. It is recommended to change the following to increase the minimum password strength of staff user accounts.
+Other important settings, such as password complexity, may also be changed during this stage. It is recommended to change the following to increase the minimum password strength of staff user accounts. Note that to set no limit for certain variables, `-1` may be used as its integer. For example, `password_max_capitals` could be set to `-1` for no limit.
 
 | Settings                | Default   | Recommended |
 | :-----------------------| :---------| :-----------|
@@ -209,6 +209,14 @@ Other important settings, such as password complexity, may also be changed durin
 | `password_min_capitals` | 0         | 1           |
 | `password_min_symbols`  | 0         | 1           |
 
+Finally, the following settings must be set to true (changed to 1). This tells the application that the settings and database have been configured. These can now be set since both were done manually.
+
+| Settings                       | Default   | Once Completed    |
+| :------------------------------| :---------| :-----------------|
+| `settings_configured`          | 0         | 1                 |
+| `sys_admin_configured`         | 0         | 1                 |
+| `database_settings_configured` | 0         | 1                 |
+| `database_created`             | 0         | 1                 |
 
 ## Deployment
 
