@@ -28,9 +28,9 @@ function getTodaysDetails() {
     // Array of weekdays
     const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     // Array of suffixes
-    const suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "st", "rd", "th", "th", "th", "th", "th", "th", "th", "st",]
+    const suffixes = ["st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th", "th", "st"]
     // Array of months
-    const months = ["Januray", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     // Todays date
     const d = new Date(); 
@@ -39,7 +39,7 @@ function getTodaysDetails() {
     today = {
       'time': ((d.getHours()<10?'0':'') + d.getHours()+':'+(d.getMinutes()<10?'0':'') + d.getMinutes()),
       'dayStr': weekdays[d.getDay()],
-      'dayNum': (d.getDate()) + suffixes[d.getDate()],
+      'dayNum': (d.getDate()) + suffixes[d.getDate()-1],
       'month': months[d.getMonth()],
     }
 
